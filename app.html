@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SendEase — Bulk Email Tool</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080f;--s1:#0c0e1a;--s2:#111524;--s3:#181d2e;
+  --border:#1f2840;--a:#e8420a;--ag:rgba(232,66,10,.15);--ab:rgba(232,66,10,.07);
+  --a2:#ff6b35;--green:#1fcea8;--red:#ff4f6e;--yellow:#fbbf24;--blue:#4f8aff;
+  --text:#dde6f5;--muted:#4a5c7a;
+  --f:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 900px 600px at 50% 0%,rgba(232,66,10,.04),transparent);pointer-events:none;z-index:0}
+
+.shell{display:grid;grid-template-columns:68px 1fr;min-height:100vh;position:relative;z-index:1}
+
+/* RAIL */
+.rail{background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:4px;position:sticky;top:0;height:100vh;}
+.rail-logo{width:38px;height:38px;border-radius:10px;background:var(--a);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:18px;box-shadow:0 0 20px rgba(232,66,10,.4)}
+.rail-btn{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);transition:all .15s;border:1px solid transparent;}
+.rail-btn:hover{background:var(--s2);color:var(--text)}.rail-btn.active{background:var(--ab);color:var(--a);border-color:rgba(232,66,10,.25)}
+.rail-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.back-link{font-size:11px;color:var(--muted);text-decoration:none;margin-top:auto;padding:8px;text-align:center;line-height:1.4;transition:color .15s}
+.back-link:hover{color:var(--text)}
+
+/* CONTENT */
+.content{padding:44px 48px;max-width:960px}
+.hdr{margin-bottom:40px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+.hdr-left{}
+.hdr-title{font-family:var(--f);font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:6px}
+.hdr-title span{color:var(--a)}
+.hdr-sub{font-size:14px;color:var(--muted)}
+.hdr-badge{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(31,206,168,.08);border:1px solid rgba(31,206,168,.2);
+  border-radius:8px;padding:8px 14px;font-size:12px;color:var(--green);
+  white-space:nowrap;flex-shrink:0;
+}
+.hdr-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* WIZARD */
+.wizard{display:flex;align-items:center;margin-bottom:40px}
+.w-step{display:flex;flex-direction:column;align-items:center;gap:5px}
+.w-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--f);border:2px solid var(--border);color:var(--muted);background:var(--s2);transition:all .3s;}
+.w-circle.done{background:var(--a);border-color:var(--a);color:#fff;box-shadow:0 0 14px var(--ag)}
+.w-circle.active{background:var(--s2);border-color:var(--a);color:var(--a)}
+.w-label{font-size:10px;font-weight:600;color:var(--muted);white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
+.w-label.active{color:var(--a)}
+.w-line{flex:1;height:2px;background:var(--border);margin-bottom:18px;transition:background .3s}
+.w-line.done{background:var(--a)}
+
+/* CARD */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:26px 30px;margin-bottom:18px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,66,10,.25),transparent)}
+.card-title{font-size:14px;font-weight:700;font-family:var(--f);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.card-title svg{width:16px;height:16px;stroke:var(--a);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* DROPS */
+.drop-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.drop-zone{border:2px dashed var(--border);border-radius:14px;padding:32px 20px;text-align:center;cursor:pointer;background:var(--s2);transition:all .2s;position:relative;}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--a);background:var(--ab)}
+.drop-zone.done{border-color:rgba(31,206,168,.4);background:rgba(31,206,168,.05)}
+.dz-icon{font-size:28px;margin-bottom:8px;display:block}
+.dz-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;font-family:var(--f)}
+.dz-sub{font-size:11px;color:var(--muted)}
+.dz-ok{font-size:12px;color:var(--green);margin-top:6px;font-weight:600}
+.dz-input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* FORM */
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fg label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.fg input,.fg select,.fg textarea{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none;transition:border-color .15s;width:100%;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--a)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--muted)}
+.fg textarea{resize:vertical;min-height:90px;line-height:1.6}
+.fg select option{background:var(--s2)}
+.form2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* DRAFT */
+.draft-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
+.draft-head{background:var(--s3);padding:9px 14px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border);}
+.draft-body{padding:14px;display:flex;flex-direction:column;gap:9px}
+.var-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:3px}
+.chip{background:var(--ab);border:1px solid rgba(232,66,10,.2);color:var(--a2);border-radius:5px;padding:3px 9px;font-size:10px;font-family:var(--fm);cursor:pointer;transition:all .15s;font-weight:500;}
+.chip:hover{background:var(--ag)}
+.chip-label{font-size:9px;color:var(--muted);margin-right:4px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--s3);color:var(--muted);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015)}
+.td-mono{font-family:var(--fm);font-size:11px}.td-email{color:var(--blue);font-size:11px}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700;white-space:nowrap}
+.b-ok{background:rgba(31,206,168,.1);color:var(--green)}.b-warn{background:rgba(251,191,36,.1);color:var(--yellow)}
+.b-err{background:rgba(255,79,110,.1);color:var(--red)}.b-emp{background:rgba(79,138,255,.1);color:var(--blue)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+.stat-n{font-size:28px;font-weight:800;line-height:1;margin-bottom:3px;font-family:var(--f)}.stat-l{font-size:11px;color:var(--muted)}
+
+/* PROGRESS */
+.prog-wrap{margin:14px 0}
+.prog-bar{height:5px;background:var(--s3);border-radius:100px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--a),var(--a2));border-radius:100px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.prog-info{display:flex;justify-content:space-between;margin-top:5px;font-size:11px;color:var(--muted)}
+
+/* LOG */
+.log{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;height:220px;overflow-y:auto;font-family:var(--fm);font-size:11px;display:flex;flex-direction:column;gap:2px;}
+.log::-webkit-scrollbar{width:3px}.log::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.ll{display:flex;gap:8px;line-height:1.5}.lt{color:var(--muted);flex-shrink:0;font-size:10px}
+.lk{flex-shrink:0;font-weight:700;font-size:10px;min-width:40px}
+.lok{color:var(--green)}.lwarn{color:var(--yellow)}.lerr{color:var(--red)}.linfo{color:var(--blue)}.ltest{color:#a78bfa}
+
+/* BUTTONS */
+.btns{display:flex;gap:9px;justify-content:flex-end;margin-top:20px}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:10px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .15s;}
+.btn-p{background:var(--a);color:#fff;box-shadow:0 4px 16px rgba(232,66,10,.3)}
+.btn-p:hover{background:#c73508;transform:translateY(-1px)}.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-g{background:var(--s2);color:var(--text);border:1px solid var(--border)}
+.btn-g:hover{border-color:var(--a);color:var(--a)}
+.btn-green{background:linear-gradient(135deg,#0d9a73,#1fcea8);color:#fff;box-shadow:0 4px 16px rgba(31,206,168,.2)}
+.btn-green:hover{transform:translateY(-1px)}.btn-green:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+/* MAPPER */
+.mapper{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* NOTICE */
+.notice{border-radius:10px;padding:11px 14px;font-size:12px;display:flex;align-items:flex-start;gap:9px;margin-bottom:14px;}
+.notice-warn{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);color:var(--yellow)}
+.notice-info{background:rgba(79,138,255,.06);border:1px solid rgba(79,138,255,.15);color:#7aa8ff}
+.notice-ok{background:rgba(31,206,168,.07);border:1px solid rgba(31,206,168,.18);color:var(--green)}
+
+/* DONE BANNER */
+.done-banner{background:rgba(31,206,168,.06);border:1px solid rgba(31,206,168,.18);border-radius:16px;padding:26px 28px;text-align:center;margin-bottom:20px;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.done-icon{font-size:44px;margin-bottom:10px}.done-title{font-size:20px;font-weight:800;color:var(--green);font-family:var(--f);margin-bottom:5px}
+.done-sub{font-size:13px;color:var(--muted)}
+
+/* CONNECT CARD */
+.connect-card{background:linear-gradient(135deg,rgba(232,66,10,.07),rgba(255,107,53,.04));border:1px solid rgba(232,66,10,.2);border-radius:18px;padding:32px 28px;margin-bottom:18px;text-align:center;}
+.connect-icon{font-size:44px;margin-bottom:14px}
+.connect-title{font-family:var(--f);font-size:20px;font-weight:800;margin-bottom:7px}
+.connect-sub{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.7;max-width:440px;margin-left:auto;margin-right:auto}
+.connected-pill{display:inline-flex;align-items:center;gap:9px;background:rgba(31,206,168,.1);border:1px solid rgba(31,206,168,.25);color:var(--green);border-radius:100px;padding:9px 18px;font-size:13px;font-weight:600;font-family:var(--f)}
+.connected-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+.script-section{margin-top:22px;text-align:left}
+.script-section .fg{}
+.script-section input{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:var(--fm);font-size:11px;outline:none;transition:border-color .15s;width:100%;}
+.script-section input:focus{border-color:var(--a)}
+.script-section input::placeholder{color:var(--muted)}
+
+@media(max-width:680px){
+  .shell{grid-template-columns:1fr}.rail{display:none}.content{padding:24px 16px}
+  .form2,.drop-grid,.stats,.mapper{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- RAIL -->
+<nav class="rail">
+  <div class="rail-logo">✉</div>
+  <div class="rail-btn active" id="rb0" onclick="goStep(0)" title="Setup">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 0 0 4.93 19.07"/></svg>
+  </div>
+  <div class="rail-btn" id="rb1" onclick="goStep(1)" title="Upload">
+    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+  </div>
+  <div class="rail-btn" id="rb2" onclick="goStep(2)" title="Map">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+  </div>
+  <div class="rail-btn" id="rb3" onclick="goStep(3)" title="Email Draft">
+    <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+  </div>
+  <div class="rail-btn" id="rb4" onclick="goStep(4)" title="Preview">
+    <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+  </div>
+  <div class="rail-btn" id="rb5" onclick="goStep(5)" title="Send">
+    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+  </div>
+  <a href="index.html" class="back-link">← Home</a>
+</nav>
+
+<!-- CONTENT -->
+<div class="content">
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="hdr-title">Send<span>Ease</span></div>
+      <div class="hdr-sub">Excel + PDF → Bulk Email in minutes</div>
+    </div>
+    <div class="hdr-badge" id="hdrBadge" style="display:none">
+      <div class="hdr-badge-dot"></div>
+      <span id="hdrEmail">Connected</span>
+    </div>
+  </div>
+
+  <!-- WIZARD -->
+  <div class="wizard">
+    <div class="w-step"><div class="w-circle active" id="wc0">1</div><div class="w-label active" id="wl0">Setup</div></div>
+    <div class="w-line" id="wln0"></div>
+    <div class="w-step"><div class="w-circle" id="wc1">2</div><div class="w-label" id="wl1">Upload</div></div>
+    <div class="w-line" id="wln1"></div>
+    <div class="w-step"><div class="w-circle" id="wc2">3</div><div class="w-label" id="wl2">Map</div></div>
+    <div class="w-line" id="wln2"></div>
+    <div class="w-step"><div class="w-circle" id="wc3">4</div><div class="w-label" id="wl3">Email</div></div>
+    <div class="w-line" id="wln3"></div>
+    <div class="w-step"><div class="w-circle" id="wc4">5</div><div class="w-label" id="wl4">Preview</div></div>
+    <div class="w-line" id="wln4"></div>
+    <div class="w-step"><div class="w-circle" id="wc5">6</div><div class="w-label" id="wl5">Send</div></div>
+  </div>
+
+  <!-- STEP 0: SETUP -->
+  <div id="step0">
+    <div class="connect-card">
+      <div class="connect-icon">🔗</div>
+      <div class="connect-title">Google Apps Script se Connect Karein</div>
+      <div class="connect-sub">Sirf ek baar setup karo — phir hamesha apni Gmail se seedha emails jaayenge.</div>
+      <div id="connectedState" style="display:none;margin-bottom:18px">
+        <div class="connected-pill">
+          <div class="connected-dot"></div>
+          <span id="connectedEmail">Connected</span>
+          <button onclick="disconnect()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;margin-left:4px">✕</button>
+        </div>
+      </div>
+      <div id="disconnectedState">
+        <div class="notice notice-info" style="text-align:left;margin-bottom:16px">
+          <span>📋</span>
+          <div>
+            <strong>Pehli baar setup:</strong><br>
+            <span style="font-size:11px">
+              1. <a href="https://script.google.com" target="_blank" style="color:var(--blue)">script.google.com</a> → New Project → Code.gs mein script paste karo (Code.gs file download mein milegi)<br>
+              2. Deploy → New Deployment → Web App → Execute as: <strong>Me</strong> → Access: <strong>Anyone</strong> → Deploy → Allow<br>
+              3. URL copy karo → neeche paste karo
+            </span>
+          </div>
+        </div>
+        <div class="script-section">
+          <div class="fg">
+            <label>Apps Script Web App URL</label>
+            <input type="url" id="scriptUrl" placeholder="https://script.google.com/macros/s/XXXXX/exec" oninput="checkScriptUrl()">
+          </div>
+          <button class="btn btn-p" id="btnConnect" onclick="testConnection()" disabled style="width:100%;justify-content:center;margin-top:4px">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Test & Connect
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-p" onclick="goStep(1)" id="btnStep1" disabled>
+        Next: Upload Files
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 1: UPLOAD -->
+  <div id="step1" style="display:none">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Files Upload Karein
+      </div>
+      <div class="drop-grid">
+        <div class="drop-zone" id="dzExcel" ondragover="dov(event,'dzExcel')" ondragleave="dlv('dzExcel')" ondrop="dropExcel(event)">
+          <input type="file" class="dz-input" accept=".xlsx,.xls,.csv" onchange="loadExcel(this.files[0])">
+          <span class="dz-icon">📊</span>
+          <div class="dz-title">Excel / CSV</div>
+          <div class="dz-sub">Name, Email, PAN columns</div>
+          <div class="dz-ok" id="excelOk" style="display:none">✓ Loaded</div>
+        </div>
+        <div class="drop-zone" id="dzPdf" ondragover="dov(event,'dzPdf')" ondragleave="dlv('dzPdf')" ondrop="dropPdfs(event)">
+          <input type="file" class="dz-input" accept=".pdf" multiple onchange="loadPdfs(this.files)">
+          <span class="dz-icon">📄</span>
+          <div class="dz-title">PDF Files</div>
+          <div class="dz-sub">Saari PDFs ek saath (optional)</div>
+          <div class="dz-ok" id="pdfOk" style="display:none">✓ 0 PDFs</div>
+        </div>
+      </div>
+      <div class="notice notice-info">
+        <span>💡</span>
+        <div>PDF name mein PAN hona chahiye: <code style="font-family:var(--fm);font-size:10px;background:var(--s3);padding:1px 5px;border-radius:3px">Form16_ABCDE1234F.pdf</code> — auto-match hoga</div>
+      </div>
+      <div class="btns">
+        <button class="btn btn-g" onclick="goStep(0)">← Back</button>
+        <button class="btn btn-p" onclick="goStep(2)" id="btnStep2" disabled>
+          Next <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: MAP -->
+  <div id="step2" style="display:none">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Excel Columns Match Karein
+      </div>
+      <div class="mapper" id="colMapper"></div>
+      <div class="form2" style="margin-top:12px">
+        <div class="fg">
+          <label>Employee Type Column (optional)</label>
+          <select id="selType"></select>
+        </div>
+        <div class="fg">
+          <label>Contract keyword</label>
+          <input type="text" id="contractKw" value="Contract">
+        </div>
+      </div>
+      <div class="fg" style="margin-top:4px">
+        <label>Financial Year</label>
+        <input type="text" id="fyInput" value="2024-25" style="max-width:180px">
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-g" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-p" onclick="buildPreviewAndGo()">
+        Next <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 3: EMAIL DRAFT -->
+  <div id="step3" style="display:none">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email Draft
+      </div>
+      <div style="padding:8px 0 14px">
+        <span class="chip-label">Click to insert →</span>
+        <div class="var-chips" id="varChips"></div>
+      </div>
+      <div class="draft-card">
+        <div class="draft-head">✉ Compose</div>
+        <div class="draft-body">
+          <div class="fg" style="margin:0"><label>Subject</label><input type="text" id="emailSubject" value="Form 16 – FY {{fy}} | {{name}}"></div>
+          <div class="fg" style="margin:0"><label>Body</label>
+            <textarea id="emailBody" rows="10">Dear {{name}},
+
+Please find attached your Form 16 for Financial Year {{fy}}.
+
+PAN: {{pan}}
+{{quarters}}
+
+Kindly use this for your Income Tax Return filing.
+
+Regards,
+HR & Payroll Team</textarea>
+          </div>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Emails per batch</label>
+        <input type="number" id="batchSize" value="50" min="1" max="100" style="max-width:130px">
+      </div>
+      <div class="btns">
+        <button class="btn btn-g" onclick="goStep(2)">← Back</button>
+        <button class="btn btn-p" onclick="goStep(4)">Preview <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: PREVIEW -->
+  <div id="step4" style="display:none">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Preview & Confirm
+      </div>
+      <div class="stats" id="statsBar"></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Name</th><th>PAN</th><th>Email</th><th>Type</th><th>PDFs</th><th>Status</th></tr></thead>
+          <tbody id="previewTbody"></tbody>
+        </table>
+      </div>
+      <div class="btns" style="margin-top:18px">
+        <button class="btn btn-g" onclick="goStep(3)">← Back</button>
+        <button class="btn btn-green" onclick="goStep(5)">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: SEND -->
+  <div id="step5" style="display:none">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Sending
+      </div>
+      <div id="doneBanner" style="display:none" class="done-banner">
+        <div class="done-icon">🎉</div>
+        <div class="done-title" id="doneTitle"></div>
+        <div class="done-sub" id="doneSub"></div>
+      </div>
+      <div id="sendingSection">
+        <div class="prog-wrap">
+          <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+          <div class="prog-info"><span id="progLabel">Ready</span><span id="progPct">0%</span></div>
+        </div>
+        <div class="log" id="logBox"></div>
+        <div class="btns">
+          <button class="btn btn-g" onclick="goStep(4)" id="btnBackSend">← Back</button>
+          <button class="btn btn-green" onclick="startSend()" id="btnGo">
+            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            <span id="btnGoTxt">🚀 Start Sending</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+let excelRows=[],excelCols=[],pdfMap={},matched=[],isSending=false;
+let scriptUrl='',connectedEmail='';
+
+window.onload=()=>{
+  const saved=localStorage.getItem('se_script_url');
+  if(saved){document.getElementById('scriptUrl').value=saved;scriptUrl=saved;checkScriptUrl();}
+  buildVarChips();
+};
+
+function goStep(n){
+  for(let i=0;i<6;i++){
+    document.getElementById('step'+i).style.display=i===n?'':'none';
+    document.getElementById('rb'+i).classList.toggle('active',i===n);
+    const wc=document.getElementById('wc'+i),wl=document.getElementById('wl'+i);
+    if(i<n){wc.classList.add('done');wc.classList.remove('active')}
+    else if(i===n){wc.classList.add('active');wc.classList.remove('done')}
+    else{wc.classList.remove('done','active')}
+    wl.classList.toggle('active',i===n);
+    const wln=document.getElementById('wln'+i);
+    if(wln)wln.classList.toggle('done',i<n);
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function checkScriptUrl(){
+  const v=document.getElementById('scriptUrl').value.trim();
+  document.getElementById('btnConnect').disabled=!v.includes('script.google.com');
+}
+
+async function testConnection(){
+  const url=document.getElementById('scriptUrl').value.trim();
+  if(!url)return;
+  const btn=document.getElementById('btnConnect');
+  btn.disabled=true;btn.innerHTML='⏳ Testing...';
+  try{
+    const res=await fetch(url+'?action=ping',{method:'GET'});
+    const data=await res.json();
+    if(data.status==='ok'){
+      scriptUrl=url;connectedEmail=data.email||'Connected';
+      localStorage.setItem('se_script_url',url);showConnected();
+    }else throw new Error(data.message||'Failed');
+  }catch(err){
+    btn.disabled=false;
+    btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Test & Connect`;
+    alert('❌ Connection failed!\n\n'+err.message+'\n\nCheck:\n1. URL sahi hai?\n2. "Anyone" access diya?\n3. Permissions allow ki?\n\nTip: Advanced → Go to script (unsafe) → Allow');
+  }
+}
+
+function showConnected(){
+  document.getElementById('disconnectedState').style.display='none';
+  document.getElementById('connectedState').style.display='';
+  document.getElementById('connectedEmail').textContent='✓ '+connectedEmail;
+  document.getElementById('btnStep1').disabled=false;
+  document.getElementById('hdrBadge').style.display='flex';
+  document.getElementById('hdrEmail').textContent=connectedEmail;
+}
+
+function disconnect(){
+  scriptUrl='';localStorage.removeItem('se_script_url');
+  document.getElementById('scriptUrl').value='';
+  document.getElementById('disconnectedState').style.display='';
+  document.getElementById('connectedState').style.display='none';
+  document.getElementById('btnStep1').disabled=true;
+  document.getElementById('hdrBadge').style.display='none';
+  const btn=document.getElementById('btnConnect');
+  btn.disabled=true;btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Test & Connect`;
+}
+
+function dov(e,id){e.preventDefault();document.getElementById(id).classList.add('drag')}
+function dlv(id){document.getElementById(id).classList.remove('drag')}
+function dropExcel(e){e.preventDefault();dlv('dzExcel');const f=e.dataTransfer.files[0];if(f)loadExcel(f)}
+function dropPdfs(e){e.preventDefault();dlv('dzPdf');loadPdfs(e.dataTransfer.files)}
+
+function loadExcel(file){
+  if(!file)return;
+  const r=new FileReader();
+  r.onload=(e)=>{
+    const wb=XLSX.read(e.target.result,{type:'array'});
+    const ws=wb.Sheets[wb.SheetNames[0]];
+    const data=XLSX.utils.sheet_to_json(ws,{defval:''});
+    excelRows=data;excelCols=data.length?Object.keys(data[0]):[];
+    document.getElementById('excelOk').textContent=`✓ ${data.length} rows`;
+    document.getElementById('excelOk').style.display='';
+    document.getElementById('dzExcel').classList.add('done');
+    buildColMapper();checkUploadReady();
+  };r.readAsArrayBuffer(file);
+}
+
+function loadPdfs(files){
+  const arr=Array.from(files);let loaded=0;
+  if(!arr.length)return;
+  arr.forEach(f=>{
+    const name=f.name;
+    let m=name.match(/Form16[_\-\s]([A-Z]{5}[0-9]{4}[A-Z])(?:[_\-\s](Q[1-4]))?\.pdf/i);
+    if(!m)m=name.match(/([A-Z]{5}[0-9]{4}[A-Z])(?:[_\-\s](Q[1-4]))?/i);
+    if(!m){loaded++;checkPdfDone(arr.length,loaded);return;}
+    const pan=m[1].toUpperCase(),quarter=m[2]?m[2].toUpperCase():null;
+    if(!pdfMap[pan])pdfMap[pan]={employee:null,contract:{}};
+    const r2=new FileReader();
+    r2.onload=(e)=>{
+      const b64=e.target.result.split(',')[1];
+      const entry={name:f.name,base64:b64};
+      if(quarter)pdfMap[pan].contract[quarter]=entry;else pdfMap[pan].employee=entry;
+      loaded++;checkPdfDone(arr.length,loaded);
+    };r2.readAsDataURL(f);
+  });
+}
+
+function checkPdfDone(total,loaded){
+  if(loaded===total){
+    const u=Object.keys(pdfMap).length;
+    document.getElementById('pdfOk').textContent=`✓ ${total} PDFs (${u} PANs)`;
+    document.getElementById('pdfOk').style.display='';
+    document.getElementById('dzPdf').classList.add('done');
+    checkUploadReady();
+  }
+}
+
+function checkUploadReady(){
+  document.getElementById('btnStep2').disabled=excelRows.length===0;
+}
+
+const requiredCols=[
+  {id:'cName',label:'Name Column',hints:['name','employee name','emp name','fullname']},
+  {id:'cPan',label:'PAN Column',hints:['pan','pan no','pan number']},
+  {id:'cEmail',label:'Email Column',hints:['email','mail','email id']},
+];
+
+function autoDetect(hints){
+  const lower=excelCols.map(c=>c.toLowerCase().trim());
+  for(const h of hints){const i=lower.findIndex(c=>c.includes(h));if(i>=0)return excelCols[i];}
+  return excelCols[0]||'';
+}
+
+function buildColMapper(){
+  const wrap=document.getElementById('colMapper');wrap.innerHTML='';
+  requiredCols.forEach(col=>{
+    const d=autoDetect(col.hints);
+    const el=document.createElement('div');el.className='fg';
+    el.innerHTML=`<label>${col.label}</label><select id="${col.id}">${excelCols.map(c=>`<option${c===d?' selected':''}>${c}</option>`).join('')}</select>`;
+    wrap.appendChild(el);
+  });
+  const ts=document.getElementById('selType');
+  ts.innerHTML=`<option value="">— skip —</option>`+excelCols.map(c=>`<option>${c}</option>`).join('');
+}
+
+function buildPreviewAndGo(){
+  const cName=document.getElementById('cName').value;
+  const cPan=document.getElementById('cPan').value;
+  const cEmail=document.getElementById('cEmail').value;
+  const cType=document.getElementById('selType').value;
+  const cKw=document.getElementById('contractKw').value.trim().toLowerCase();
+  matched=excelRows.map((row,idx)=>{
+    const name=String(row[cName]||'').trim();
+    const pan=String(row[cPan]||'').trim().toUpperCase();
+    const email=String(row[cEmail]||'').trim();
+    const type=cType?String(row[cType]||'').trim():'Employee';
+    const isContract=cKw&&type.toLowerCase().includes(cKw);
+    let files=[],status='ready',fileNames=[];
+    const pm=pdfMap[pan];
+    if(!pan||pan.length<10)status='invalid-pan';
+    else if(!email||!email.includes('@'))status='invalid-email';
+    else if(!pm&&Object.keys(pdfMap).length>0)status='no-pdf';
+    else if(pm){
+      if(isContract){Object.entries(pm.contract).forEach(([q,f])=>{files.push(f);fileNames.push(q);});fileNames.sort();}
+      else{
+        if(pm.employee){files=[pm.employee];fileNames=[pm.employee.name];}
+        else if(Object.keys(pm.contract).length){Object.entries(pm.contract).forEach(([q,f])=>{files.push(f);fileNames.push(q);});fileNames.sort();}
+      }
+      if(files.length===0)status='no-pdf';
+    }
+    return{idx:idx+1,name,pan,email,type,isContract,files,fileNames,status};
+  });
+  renderStats();renderPreview();goStep(3);
+}
+
+function renderStats(){
+  const total=matched.length,ready=matched.filter(r=>r.status==='ready').length;
+  const skip=matched.filter(r=>r.status!=='ready').length,pdfs=Object.keys(pdfMap).length;
+  document.getElementById('statsBar').innerHTML=`
+    <div class="stat"><div class="stat-n" style="color:var(--text)">${total}</div><div class="stat-l">Total</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--green)">${ready}</div><div class="stat-l">Ready</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--yellow)">${skip}</div><div class="stat-l">Skipped</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--blue)">${pdfs}</div><div class="stat-l">PDFs</div></div>`;
+}
+
+function renderPreview(){
+  document.getElementById('previewTbody').innerHTML=matched.map(r=>{
+    const stB={ready:`<span class="badge b-ok">✓ Ready</span>`,'no-pdf':`<span class="badge b-warn">⚠ No PDF</span>`,'invalid-pan':`<span class="badge b-err">✗ Bad PAN</span>`,'invalid-email':`<span class="badge b-err">✗ Bad Email</span>`}[r.status]||`<span class="badge b-warn">${r.status}</span>`;
+    const tB=r.isContract?`<span class="badge b-warn">Contract</span>`:`<span class="badge b-emp">Employee</span>`;
+    return`<tr><td class="td-mono">${r.idx}</td><td style="font-weight:500">${r.name||'—'}</td><td class="td-mono">${r.pan||'—'}</td><td class="td-email">${r.email||'—'}</td><td>${tB}</td><td class="td-mono" style="font-size:10px;color:var(--muted)">${r.fileNames.join(', ')||'—'}</td><td>${stB}</td></tr>`;
+  }).join('');
+}
+
+const VARS=[{label:'{{name}}'},{label:'{{pan}}'},{label:'{{email}}'},{label:'{{fy}}'},{label:'{{quarters}}'},{label:'{{type}}'}];
+function buildVarChips(){
+  const w=document.getElementById('varChips');if(!w)return;
+  w.innerHTML=VARS.map(v=>`<span class="chip" onclick="insertVar('${v.label}')">${v.label}</span>`).join('');
+}
+function insertVar(v){
+  const ta=document.getElementById('emailBody');
+  const s=ta.selectionStart,e=ta.selectionEnd;
+  ta.value=ta.value.slice(0,s)+v+ta.value.slice(e);
+  ta.focus();ta.setSelectionRange(s+v.length,s+v.length);
+}
+
+function fillTemplate(tpl,row){
+  const fy=document.getElementById('fyInput').value;
+  return tpl.replace(/\{\{name\}\}/g,row.name).replace(/\{\{pan\}\}/g,row.pan).replace(/\{\{email\}\}/g,row.email).replace(/\{\{fy\}\}/g,fy).replace(/\{\{quarters\}\}/g,row.fileNames.join(', ')||'Form 16').replace(/\{\{type\}\}/g,row.type);
+}
+
+function addLog(type,msg){
+  const box=document.getElementById('logBox');
+  const now=new Date().toLocaleTimeString();
+  const colors={ok:'lok',warn:'lwarn',err:'lerr',info:'linfo',test:'ltest'};
+  const keys={ok:'SENT',warn:'SKIP',err:'FAIL',info:'INFO'};
+  const div=document.createElement('div');div.className='ll';
+  div.innerHTML=`<span class="lt">${now}</span><span class="lk ${colors[type]||'linfo'}">${keys[type]||type}</span><span>${msg}</span>`;
+  box.appendChild(div);box.scrollTop=box.scrollHeight;
+}
+
+function setProgress(pct,label){
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('progLabel').textContent=label;
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+function chunk(arr,size){const r=[];for(let i=0;i<arr.length;i+=size)r.push(arr.slice(i,i+size));return r;}
+
+async function startSend(){
+  if(isSending)return;isSending=true;
+  const subject=document.getElementById('emailSubject').value;
+  const body=document.getElementById('emailBody').value;
+  const batchSize=parseInt(document.getElementById('batchSize').value)||50;
+  document.getElementById('btnGo').disabled=true;
+  document.getElementById('btnBackSend').disabled=true;
+  document.getElementById('logBox').innerHTML='';
+  document.getElementById('doneBanner').style.display='none';
+  const toSend=matched.filter(r=>r.status==='ready');
+  const skipped=matched.filter(r=>r.status!=='ready');
+  addLog('info',`Script: ${scriptUrl.substring(0,50)}...`);
+  addLog('info',`Ready: ${toSend.length} | Skip: ${skipped.length}`);
+  skipped.forEach(r=>addLog('warn',`${r.name||r.pan} — ${r.status}`));
+  if(!toSend.length){isSending=false;document.getElementById('btnGo').disabled=false;document.getElementById('btnBackSend').disabled=false;return;}
+  const records=toSend.map(row=>({
+    name:row.name,pan:row.pan,email:row.email,type:row.type,
+    subject:fillTemplate(subject,row),body:fillTemplate(body,row),
+    pdfs:row.files.map((f,i)=>({name:row.fileNames[i]+'_Form16.pdf',base64:f.base64}))
+  }));
+  const batches=chunk(records,batchSize);
+  let sentTotal=0,failedTotal=0;
+  for(let bi=0;bi<batches.length;bi++){
+    const batch=batches[bi];
+    addLog('info',`Batch ${bi+1}/${batches.length} (${batch.length} emails)...`);
+    try{
+      const res=await fetch(scriptUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send',records:batch})});
+      const data=await res.json();
+      if(data.status==='ok'){
+        data.results.forEach(r=>{
+          if(r.status==='sent'){addLog('ok',`${r.name} → ${r.email}`);sentTotal++;}
+          else if(r.status==='failed'){addLog('err',`${r.name}: ${r.reason}`);failedTotal++;}
+          else addLog('warn',`${r.name||r.pan} — ${r.reason||r.status}`);
+        });
+      }else{addLog('err',`Batch ${bi+1} error: ${data.message}`);failedTotal+=batch.length;}
+    }catch(err){addLog('err',`Batch ${bi+1} network error: ${err.message}`);failedTotal+=batch.length;}
+    setProgress(Math.round(((bi+1)/batches.length)*100),`Batch ${bi+1}/${batches.length} done`);
+    if(bi<batches.length-1)await sleep(1500);
+  }
+  setProgress(100,'Complete!');isSending=false;
+  document.getElementById('doneTitle').textContent=`✓ ${sentTotal} emails sent!`;
+  document.getElementById('doneSub').textContent=`${failedTotal} failed • ${skipped.length} skipped`;
+  document.getElementById('doneBanner').style.display='';
+  document.getElementById('btnGo').disabled=false;
+  document.getElementById('btnBackSend').disabled=false;
+  document.getElementById('btnGoTxt').textContent='🔁 Send Again';
+  const logLines=Array.from(document.getElementById('logBox').querySelectorAll('.ll')).map(l=>l.innerText).join('\n');
+  const blob=new Blob([logLines],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sendease_log.txt';a.style.display='none';document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+</script>
+</body>
+</html>
