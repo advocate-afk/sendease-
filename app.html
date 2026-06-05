@@ -202,7 +202,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
   <div class="hdr">
     <div class="hdr-left">
       <div class="hdr-title">Send<span>Ease</span></div>
-      <div class="hdr-sub">Excel + PDF → Bulk Email in minutes</div>
+      <div class="hdr-sub">Upload Excel &amp; PDFs → Send bulk emails in minutes</div>
     </div>
     <div class="hdr-badge" id="hdrBadge" style="display:none">
       <div class="hdr-badge-dot"></div>
@@ -229,8 +229,8 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
   <div id="step0">
     <div class="connect-card">
       <div class="connect-icon">🔗</div>
-      <div class="connect-title">Google Apps Script se Connect Karein</div>
-      <div class="connect-sub">Sirf ek baar setup karo — phir hamesha apni Gmail se seedha emails jaayenge.</div>
+      <div class="connect-title">Connect Google Apps Script</div>
+      <div class="connect-sub">One-time setup — send emails directly from your Gmail account, no App Password required.</div>
       <div id="connectedState" style="display:none;margin-bottom:18px">
         <div class="connected-pill">
           <div class="connected-dot"></div>
@@ -242,11 +242,11 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
         <div class="notice notice-info" style="text-align:left;margin-bottom:16px">
           <span>📋</span>
           <div>
-            <strong>Pehli baar setup:</strong><br>
+            <strong>First-time setup:</strong><br>
             <span style="font-size:11px">
-              1. <a href="https://script.google.com" target="_blank" style="color:var(--blue)">script.google.com</a> → New Project → Code.gs mein script paste karo (Code.gs file download mein milegi)<br>
+              1. <a href="https://script.google.com" target="_blank" style="color:var(--blue)">script.google.com</a> → New Project → paste Code.gs content<br>
               2. Deploy → New Deployment → Web App → Execute as: <strong>Me</strong> → Access: <strong>Anyone</strong> → Deploy → Allow<br>
-              3. URL copy karo → neeche paste karo
+              3. Copy the URL → paste below
             </span>
           </div>
         </div>
@@ -275,7 +275,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
     <div class="card">
       <div class="card-title">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Files Upload Karein
+        Upload Files
       </div>
       <div class="drop-grid">
         <div class="drop-zone" id="dzExcel" ondragover="dov(event,'dzExcel')" ondragleave="dlv('dzExcel')" ondrop="dropExcel(event)">
@@ -289,13 +289,13 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
           <input type="file" class="dz-input" accept=".pdf" multiple onchange="loadPdfs(this.files)">
           <span class="dz-icon">📄</span>
           <div class="dz-title">PDF Files</div>
-          <div class="dz-sub">Saari PDFs ek saath (optional)</div>
+          <div class="dz-sub">All PDF files at once (optional)</div>
           <div class="dz-ok" id="pdfOk" style="display:none">✓ 0 PDFs</div>
         </div>
       </div>
       <div class="notice notice-info">
         <span>💡</span>
-        <div>PDF name mein PAN hona chahiye: <code style="font-family:var(--fm);font-size:10px;background:var(--s3);padding:1px 5px;border-radius:3px">Form16_ABCDE1234F.pdf</code> — auto-match hoga</div>
+        <div>PDF filename must contain PAN number: <code style="font-family:var(--fm);font-size:10px;background:var(--s3);padding:1px 5px;border-radius:3px">Form16_ABCDE1234F.pdf</code> — auto-matched automatically</div>
       </div>
       <div class="btns">
         <button class="btn btn-g" onclick="goStep(0)">← Back</button>
@@ -311,7 +311,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
     <div class="card">
       <div class="card-title">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Excel Columns Match Karein
+        Map Excel Columns
       </div>
       <div class="mapper" id="colMapper"></div>
       <div class="form2" style="margin-top:12px">
@@ -492,7 +492,7 @@ async function testConnection(){
     } else {
       btn.disabled=false;
       btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Test & Connect`;
-      alert('❌ URL galat lag rahi hai!\n\nSahi format:\nhttps://script.google.com/macros/s/XXXXX/exec');
+      alert('❌ Invalid URL format. Expected:\nhttps://script.google.com/macros/s/XXXXX/exec');
     }
   }
 }
