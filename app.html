@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>SendEase — Bulk Email Tool</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -16,10 +15,8 @@
   --text:#dde6f5;--muted:#4a5c7a;
   --f:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace;
 }
-html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 900px 600px at 50% 0%,rgba(232,66,10,.04),transparent);pointer-events:none;z-index:0}
-
 .shell{display:grid;grid-template-columns:68px 1fr;min-height:100vh;position:relative;z-index:1}
 
 /* RAIL */
@@ -30,32 +27,41 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .rail-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .back-link{font-size:11px;color:var(--muted);text-decoration:none;margin-top:auto;padding:8px;text-align:center;line-height:1.4;transition:color .15s}
 .back-link:hover{color:var(--text)}
+.by-ps{font-size:10px;color:var(--muted);text-align:center;padding:6px 4px;line-height:1.5}
+.by-ps strong{color:var(--text);display:block}
 
 /* CONTENT */
 .content{padding:44px 48px;max-width:960px}
-.hdr{margin-bottom:40px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
-.hdr-left{}
+.hdr{margin-bottom:32px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
 .hdr-title{font-family:var(--f);font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:6px}
 .hdr-title span{color:var(--a)}
 .hdr-sub{font-size:14px;color:var(--muted)}
-.hdr-badge{
-  display:flex;align-items:center;gap:8px;
-  background:rgba(31,206,168,.08);border:1px solid rgba(31,206,168,.2);
-  border-radius:8px;padding:8px 14px;font-size:12px;color:var(--green);
-  white-space:nowrap;flex-shrink:0;
-}
+.hdr-badge{display:flex;align-items:center;gap:8px;background:rgba(31,206,168,.08);border:1px solid rgba(31,206,168,.2);border-radius:8px;padding:8px 14px;font-size:12px;color:var(--green);white-space:nowrap;flex-shrink:0;}
 .hdr-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
+/* MODE SELECTOR */
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.mode-card{border:2px solid var(--border);border-radius:16px;padding:22px 20px;cursor:pointer;background:var(--s2);transition:all .2s;position:relative;}
+.mode-card:hover{border-color:var(--a);background:var(--ab)}
+.mode-card.selected{border-color:var(--a);background:var(--ab)}
+.mode-card.selected::after{content:'✓';position:absolute;top:12px;right:14px;color:var(--a);font-weight:800;font-size:16px}
+.mode-icon{font-size:28px;margin-bottom:10px}
+.mode-title{font-family:var(--f);font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px}
+.mode-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.mode-tag{display:inline-block;margin-top:8px;font-size:10px;font-weight:700;font-family:var(--f);text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:4px}
+.tag-orange{background:var(--ab);color:var(--a2)}
+.tag-blue{background:rgba(79,138,255,.1);color:var(--blue)}
+
 /* WIZARD */
-.wizard{display:flex;align-items:center;margin-bottom:40px}
+.wizard{display:flex;align-items:center;margin-bottom:36px}
 .w-step{display:flex;flex-direction:column;align-items:center;gap:5px}
-.w-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--f);border:2px solid var(--border);color:var(--muted);background:var(--s2);transition:all .3s;}
-.w-circle.done{background:var(--a);border-color:var(--a);color:#fff;box-shadow:0 0 14px var(--ag)}
+.w-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:var(--f);border:2px solid var(--border);color:var(--muted);background:var(--s2);transition:all .3s;}
+.w-circle.done{background:var(--a);border-color:var(--a);color:#fff;box-shadow:0 0 12px var(--ag)}
 .w-circle.active{background:var(--s2);border-color:var(--a);color:var(--a)}
-.w-label{font-size:10px;font-weight:600;color:var(--muted);white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
+.w-label{font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
 .w-label.active{color:var(--a)}
-.w-line{flex:1;height:2px;background:var(--border);margin-bottom:18px;transition:background .3s}
+.w-line{flex:1;height:2px;background:var(--border);margin-bottom:16px;transition:background .3s}
 .w-line.done{background:var(--a)}
 
 /* CARD */
@@ -69,11 +75,19 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .drop-zone{border:2px dashed var(--border);border-radius:14px;padding:32px 20px;text-align:center;cursor:pointer;background:var(--s2);transition:all .2s;position:relative;}
 .drop-zone:hover,.drop-zone.drag{border-color:var(--a);background:var(--ab)}
 .drop-zone.done{border-color:rgba(31,206,168,.4);background:rgba(31,206,168,.05)}
+.drop-zone.full{grid-column:1/-1}
 .dz-icon{font-size:28px;margin-bottom:8px;display:block}
 .dz-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;font-family:var(--f)}
 .dz-sub{font-size:11px;color:var(--muted)}
 .dz-ok{font-size:12px;color:var(--green);margin-top:6px;font-weight:600}
 .dz-input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* ATTACHED FILES LIST */
+.attached-files{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.attached-file{display:flex;align-items:center;gap:6px;background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--text)}
+.attached-file-remove{cursor:pointer;color:var(--muted);font-size:13px;line-height:1;transition:color .15s}
+.attached-file-remove:hover{color:var(--red)}
+.file-icon{font-size:14px}
 
 /* FORM */
 .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
@@ -106,6 +120,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
 .badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700;white-space:nowrap}
 .b-ok{background:rgba(31,206,168,.1);color:var(--green)}.b-warn{background:rgba(251,191,36,.1);color:var(--yellow)}
 .b-err{background:rgba(255,79,110,.1);color:var(--red)}.b-emp{background:rgba(79,138,255,.1);color:var(--blue)}
+.b-mode{background:var(--ab);color:var(--a2)}
 
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
@@ -123,7 +138,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
 .log::-webkit-scrollbar{width:3px}.log::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 .ll{display:flex;gap:8px;line-height:1.5}.lt{color:var(--muted);flex-shrink:0;font-size:10px}
 .lk{flex-shrink:0;font-weight:700;font-size:10px;min-width:40px}
-.lok{color:var(--green)}.lwarn{color:var(--yellow)}.lerr{color:var(--red)}.linfo{color:var(--blue)}.ltest{color:#a78bfa}
+.lok{color:var(--green)}.lwarn{color:var(--yellow)}.lerr{color:var(--red)}.linfo{color:var(--blue)}
 
 /* BUTTONS */
 .btns{display:flex;gap:9px;justify-content:flex-end;margin-top:20px}
@@ -159,14 +174,13 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
 .connected-pill{display:inline-flex;align-items:center;gap:9px;background:rgba(31,206,168,.1);border:1px solid rgba(31,206,168,.25);color:var(--green);border-radius:100px;padding:9px 18px;font-size:13px;font-weight:600;font-family:var(--f)}
 .connected-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
 .script-section{margin-top:22px;text-align:left}
-.script-section .fg{}
 .script-section input{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:var(--fm);font-size:11px;outline:none;transition:border-color .15s;width:100%;}
 .script-section input:focus{border-color:var(--a)}
 .script-section input::placeholder{color:var(--muted)}
 
 @media(max-width:680px){
   .shell{grid-template-columns:1fr}.rail{display:none}.content{padding:24px 16px}
-  .form2,.drop-grid,.stats,.mapper{grid-template-columns:1fr}
+  .form2,.drop-grid,.stats,.mapper,.mode-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -179,23 +193,26 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
   <div class="rail-btn active" id="rb0" onclick="goStep(0)" title="Setup">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 0 0 4.93 19.07"/></svg>
   </div>
-  <div class="rail-btn" id="rb1" onclick="goStep(1)" title="Upload">
+  <div class="rail-btn" id="rb1" onclick="goStep(1)" title="Mode">
+    <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+  </div>
+  <div class="rail-btn" id="rb2" onclick="goStep(2)" title="Upload">
     <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
   </div>
-  <div class="rail-btn" id="rb2" onclick="goStep(2)" title="Map">
+  <div class="rail-btn" id="rb3" onclick="goStep(3)" title="Map Columns">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
   </div>
-  <div class="rail-btn" id="rb3" onclick="goStep(3)" title="Email Draft">
+  <div class="rail-btn" id="rb4" onclick="goStep(4)" title="Email">
     <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
   </div>
-  <div class="rail-btn" id="rb4" onclick="goStep(4)" title="Preview">
+  <div class="rail-btn" id="rb5" onclick="goStep(5)" title="Preview">
     <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
   </div>
-  <div class="rail-btn" id="rb5" onclick="goStep(5)" title="Send">
+  <div class="rail-btn" id="rb6" onclick="goStep(6)" title="Send">
     <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
   </div>
   <a href="index.html" class="back-link">← Home</a>
-  <div style="font-size:10px;color:var(--muted);text-align:center;padding:8px 4px;line-height:1.5">By<br/><strong style="color:var(--text)">Prakash<br/>Sharma</strong></div>
+  <div class="by-ps">By<strong>Prakash<br/>Sharma</strong></div>
 </nav>
 
 <!-- CONTENT -->
@@ -203,7 +220,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
   <div class="hdr">
     <div class="hdr-left">
       <div class="hdr-title">Send<span>Ease</span></div>
-      <div class="hdr-sub">Upload Excel &amp; PDFs · Send bulk emails in minutes</div>
+      <div class="hdr-sub">Bulk email with any attachment — for everyone</div>
     </div>
     <div class="hdr-badge" id="hdrBadge" style="display:none">
       <div class="hdr-badge-dot"></div>
@@ -215,15 +232,17 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
   <div class="wizard">
     <div class="w-step"><div class="w-circle active" id="wc0">1</div><div class="w-label active" id="wl0">Setup</div></div>
     <div class="w-line" id="wln0"></div>
-    <div class="w-step"><div class="w-circle" id="wc1">2</div><div class="w-label" id="wl1">Upload</div></div>
+    <div class="w-step"><div class="w-circle" id="wc1">2</div><div class="w-label" id="wl1">Mode</div></div>
     <div class="w-line" id="wln1"></div>
-    <div class="w-step"><div class="w-circle" id="wc2">3</div><div class="w-label" id="wl2">Map</div></div>
+    <div class="w-step"><div class="w-circle" id="wc2">3</div><div class="w-label" id="wl2">Upload</div></div>
     <div class="w-line" id="wln2"></div>
-    <div class="w-step"><div class="w-circle" id="wc3">4</div><div class="w-label" id="wl3">Email</div></div>
+    <div class="w-step"><div class="w-circle" id="wc3">4</div><div class="w-label" id="wl3">Columns</div></div>
     <div class="w-line" id="wln3"></div>
-    <div class="w-step"><div class="w-circle" id="wc4">5</div><div class="w-label" id="wl4">Preview</div></div>
+    <div class="w-step"><div class="w-circle" id="wc4">5</div><div class="w-label" id="wl4">Email</div></div>
     <div class="w-line" id="wln4"></div>
-    <div class="w-step"><div class="w-circle" id="wc5">6</div><div class="w-label" id="wl5">Send</div></div>
+    <div class="w-step"><div class="w-circle" id="wc5">6</div><div class="w-label" id="wl5">Preview</div></div>
+    <div class="w-line" id="wln5"></div>
+    <div class="w-step"><div class="w-circle" id="wc6">7</div><div class="w-label" id="wl6">Send</div></div>
   </div>
 
   <!-- STEP 0: SETUP -->
@@ -231,7 +250,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
     <div class="connect-card">
       <div class="connect-icon">🔗</div>
       <div class="connect-title">Connect Google Apps Script</div>
-      <div class="connect-sub">One-time setup — send emails directly from your Gmail account, no App Password required.</div>
+      <div class="connect-sub">One-time setup — emails will be sent directly from your Gmail account.</div>
       <div id="connectedState" style="display:none;margin-bottom:18px">
         <div class="connected-pill">
           <div class="connected-dot"></div>
@@ -245,9 +264,9 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
           <div>
             <strong>First-time setup:</strong><br>
             <span style="font-size:11px">
-              1. <a href="https://script.google.com" target="_blank" style="color:var(--blue)">script.google.com</a> → New Project → paste Code.gs content<br>
-              2. Deploy → New Deployment → Web App → Execute as: <strong>Me</strong> → Access: <strong>Anyone</strong> → Deploy → Allow<br>
-              3. Copy the URL → paste below
+              1. <a href="https://script.google.com" target="_blank" style="color:var(--blue)">script.google.com</a> → New Project → paste Code.gs content → Save<br>
+              2. Deploy → New Deployment → Web App → Execute as: <strong>Me</strong> → Access: <strong>Anyone</strong> → Deploy<br>
+              3. Advanced → Allow → Copy the Web App URL → paste below
             </span>
           </div>
         </div>
@@ -265,103 +284,185 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
     </div>
     <div class="btns">
       <button class="btn btn-p" onclick="goStep(1)" id="btnStep1" disabled>
+        Next: Choose Mode
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 1: MODE SELECTION -->
+  <div id="step1" style="display:none">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Select Sending Mode
+      </div>
+      <div class="mode-grid">
+        <div class="mode-card" id="modeBroadcast" onclick="selectMode('broadcast')">
+          <div class="mode-icon">📢</div>
+          <div class="mode-title">Broadcast Mode</div>
+          <div class="mode-desc">Send the <strong>same file(s)</strong> to everyone in your list. Perfect for newsletters, circulars, announcements, offer letters, event invites.</div>
+          <div class="mode-tag tag-orange">1 file → 1000 people</div>
+        </div>
+        <div class="mode-card" id="modePersonal" onclick="selectMode('personal')">
+          <div class="mode-icon">🎯</div>
+          <div class="mode-title">Personal Mode</div>
+          <div class="mode-desc">Send a <strong>different file</strong> to each person, matched by PAN or Employee ID. Perfect for Form16, payslips, individual reports.</div>
+          <div class="mode-tag tag-blue">1 file per person</div>
+        </div>
+      </div>
+      <div id="modeHint" style="font-size:12px;color:var(--muted);text-align:center;padding:8px">Select a mode to continue</div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-g" onclick="goStep(0)">← Back</button>
+      <button class="btn btn-p" onclick="goStep(2)" id="btnStep2" disabled>
         Next: Upload Files
         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
   </div>
 
-  <!-- STEP 1: UPLOAD -->
-  <div id="step1" style="display:none">
+  <!-- STEP 2: UPLOAD -->
+  <div id="step2" style="display:none">
     <div class="card">
       <div class="card-title">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Upload Files
       </div>
-      <div class="drop-grid">
-        <div class="drop-zone" id="dzExcel" ondragover="dov(event,'dzExcel')" ondragleave="dlv('dzExcel')" ondrop="dropExcel(event)">
-          <input type="file" class="dz-input" accept=".xlsx,.xls,.csv" onchange="loadExcel(this.files[0])">
-          <span class="dz-icon">📊</span>
-          <div class="dz-title">Excel / CSV</div>
-          <div class="dz-sub">Name, Email, PAN columns</div>
-          <div class="dz-ok" id="excelOk" style="display:none">✓ Loaded</div>
+
+      <!-- BROADCAST MODE UPLOAD -->
+      <div id="uploadBroadcast">
+        <div class="notice notice-info">
+          <span>📢</span>
+          <div><strong>Broadcast Mode:</strong> Upload your recipient list (Excel/CSV) and the file(s) you want to send to everyone.</div>
         </div>
-        <div class="drop-zone" id="dzPdf" ondragover="dov(event,'dzPdf')" ondragleave="dlv('dzPdf')" ondrop="dropPdfs(event)">
-          <input type="file" class="dz-input" accept=".pdf" multiple onchange="loadPdfs(this.files)">
-          <span class="dz-icon">📄</span>
-          <div class="dz-title">PDF Files</div>
-          <div class="dz-sub">All PDF files at once (optional)</div>
-          <div class="dz-ok" id="pdfOk" style="display:none">✓ 0 PDFs</div>
+        <div class="drop-grid">
+          <div class="drop-zone" id="dzExcel" ondragover="dov(event,'dzExcel')" ondragleave="dlv('dzExcel')" ondrop="dropExcel(event)">
+            <input type="file" class="dz-input" accept=".xlsx,.xls,.csv" onchange="loadExcel(this.files[0])">
+            <span class="dz-icon">📊</span>
+            <div class="dz-title">Recipient List</div>
+            <div class="dz-sub">Excel or CSV — Name, Email columns</div>
+            <div class="dz-ok" id="excelOk" style="display:none">✓ Loaded</div>
+          </div>
+          <div class="drop-zone" id="dzBroadcast" ondragover="dov(event,'dzBroadcast')" ondragleave="dlv('dzBroadcast')" ondrop="dropBroadcast(event)">
+            <input type="file" class="dz-input" accept="*/*" multiple onchange="loadBroadcastFiles(this.files)">
+            <span class="dz-icon">📎</span>
+            <div class="dz-title">Attachment(s)</div>
+            <div class="dz-sub">Any file type — PDF, image, Word, ZIP</div>
+            <div class="dz-ok" id="broadcastOk" style="display:none">✓ 0 files</div>
+          </div>
+        </div>
+        <div id="broadcastFileList" class="attached-files"></div>
+      </div>
+
+      <!-- PERSONAL MODE UPLOAD -->
+      <div id="uploadPersonal" style="display:none">
+        <div class="notice notice-info">
+          <span>🎯</span>
+          <div><strong>Personal Mode:</strong> Upload your recipient list and all individual files. Each file will be matched by PAN or Employee ID.</div>
+        </div>
+        <div class="drop-grid">
+          <div class="drop-zone" id="dzExcel2" ondragover="dov(event,'dzExcel2')" ondragleave="dlv('dzExcel2')" ondrop="dropExcel2(event)">
+            <input type="file" class="dz-input" accept=".xlsx,.xls,.csv" onchange="loadExcel(this.files[0])">
+            <span class="dz-icon">📊</span>
+            <div class="dz-title">Recipient List</div>
+            <div class="dz-sub">Excel or CSV — Name, Email, PAN/ID</div>
+            <div class="dz-ok" id="excelOk2" style="display:none">✓ Loaded</div>
+          </div>
+          <div class="drop-zone" id="dzPdf" ondragover="dov(event,'dzPdf')" ondragleave="dlv('dzPdf')" ondrop="dropPdfs(event)">
+            <input type="file" class="dz-input" accept="*/*" multiple onchange="loadPdfs(this.files)">
+            <span class="dz-icon">📄</span>
+            <div class="dz-title">Individual Files</div>
+            <div class="dz-sub">All files at once — matched by PAN/ID in filename</div>
+            <div class="dz-ok" id="pdfOk" style="display:none">✓ 0 files</div>
+          </div>
+        </div>
+        <div class="notice notice-warn" style="margin-top:4px">
+          <span>💡</span>
+          <div>Filename must contain the PAN or Employee ID: <code style="font-family:var(--fm);font-size:10px;background:var(--s3);padding:1px 5px;border-radius:3px">Payslip_ABCDE1234F.pdf</code> or <code style="font-family:var(--fm);font-size:10px;background:var(--s3);padding:1px 5px;border-radius:3px">Report_EMP001.pdf</code></div>
         </div>
       </div>
-      <div class="notice notice-info">
-        <span>💡</span>
-        <div>PDF filename must contain PAN number: <code style="font-family:var(--fm);font-size:10px;background:var(--s3);padding:1px 5px;border-radius:3px">Form16_ABCDE1234F.pdf</code> — auto-matched automatically</div>
-      </div>
-      <div class="btns">
-        <button class="btn btn-g" onclick="goStep(0)">← Back</button>
-        <button class="btn btn-p" onclick="goStep(2)" id="btnStep2" disabled>
-          Next <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-      </div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-g" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-p" onclick="goStep(3)" id="btnStep3" disabled>
+        Next: Map Columns
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
   </div>
 
-  <!-- STEP 2: MAP -->
-  <div id="step2" style="display:none">
+  <!-- STEP 3: MAP COLUMNS -->
+  <div id="step3" style="display:none">
     <div class="card">
       <div class="card-title">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         Map Excel Columns
       </div>
       <div class="mapper" id="colMapper"></div>
-      <div class="form2" style="margin-top:12px">
-        <div class="fg">
-          <label>Employee Type Column (optional)</label>
-          <select id="selType"></select>
+      <div id="personalColExtra" style="display:none">
+        <div class="form2" style="margin-top:12px">
+          <div class="fg">
+            <label>PAN / Employee ID Column</label>
+            <select id="cId"></select>
+          </div>
+          <div class="fg">
+            <label>Match by</label>
+            <select id="matchType">
+              <option value="pan">PAN Number</option>
+              <option value="empid">Employee ID</option>
+              <option value="any">Any ID in filename</option>
+            </select>
+          </div>
         </div>
-        <div class="fg">
-          <label>Contract keyword</label>
-          <input type="text" id="contractKw" value="Contract">
+        <div class="form2">
+          <div class="fg">
+            <label>Employee Type Column (optional)</label>
+            <select id="selType"></select>
+          </div>
+          <div class="fg">
+            <label>Contract keyword</label>
+            <input type="text" id="contractKw" value="Contract">
+          </div>
         </div>
       </div>
-      <div class="fg" style="margin-top:4px">
-        <label>Financial Year</label>
-        <input type="text" id="fyInput" value="2024-25" style="max-width:180px">
+      <div class="fg" style="margin-top:8px">
+        <label>Financial Year (used in email template)</label>
+        <input type="text" id="fyInput" value="2024-25" style="max-width:160px">
       </div>
     </div>
     <div class="btns">
-      <button class="btn btn-g" onclick="goStep(1)">← Back</button>
-      <button class="btn btn-p" onclick="buildPreviewAndGo()">
-        Next <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      <button class="btn btn-g" onclick="goStep(2)">← Back</button>
+      <button class="btn btn-p" onclick="buildAndGo()">
+        Next: Email Draft
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
   </div>
 
-  <!-- STEP 3: EMAIL DRAFT -->
-  <div id="step3" style="display:none">
+  <!-- STEP 4: EMAIL DRAFT -->
+  <div id="step4" style="display:none">
     <div class="card">
       <div class="card-title">
         <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Email Draft
+        Compose Email
       </div>
       <div style="padding:8px 0 14px">
         <span class="chip-label">Click to insert →</span>
         <div class="var-chips" id="varChips"></div>
       </div>
       <div class="draft-card">
-        <div class="draft-head">✉ Compose</div>
+        <div class="draft-head">✉ New Message</div>
         <div class="draft-body">
-          <div class="fg" style="margin:0"><label>Subject</label><input type="text" id="emailSubject" value="Form 16 – FY {{fy}} | {{name}}"></div>
+          <div class="fg" style="margin:0"><label>Subject</label><input type="text" id="emailSubject" value="Important Document — {{name}}"></div>
           <div class="fg" style="margin:0"><label>Body</label>
             <textarea id="emailBody" rows="10">Dear {{name}},
 
-Please find attached your Form 16 for Financial Year {{fy}}.
+Please find the attached document for your reference.
 
-PAN: {{pan}}
-{{quarters}}
+{{extra}}
 
-Kindly use this for your Income Tax Return filing.
+For any queries, please contact HR.
 
 Regards,
 HR & Payroll Team</textarea>
@@ -369,18 +470,21 @@ HR & Payroll Team</textarea>
         </div>
       </div>
       <div class="fg">
-        <label>Emails per batch</label>
+        <label>Emails per batch (max 50 recommended)</label>
         <input type="number" id="batchSize" value="50" min="1" max="100" style="max-width:130px">
       </div>
       <div class="btns">
-        <button class="btn btn-g" onclick="goStep(2)">← Back</button>
-        <button class="btn btn-p" onclick="goStep(4)">Preview <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        <button class="btn btn-g" onclick="goStep(3)">← Back</button>
+        <button class="btn btn-p" onclick="goStep(5)">
+          Preview
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- STEP 4: PREVIEW -->
-  <div id="step4" style="display:none">
+  <!-- STEP 5: PREVIEW -->
+  <div id="step5" style="display:none">
     <div class="card">
       <div class="card-title">
         <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -389,13 +493,13 @@ HR & Payroll Team</textarea>
       <div class="stats" id="statsBar"></div>
       <div class="tbl-wrap">
         <table>
-          <thead><tr><th>#</th><th>Name</th><th>PAN</th><th>Email</th><th>Type</th><th>PDFs</th><th>Status</th></tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Attachment</th><th>Status</th></tr></thead>
           <tbody id="previewTbody"></tbody>
         </table>
       </div>
       <div class="btns" style="margin-top:18px">
-        <button class="btn btn-g" onclick="goStep(3)">← Back</button>
-        <button class="btn btn-green" onclick="goStep(5)">
+        <button class="btn btn-g" onclick="goStep(4)">← Back</button>
+        <button class="btn btn-green" onclick="goStep(6)">
           <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           Send Now
         </button>
@@ -403,8 +507,8 @@ HR & Payroll Team</textarea>
     </div>
   </div>
 
-  <!-- STEP 5: SEND -->
-  <div id="step5" style="display:none">
+  <!-- STEP 6: SEND -->
+  <div id="step6" style="display:none">
     <div class="card">
       <div class="card-title">
         <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -422,7 +526,7 @@ HR & Payroll Team</textarea>
         </div>
         <div class="log" id="logBox"></div>
         <div class="btns">
-          <button class="btn btn-g" onclick="goStep(4)" id="btnBackSend">← Back</button>
+          <button class="btn btn-g" onclick="goStep(5)" id="btnBackSend">← Back</button>
           <button class="btn btn-green" onclick="startSend()" id="btnGo">
             <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             <span id="btnGoTxt">🚀 Start Sending</span>
@@ -431,21 +535,26 @@ HR & Payroll Team</textarea>
       </div>
     </div>
   </div>
+
 </div>
 </div>
 
 <script>
-let excelRows=[],excelCols=[],pdfMap={},matched=[],isSending=false;
-let scriptUrl='',connectedEmail='';
+// ═══ STATE ═══
+let excelRows=[],excelCols=[],pdfMap={},broadcastFiles=[],matched=[];
+let isSending=false,scriptUrl='',connectedEmail='',sendMode='broadcast';
+const TOTAL_STEPS=7;
 
+// ═══ INIT ═══
 window.onload=()=>{
   const saved=localStorage.getItem('se_script_url');
   if(saved){document.getElementById('scriptUrl').value=saved;scriptUrl=saved;checkScriptUrl();}
   buildVarChips();
 };
 
+// ═══ STEP NAV ═══
 function goStep(n){
-  for(let i=0;i<6;i++){
+  for(let i=0;i<TOTAL_STEPS;i++){
     document.getElementById('step'+i).style.display=i===n?'':'none';
     document.getElementById('rb'+i).classList.toggle('active',i===n);
     const wc=document.getElementById('wc'+i),wl=document.getElementById('wl'+i);
@@ -459,6 +568,7 @@ function goStep(n){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+// ═══ SETUP ═══
 function checkScriptUrl(){
   const v=document.getElementById('scriptUrl').value.trim();
   document.getElementById('btnConnect').disabled=!v.includes('script.google.com');
@@ -470,30 +580,17 @@ async function testConnection(){
   const btn=document.getElementById('btnConnect');
   btn.disabled=true;btn.innerHTML='⏳ Testing...';
   try{
-    // Google Apps Script requires no-cors for GET from external domains
-    // We use a script tag trick to verify the URL works
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {'Content-Type': 'text/plain'},
-      body: JSON.stringify({action: 'ping'})
-    });
-    const data = await res.json();
-    if(data.status==='ok'){
-      scriptUrl=url;connectedEmail=data.email||'Connected';
-      localStorage.setItem('se_script_url',url);showConnected();
-    }else throw new Error(data.message||'Failed');
+    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'ping'})});
+    const data=await res.json();
+    if(data.status==='ok'){scriptUrl=url;connectedEmail=data.email||'Connected';localStorage.setItem('se_script_url',url);showConnected();}
+    else throw new Error(data.message||'Failed');
   }catch(err){
-    // If fetch fails due to CORS but URL looks valid, trust it and connect anyway
-    const url2=document.getElementById('scriptUrl').value.trim();
-    if(url2.includes('script.google.com/macros/s/') && url2.endsWith('/exec')){
-      scriptUrl=url2;
-      connectedEmail='Gmail (connected)';
-      localStorage.setItem('se_script_url',url2);
-      showConnected();
+    if(url.includes('script.google.com/macros/s/')&&url.endsWith('/exec')){
+      scriptUrl=url;connectedEmail='Gmail (connected)';localStorage.setItem('se_script_url',url);showConnected();
     } else {
       btn.disabled=false;
       btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Test & Connect`;
-      alert('❌ Invalid URL format. Expected:\nhttps://script.google.com/macros/s/XXXXX/exec');
+      alert('Invalid URL. Expected format:\nhttps://script.google.com/macros/s/XXXXX/exec');
     }
   }
 }
@@ -518,11 +615,43 @@ function disconnect(){
   btn.disabled=true;btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Test & Connect`;
 }
 
+// ═══ MODE SELECTION ═══
+function selectMode(mode){
+  sendMode=mode;
+  document.getElementById('modeBroadcast').classList.toggle('selected',mode==='broadcast');
+  document.getElementById('modePersonal').classList.toggle('selected',mode==='personal');
+  document.getElementById('modeHint').textContent = mode==='broadcast'
+    ? '📢 Broadcast — same file(s) will go to everyone'
+    : '🎯 Personal — each person gets their own matched file';
+  document.getElementById('btnStep2').disabled=false;
+  // Show/hide upload panels
+  document.getElementById('uploadBroadcast').style.display=mode==='broadcast'?'':'none';
+  document.getElementById('uploadPersonal').style.display=mode==='personal'?'':'none';
+  document.getElementById('personalColExtra').style.display=mode==='personal'?'':'none';
+  checkUploadReady();
+}
+
+// ═══ DRAG & DROP ═══
 function dov(e,id){e.preventDefault();document.getElementById(id).classList.add('drag')}
 function dlv(id){document.getElementById(id).classList.remove('drag')}
-function dropExcel(e){e.preventDefault();dlv('dzExcel');const f=e.dataTransfer.files[0];if(f)loadExcel(f)}
+function dropExcel(e){e.preventDefault();dlv('dzExcel');loadExcel(e.dataTransfer.files[0])}
+function dropExcel2(e){e.preventDefault();dlv('dzExcel2');loadExcel(e.dataTransfer.files[0])}
+function dropBroadcast(e){e.preventDefault();dlv('dzBroadcast');loadBroadcastFiles(e.dataTransfer.files)}
 function dropPdfs(e){e.preventDefault();dlv('dzPdf');loadPdfs(e.dataTransfer.files)}
 
+// ═══ FILE ICON ═══
+function fileIcon(name){
+  const ext=name.split('.').pop().toLowerCase();
+  if(['pdf'].includes(ext)) return '📄';
+  if(['jpg','jpeg','png','gif','webp','svg'].includes(ext)) return '🖼️';
+  if(['xlsx','xls','csv'].includes(ext)) return '📊';
+  if(['doc','docx'].includes(ext)) return '📝';
+  if(['zip','rar','7z'].includes(ext)) return '🗜️';
+  if(['mp4','mov','avi'].includes(ext)) return '🎬';
+  return '📎';
+}
+
+// ═══ EXCEL LOADER ═══
 function loadExcel(file){
   if(!file)return;
   const r=new FileReader();
@@ -531,51 +660,108 @@ function loadExcel(file){
     const ws=wb.Sheets[wb.SheetNames[0]];
     const data=XLSX.utils.sheet_to_json(ws,{defval:''});
     excelRows=data;excelCols=data.length?Object.keys(data[0]):[];
-    document.getElementById('excelOk').textContent=`✓ ${data.length} rows`;
-    document.getElementById('excelOk').style.display='';
-    document.getElementById('dzExcel').classList.add('done');
+    const txt=`✓ ${data.length} rows loaded`;
+    ['excelOk','excelOk2'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.textContent=txt;el.style.display='';}
+    });
+    ['dzExcel','dzExcel2'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.add('done');
+    });
     buildColMapper();checkUploadReady();
-  };r.readAsArrayBuffer(file);
+  };
+  r.readAsArrayBuffer(file);
 }
 
-function loadPdfs(files){
-  const arr=Array.from(files);let loaded=0;
-  if(!arr.length)return;
+// ═══ BROADCAST FILES ═══
+function loadBroadcastFiles(files){
+  const arr=Array.from(files);
+  let loaded=0;
   arr.forEach(f=>{
-    const name=f.name;
-    let m=name.match(/Form16[_\-\s]([A-Z]{5}[0-9]{4}[A-Z])(?:[_\-\s](Q[1-4]))?\.pdf/i);
-    if(!m)m=name.match(/([A-Z]{5}[0-9]{4}[A-Z])(?:[_\-\s](Q[1-4]))?/i);
-    if(!m){loaded++;checkPdfDone(arr.length,loaded);return;}
-    const pan=m[1].toUpperCase(),quarter=m[2]?m[2].toUpperCase():null;
-    if(!pdfMap[pan])pdfMap[pan]={employee:null,contract:{}};
-    const r2=new FileReader();
-    r2.onload=(e)=>{
-      const b64=e.target.result.split(',')[1];
-      const entry={name:f.name,base64:b64};
-      if(quarter)pdfMap[pan].contract[quarter]=entry;else pdfMap[pan].employee=entry;
-      loaded++;checkPdfDone(arr.length,loaded);
-    };r2.readAsDataURL(f);
+    const r=new FileReader();
+    r.onload=(e)=>{
+      broadcastFiles.push({name:f.name,base64:e.target.result.split(',')[1],type:f.type||'application/octet-stream'});
+      loaded++;
+      if(loaded===arr.length){
+        document.getElementById('broadcastOk').textContent=`✓ ${broadcastFiles.length} file(s)`;
+        document.getElementById('broadcastOk').style.display='';
+        document.getElementById('dzBroadcast').classList.add('done');
+        renderBroadcastList();
+        checkUploadReady();
+      }
+    };
+    r.readAsDataURL(f);
   });
 }
 
-function checkPdfDone(total,loaded){
-  if(loaded===total){
-    const u=Object.keys(pdfMap).length;
-    document.getElementById('pdfOk').textContent=`✓ ${total} PDFs (${u} PANs)`;
-    document.getElementById('pdfOk').style.display='';
-    document.getElementById('dzPdf').classList.add('done');
-    checkUploadReady();
+function renderBroadcastList(){
+  const wrap=document.getElementById('broadcastFileList');
+  wrap.innerHTML=broadcastFiles.map((f,i)=>`
+    <div class="attached-file">
+      <span class="file-icon">${fileIcon(f.name)}</span>
+      <span>${f.name}</span>
+      <span class="attached-file-remove" onclick="removeBroadcastFile(${i})">✕</span>
+    </div>`).join('');
+}
+
+function removeBroadcastFile(i){
+  broadcastFiles.splice(i,1);
+  renderBroadcastList();
+  if(broadcastFiles.length===0){
+    document.getElementById('broadcastOk').style.display='none';
+    document.getElementById('dzBroadcast').classList.remove('done');
   }
+  checkUploadReady();
+}
+
+// ═══ PERSONAL FILES (PAN match) ═══
+function loadPdfs(files){
+  const arr=Array.from(files);
+  let loaded=0;
+  arr.forEach(f=>{
+    const r=new FileReader();
+    r.onload=(e)=>{
+      const b64=e.target.result.split(',')[1];
+      // Extract any ID-like pattern from filename
+      const name=f.name;
+      // Try PAN: 5 letters + 4 digits + 1 letter
+      let m=name.match(/([A-Z]{5}[0-9]{4}[A-Z])/i);
+      const pan=m?m[1].toUpperCase():null;
+      // Try EmpID: alphanumeric patterns like EMP001, E001, 1234 etc
+      let empId=null;
+      const empMatch=name.match(/[_\-\s]([A-Z0-9]{3,10})[_\-\s\.]/i);
+      if(empMatch) empId=empMatch[1].toUpperCase();
+
+      const key=pan||empId||f.name.replace(/\.[^.]+$/,'').toUpperCase();
+      if(!pdfMap[key]) pdfMap[key]=[];
+      pdfMap[key].push({name:f.name,base64:b64,type:f.type||'application/octet-stream'});
+      loaded++;
+      if(loaded===arr.length){
+        const u=Object.keys(pdfMap).length;
+        document.getElementById('pdfOk').textContent=`✓ ${arr.length} files (${u} matched IDs)`;
+        document.getElementById('pdfOk').style.display='';
+        document.getElementById('dzPdf').classList.add('done');
+        checkUploadReady();
+      }
+    };
+    r.readAsDataURL(f);
+  });
 }
 
 function checkUploadReady(){
-  document.getElementById('btnStep2').disabled=excelRows.length===0;
+  const hasExcel=excelRows.length>0;
+  if(sendMode==='broadcast'){
+    document.getElementById('btnStep3').disabled=!hasExcel;
+  } else {
+    document.getElementById('btnStep3').disabled=!hasExcel;
+  }
 }
 
+// ═══ COLUMN MAPPER ═══
 const requiredCols=[
-  {id:'cName',label:'Name Column',hints:['name','employee name','emp name','fullname']},
-  {id:'cPan',label:'PAN Column',hints:['pan','pan no','pan number']},
-  {id:'cEmail',label:'Email Column',hints:['email','mail','email id']},
+  {id:'cName',label:'Name Column',hints:['name','employee name','emp name','fullname','full name']},
+  {id:'cEmail',label:'Email Column',hints:['email','mail','email id','emailid','e-mail']},
 ];
 
 function autoDetect(hints){
@@ -592,62 +778,121 @@ function buildColMapper(){
     el.innerHTML=`<label>${col.label}</label><select id="${col.id}">${excelCols.map(c=>`<option${c===d?' selected':''}>${c}</option>`).join('')}</select>`;
     wrap.appendChild(el);
   });
+
+  // ID column for personal mode
+  const idSel=document.getElementById('cId');
+  if(idSel){
+    const panHints=['pan','pan no','panno','emp id','employee id','empid','id'];
+    const d=autoDetect(panHints);
+    idSel.innerHTML=excelCols.map(c=>`<option${c===d?' selected':''}>${c}</option>`).join('');
+  }
+
+  // Type column
   const ts=document.getElementById('selType');
-  ts.innerHTML=`<option value="">— skip —</option>`+excelCols.map(c=>`<option>${c}</option>`).join('');
+  if(ts) ts.innerHTML=`<option value="">— skip —</option>`+excelCols.map(c=>`<option>${c}</option>`).join('');
+  
+  // Show personal extra cols if needed
+  if(document.getElementById('personalColExtra'))
+    document.getElementById('personalColExtra').style.display=sendMode==='personal'?'':'none';
 }
 
-function buildPreviewAndGo(){
+// ═══ BUILD MATCHED RECORDS ═══
+function buildAndGo(){
   const cName=document.getElementById('cName').value;
-  const cPan=document.getElementById('cPan').value;
   const cEmail=document.getElementById('cEmail').value;
-  const cType=document.getElementById('selType').value;
-  const cKw=document.getElementById('contractKw').value.trim().toLowerCase();
-  matched=excelRows.map((row,idx)=>{
-    const name=String(row[cName]||'').trim();
-    const pan=String(row[cPan]||'').trim().toUpperCase();
-    const email=String(row[cEmail]||'').trim();
-    const type=cType?String(row[cType]||'').trim():'Employee';
-    const isContract=cKw&&type.toLowerCase().includes(cKw);
-    let files=[],status='ready',fileNames=[];
-    const pm=pdfMap[pan];
-    if(!pan||pan.length<10)status='invalid-pan';
-    else if(!email||!email.includes('@'))status='invalid-email';
-    else if(!pm&&Object.keys(pdfMap).length>0)status='no-pdf';
-    else if(pm){
-      if(isContract){Object.entries(pm.contract).forEach(([q,f])=>{files.push(f);fileNames.push(q);});fileNames.sort();}
-      else{
-        if(pm.employee){files=[pm.employee];fileNames=[pm.employee.name];}
-        else if(Object.keys(pm.contract).length){Object.entries(pm.contract).forEach(([q,f])=>{files.push(f);fileNames.push(q);});fileNames.sort();}
+  const fy=document.getElementById('fyInput').value;
+
+  if(sendMode==='broadcast'){
+    // Every row gets same files
+    matched=excelRows.map((row,idx)=>{
+      const name=String(row[cName]||'').trim();
+      const email=String(row[cEmail]||'').trim();
+      let status='ready';
+      if(!email||!email.includes('@')) status='invalid-email';
+      else if(!name) status='no-name';
+      return{idx:idx+1,name,email,files:broadcastFiles,fileNames:broadcastFiles.map(f=>f.name),status,type:'Broadcast'};
+    });
+  } else {
+    // Personal mode — match by ID
+    const cId=document.getElementById('cId').value;
+    const cType=document.getElementById('selType').value;
+    const cKw=document.getElementById('contractKw').value.trim().toLowerCase();
+
+    matched=excelRows.map((row,idx)=>{
+      const name=String(row[cName]||'').trim();
+      const email=String(row[cEmail]||'').trim();
+      const rawId=String(row[cId]||'').trim().toUpperCase();
+      const type=cType?String(row[cType]||'').trim():'Employee';
+      const isContract=cKw&&type.toLowerCase().includes(cKw);
+
+      let files=[],fileNames=[],status='ready';
+      if(!email||!email.includes('@')) status='invalid-email';
+      else if(!rawId) status='no-id';
+      else {
+        // Try exact match first, then partial
+        let pm=pdfMap[rawId];
+        if(!pm){
+          // Try partial match — find key that contains the ID
+          const key=Object.keys(pdfMap).find(k=>k.includes(rawId)||rawId.includes(k));
+          if(key) pm=pdfMap[key];
+        }
+        if(pm&&pm.length>0){files=pm;fileNames=pm.map(f=>f.name);}
+        else status=Object.keys(pdfMap).length>0?'no-file':'ready-no-attach';
       }
-      if(files.length===0)status='no-pdf';
-    }
-    return{idx:idx+1,name,pan,email,type,isContract,files,fileNames,status};
-  });
-  renderStats();renderPreview();goStep(3);
+      return{idx:idx+1,name,email,id:rawId,files,fileNames,status,type:isContract?'Contract':'Employee'};
+    });
+  }
+
+  renderStats();renderPreview();goStep(4);
 }
 
+// ═══ STATS + PREVIEW ═══
 function renderStats(){
-  const total=matched.length,ready=matched.filter(r=>r.status==='ready').length;
-  const skip=matched.filter(r=>r.status!=='ready').length,pdfs=Object.keys(pdfMap).length;
+  const total=matched.length;
+  const ready=matched.filter(r=>r.status==='ready'||r.status==='ready-no-attach').length;
+  const skip=matched.filter(r=>r.status!=='ready'&&r.status!=='ready-no-attach').length;
+  const attach=matched.filter(r=>r.files&&r.files.length>0).length;
   document.getElementById('statsBar').innerHTML=`
     <div class="stat"><div class="stat-n" style="color:var(--text)">${total}</div><div class="stat-l">Total</div></div>
     <div class="stat"><div class="stat-n" style="color:var(--green)">${ready}</div><div class="stat-l">Ready</div></div>
     <div class="stat"><div class="stat-n" style="color:var(--yellow)">${skip}</div><div class="stat-l">Skipped</div></div>
-    <div class="stat"><div class="stat-n" style="color:var(--blue)">${pdfs}</div><div class="stat-l">PDFs</div></div>`;
+    <div class="stat"><div class="stat-n" style="color:var(--blue)">${attach}</div><div class="stat-l">With Attachment</div></div>`;
 }
 
 function renderPreview(){
   document.getElementById('previewTbody').innerHTML=matched.map(r=>{
-    const stB={ready:`<span class="badge b-ok">✓ Ready</span>`,'no-pdf':`<span class="badge b-warn">⚠ No PDF</span>`,'invalid-pan':`<span class="badge b-err">✗ Bad PAN</span>`,'invalid-email':`<span class="badge b-err">✗ Bad Email</span>`}[r.status]||`<span class="badge b-warn">${r.status}</span>`;
-    const tB=r.isContract?`<span class="badge b-warn">Contract</span>`:`<span class="badge b-emp">Employee</span>`;
-    return`<tr><td class="td-mono">${r.idx}</td><td style="font-weight:500">${r.name||'—'}</td><td class="td-mono">${r.pan||'—'}</td><td class="td-email">${r.email||'—'}</td><td>${tB}</td><td class="td-mono" style="font-size:10px;color:var(--muted)">${r.fileNames.join(', ')||'—'}</td><td>${stB}</td></tr>`;
+    const stB={
+      ready:`<span class="badge b-ok">✓ Ready</span>`,
+      'ready-no-attach':`<span class="badge b-emp">✓ No File</span>`,
+      'no-file':`<span class="badge b-warn">⚠ No Match</span>`,
+      'invalid-email':`<span class="badge b-err">✗ Bad Email</span>`,
+      'no-id':`<span class="badge b-err">✗ No ID</span>`,
+      'no-name':`<span class="badge b-warn">⚠ No Name</span>`,
+    }[r.status]||`<span class="badge b-warn">${r.status}</span>`;
+    const attach=r.fileNames&&r.fileNames.length>0
+      ?`<span style="font-size:10px;color:var(--muted)">${r.fileNames.map(n=>fileIcon(n)).join(' ')} ${r.fileNames.length} file(s)</span>`
+      :`<span style="font-size:10px;color:var(--muted)">—</span>`;
+    return`<tr>
+      <td class="td-mono">${r.idx}</td>
+      <td style="font-weight:500">${r.name||'—'}</td>
+      <td class="td-email">${r.email||'—'}</td>
+      <td>${attach}</td>
+      <td>${stB}</td>
+    </tr>`;
   }).join('');
 }
 
-const VARS=[{label:'{{name}}'},{label:'{{pan}}'},{label:'{{email}}'},{label:'{{fy}}'},{label:'{{quarters}}'},{label:'{{type}}'}];
+// ═══ EMAIL VARIABLES ═══
+const VARS=[
+  {label:'{{name}}',desc:'Recipient name'},
+  {label:'{{email}}',desc:'Email address'},
+  {label:'{{fy}}',desc:'Financial year'},
+  {label:'{{extra}}',desc:'Extra column value'},
+  {label:'{{type}}',desc:'Employee/Contract'},
+];
 function buildVarChips(){
   const w=document.getElementById('varChips');if(!w)return;
-  w.innerHTML=VARS.map(v=>`<span class="chip" onclick="insertVar('${v.label}')">${v.label}</span>`).join('');
+  w.innerHTML=VARS.map(v=>`<span class="chip" title="${v.desc}" onclick="insertVar('${v.label}')">${v.label}</span>`).join('');
 }
 function insertVar(v){
   const ta=document.getElementById('emailBody');
@@ -655,31 +900,35 @@ function insertVar(v){
   ta.value=ta.value.slice(0,s)+v+ta.value.slice(e);
   ta.focus();ta.setSelectionRange(s+v.length,s+v.length);
 }
-
 function fillTemplate(tpl,row){
   const fy=document.getElementById('fyInput').value;
-  return tpl.replace(/\{\{name\}\}/g,row.name).replace(/\{\{pan\}\}/g,row.pan).replace(/\{\{email\}\}/g,row.email).replace(/\{\{fy\}\}/g,fy).replace(/\{\{quarters\}\}/g,row.fileNames.join(', ')||'Form 16').replace(/\{\{type\}\}/g,row.type);
+  return tpl
+    .replace(/\{\{name\}\}/g,row.name||'')
+    .replace(/\{\{email\}\}/g,row.email||'')
+    .replace(/\{\{fy\}\}/g,fy)
+    .replace(/\{\{type\}\}/g,row.type||'')
+    .replace(/\{\{extra\}\}/g,row.id||'');
 }
 
+// ═══ LOG ═══
 function addLog(type,msg){
   const box=document.getElementById('logBox');
   const now=new Date().toLocaleTimeString();
-  const colors={ok:'lok',warn:'lwarn',err:'lerr',info:'linfo',test:'ltest'};
+  const colors={ok:'lok',warn:'lwarn',err:'lerr',info:'linfo'};
   const keys={ok:'SENT',warn:'SKIP',err:'FAIL',info:'INFO'};
   const div=document.createElement('div');div.className='ll';
   div.innerHTML=`<span class="lt">${now}</span><span class="lk ${colors[type]||'linfo'}">${keys[type]||type}</span><span>${msg}</span>`;
   box.appendChild(div);box.scrollTop=box.scrollHeight;
 }
-
 function setProgress(pct,label){
   document.getElementById('progFill').style.width=pct+'%';
   document.getElementById('progPct').textContent=pct+'%';
   document.getElementById('progLabel').textContent=label;
 }
-
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
 function chunk(arr,size){const r=[];for(let i=0;i<arr.length;i+=size)r.push(arr.slice(i,i+size));return r;}
 
+// ═══ SEND ═══
 async function startSend(){
   if(isSending)return;isSending=true;
   const subject=document.getElementById('emailSubject').value;
@@ -689,46 +938,66 @@ async function startSend(){
   document.getElementById('btnBackSend').disabled=true;
   document.getElementById('logBox').innerHTML='';
   document.getElementById('doneBanner').style.display='none';
-  const toSend=matched.filter(r=>r.status==='ready');
-  const skipped=matched.filter(r=>r.status!=='ready');
-  addLog('info',`Script: ${scriptUrl.substring(0,50)}...`);
-  addLog('info',`Ready: ${toSend.length} | Skip: ${skipped.length}`);
-  skipped.forEach(r=>addLog('warn',`${r.name||r.pan} — ${r.status}`));
-  if(!toSend.length){isSending=false;document.getElementById('btnGo').disabled=false;document.getElementById('btnBackSend').disabled=false;return;}
+
+  const toSend=matched.filter(r=>r.status==='ready'||r.status==='ready-no-attach');
+  const skipped=matched.filter(r=>r.status!=='ready'&&r.status!=='ready-no-attach');
+
+  addLog('info',`Mode: ${sendMode==='broadcast'?'Broadcast':'Personal'} | Ready: ${toSend.length} | Skip: ${skipped.length}`);
+  skipped.forEach(r=>addLog('warn',`${r.name||r.email} — ${r.status}`));
+
+  if(!toSend.length){
+    addLog('warn','No records to send!');
+    isSending=false;
+    document.getElementById('btnGo').disabled=false;
+    document.getElementById('btnBackSend').disabled=false;
+    return;
+  }
+
   const records=toSend.map(row=>({
-    name:row.name,pan:row.pan,email:row.email,type:row.type,
-    subject:fillTemplate(subject,row),body:fillTemplate(body,row),
-    pdfs:row.files.map((f,i)=>({name:row.fileNames[i]+'_Form16.pdf',base64:f.base64}))
+    name:row.name,email:row.email,type:row.type||'',
+    subject:fillTemplate(subject,row),
+    body:fillTemplate(body,row),
+    attachments:(row.files||[]).map(f=>({name:f.name,base64:f.base64,type:f.type||'application/octet-stream'}))
   }));
+
   const batches=chunk(records,batchSize);
   let sentTotal=0,failedTotal=0;
+
   for(let bi=0;bi<batches.length;bi++){
-    const batch=batches[bi];
-    addLog('info',`Batch ${bi+1}/${batches.length} (${batch.length} emails)...`);
+    addLog('info',`Batch ${bi+1}/${batches.length} — ${batches[bi].length} emails...`);
     try{
-      const res=await fetch(scriptUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send',records:batch})});
+      const res=await fetch(scriptUrl,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'send',records:batches[bi]})
+      });
       const data=await res.json();
       if(data.status==='ok'){
         data.results.forEach(r=>{
           if(r.status==='sent'){addLog('ok',`${r.name} → ${r.email}`);sentTotal++;}
           else if(r.status==='failed'){addLog('err',`${r.name}: ${r.reason}`);failedTotal++;}
-          else addLog('warn',`${r.name||r.pan} — ${r.reason||r.status}`);
+          else addLog('warn',`${r.name||r.email} — ${r.reason||r.status}`);
         });
-      }else{addLog('err',`Batch ${bi+1} error: ${data.message}`);failedTotal+=batch.length;}
-    }catch(err){addLog('err',`Batch ${bi+1} network error: ${err.message}`);failedTotal+=batch.length;}
+      }else{addLog('err',`Batch ${bi+1}: ${data.message}`);failedTotal+=batches[bi].length;}
+    }catch(err){addLog('err',`Batch ${bi+1} error: ${err.message}`);failedTotal+=batches[bi].length;}
     setProgress(Math.round(((bi+1)/batches.length)*100),`Batch ${bi+1}/${batches.length} done`);
-    if(bi<batches.length-1)await sleep(1500);
+    if(bi<batches.length-1) await sleep(1500);
   }
+
   setProgress(100,'Complete!');isSending=false;
   document.getElementById('doneTitle').textContent=`✓ ${sentTotal} emails sent!`;
-  document.getElementById('doneSub').textContent=`${failedTotal} failed • ${skipped.length} skipped`;
+  document.getElementById('doneSub').textContent=`${failedTotal} failed · ${skipped.length} skipped`;
   document.getElementById('doneBanner').style.display='';
   document.getElementById('btnGo').disabled=false;
   document.getElementById('btnBackSend').disabled=false;
   document.getElementById('btnGoTxt').textContent='🔁 Send Again';
+
+  // Download log
   const logLines=Array.from(document.getElementById('logBox').querySelectorAll('.ll')).map(l=>l.innerText).join('\n');
   const blob=new Blob([logLines],{type:'text/plain'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sendease_log.txt';a.style.display='none';document.body.appendChild(a);a.click();document.body.removeChild(a);
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='sendease_log.txt';a.style.display='none';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
 </script>
 </body>
