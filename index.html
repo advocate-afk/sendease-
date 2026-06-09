@@ -391,13 +391,40 @@ footer p{font-size:12px;color:rgba(255,255,255,.35)}
     <div class="pwa-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Windows, Mac & Linux</div>
     <div class="pwa-badge"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>Works offline</div>
   </div>
-  <button class="pwa-install-big" id="bigInstall" onclick="installPWA()">
+  <button class="pwa-install-big show" id="bigInstall" onclick="installPWA()">
     <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     Install SendEase — Free
   </button>
-  <p class="pwa-hint" id="pwaHint" style="display:none">Open in Chrome, Edge, or Safari to install.</p>
   <p class="pwa-hint" id="pwaAlready" style="display:none">Already installed! 🎉</p>
 </section>
+
+<!-- INSTALL MODAL -->
+<div id="installModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:18px;padding:28px;max-width:400px;width:100%;position:relative;max-height:90vh;overflow-y:auto">
+    <button onclick="closeModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;line-height:1">✕</button>
+    <div style="font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:#111;margin-bottom:4px">Install SendEase</div>
+    <div style="font-size:13px;color:#888;margin-bottom:20px">Apne device ke hisaab se steps follow karo</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="background:#f8f7f5;border-radius:10px;padding:14px 16px">
+        <div style="font-weight:700;font-size:13px;color:#111;margin-bottom:5px">🖥️ Chrome / Edge — Windows, Mac</div>
+        <div style="font-size:12px;color:#555;line-height:1.8">Address bar mein right side pe <strong>install icon ⊕</strong> dikhe tab click karo → <strong>Install</strong><br/>Ya: 3 dots menu → <strong>Cast, save and share → Install page as app</strong></div>
+      </div>
+      <div style="background:#f8f7f5;border-radius:10px;padding:14px 16px">
+        <div style="font-weight:700;font-size:13px;color:#111;margin-bottom:5px">🤖 Android — Chrome</div>
+        <div style="font-size:12px;color:#555;line-height:1.8">Browser ke <strong>3 dots menu</strong> → <strong>Add to Home screen</strong> → Add</div>
+      </div>
+      <div style="background:#f8f7f5;border-radius:10px;padding:14px 16px">
+        <div style="font-weight:700;font-size:13px;color:#111;margin-bottom:5px">🍎 iPhone / iPad — Safari</div>
+        <div style="font-size:12px;color:#555;line-height:1.8">Neeche <strong>Share button (□↑)</strong> → <strong>Add to Home Screen</strong> → Add<br/><span style="color:#e8420a;font-size:11px">⚠ Safari mein open karna zaroori hai, Chrome mein nahi hoga</span></div>
+      </div>
+    </div>
+    <div id="autoBtn" style="display:none;margin-top:16px">
+      <button onclick="doAutoInstall()" style="width:100%;background:#e8420a;color:#fff;border:none;border-radius:9px;padding:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#c73508'" onmouseout="this.style.background='#e8420a'">
+        ⚡ Install Now — One Click
+      </button>
+    </div>
+  </div>
+</div>
 
 <section class="cta">
   <h2>Try it now — <span>free</span></h2>
@@ -424,27 +451,45 @@ let deferredPrompt=null;
 const isInstalled=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 
 window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();deferredPrompt=e;
-  if(!isInstalled){
-    document.getElementById('navInstall').classList.add('show');
-    document.getElementById('heroInstall').classList.add('show');
-    document.getElementById('bigInstall').classList.add('show');
-  }
+  e.preventDefault();
+  deferredPrompt=e;
+  document.getElementById('autoBtn').style.display='block';
+  // Also show nav + hero install buttons
+  document.getElementById('navInstall').classList.add('show');
+  document.getElementById('heroInstall').classList.add('show');
 });
+
 window.addEventListener('appinstalled',()=>{
-  ['navInstall','heroInstall','bigInstall'].forEach(id=>document.getElementById(id).classList.remove('show'));
   document.getElementById('pwaAlready').style.display='';
+  closeModal();
 });
-async function installPWA(){
+
+function installPWA(){
   if(isInstalled){document.getElementById('pwaAlready').style.display='';return;}
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    const{outcome}=await deferredPrompt.userChoice;
-    deferredPrompt=null;
-  } else {
-    document.getElementById('pwaHint').style.display='';
-  }
+  // Show modal always
+  const m=document.getElementById('installModal');
+  m.style.display='flex';
+  // If browser supports auto install, show that button too
+  if(deferredPrompt) document.getElementById('autoBtn').style.display='block';
 }
+
+async function doAutoInstall(){
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();
+  const{outcome}=await deferredPrompt.userChoice;
+  deferredPrompt=null;
+  if(outcome==='accepted') closeModal();
+}
+
+function closeModal(){
+  document.getElementById('installModal').style.display='none';
+}
+
+// Close modal on outside click
+document.getElementById('installModal').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+
 if(isInstalled) document.getElementById('pwaAlready').style.display='';
 </script>
 </body>
