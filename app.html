@@ -911,7 +911,7 @@ async function startSend(){
   const skipped=matched.filter(r=>r.status!=='ready'&&r.status!=='ready-no-attach');
 
   addLog('info',`Mode: ${sendMode==='broadcast'?'Broadcast':'Personal'} | Ready: ${toSend.length} | Skip: ${skipped.length}`);
-  skipped.forEach(r=>addLog('warn',`${r.name||r.email} — ${r.status}`));
+  skipped.forEach(r=>{r._finalStatus=r.status;r._reason='Skipped before send';addLog('warn',`${r.name||r.email} — ${r.status}`);});
 
   if(!toSend.length){
     addLog('warn','No valid recipients!');
@@ -940,6 +940,9 @@ async function startSend(){
       const data=await res.json();
       if(data.status==='ok'){
         data.results.forEach(r=>{
+          // Update matched record with final status
+          const rec = matched.find(m => m.email === r.email);
+          if(rec){ rec._finalStatus = r.status; rec._reason = r.reason || ''; }
           if(r.status==='sent'){addLog('ok',`${r.name} → ${r.email}`);sent++;}
           else if(r.status==='failed'){addLog('err',`${r.name}: ${r.reason}`);failed++;}
           else addLog('warn',`${r.name||r.email} — ${r.reason||r.status}`);
@@ -958,10 +961,88 @@ async function startSend(){
   document.getElementById('btnBackSend').disabled=false;
   document.getElementById('btnGoTxt').textContent='🔁 Send Again';
 
-  const lines=Array.from(document.getElementById('logBox').querySelectorAll('.ll')).map(l=>l.innerText).join('\n');
-  const blob=new Blob([lines],{type:'text/plain'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sendease_log.txt';a.style.display='none';
-  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  // Build Excel report with color coding
+  try {
+    const wb = XLSX.utils.book_new();
+
+    // Summary sheet
+    const summaryData = [
+      ['SendEase — Email Report'],
+      [''],
+      ['Date', new Date().toLocaleString()],
+      ['Mode', sendMode === 'broadcast' ? 'Broadcast' : 'Personal'],
+      ['Total Recipients', matched.length],
+      ['Emails Sent', sent],
+      ['Failed', failed],
+      ['Skipped', skipped.length],
+    ];
+    const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+    wsSummary['!cols'] = [{wch:22},{wch:28}];
+    XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+
+    // Detail sheet
+    const headers = ['#', 'Name', 'Email', 'Attachment', 'Status', 'Reason'];
+    const detailRows = matched.map(r => [
+      r.idx,
+      r.name || '',
+      r.email || '',
+      r.fileNames && r.fileNames.length ? r.fileNames.join(', ') : '—',
+      r._finalStatus || r.status,
+      r._reason || ''
+    ]);
+    const wsDetail = XLSX.utils.aoa_to_sheet([headers, ...detailRows]);
+    wsDetail['!cols'] = [{wch:4},{wch:20},{wch:28},{wch:30},{wch:12},{wch:35}];
+
+    // Color the Status column (col index 4 = E)
+    const statusColors = { sent:'FF90EE90', failed:'FFFF9999', skip:'FFFFFF99', 'invalid-email':'FFFFCC99', 'no-file':'FFFFCC99', 'no-id':'FFFFCC99' };
+    matched.forEach((r, i) => {
+      const rowNum = i + 2; // 1 = header
+      const cellRef = 'E' + rowNum;
+      const st = (r._finalStatus || r.status || '').toLowerCase();
+      const fgColor = statusColors[st] || 'FFEEEEEE';
+      if (!wsDetail[cellRef]) wsDetail[cellRef] = { v: st, t: 's' };
+      wsDetail[cellRef].s = { fill: { fgColor: { rgb: fgColor } }, font: { bold: true } };
+    });
+
+    // Header row bold
+    headers.forEach((h, i) => {
+      const ref = String.fromCharCode(65+i) + '1';
+      if (!wsDetail[ref]) wsDetail[ref] = { v: h, t: 's' };
+      wsDetail[ref].s = { fill: { fgColor: { rgb: 'FF333333' } }, font: { bold: true, color: { rgb: 'FFFFFFFF' } } };
+    });
+
+    XLSX.utils.book_append_sheet(wb, wsDetail, 'Email Details');
+
+    // Sent only sheet
+    const sentRows = matched.filter(r => r._finalStatus === 'sent');
+    if (sentRows.length) {
+      const wsSent = XLSX.utils.aoa_to_sheet([
+        ['#','Name','Email','Attachment'],
+        ...sentRows.map(r => [r.idx, r.name, r.email, r.fileNames&&r.fileNames.length?r.fileNames.join(', '):'—'])
+      ]);
+      wsSent['!cols'] = [{wch:4},{wch:20},{wch:28},{wch:30}];
+      XLSX.utils.book_append_sheet(wb, wsSent, 'Sent');
+    }
+
+    // Failed only sheet
+    const failedRows = matched.filter(r => r._finalStatus === 'failed' || (r.status !== 'ready' && r.status !== 'ready-no-attach' && r._finalStatus !== 'sent'));
+    if (failedRows.length) {
+      const wsFail = XLSX.utils.aoa_to_sheet([
+        ['#','Name','Email','Status','Reason'],
+        ...failedRows.map(r => [r.idx, r.name, r.email, r._finalStatus||r.status, r._reason||''])
+      ]);
+      wsFail['!cols'] = [{wch:4},{wch:20},{wch:28},{wch:14},{wch:35}];
+      XLSX.utils.book_append_sheet(wb, wsFail, 'Failed & Skipped');
+    }
+
+    XLSX.writeFile(wb, 'sendease_report.xlsx');
+  } catch(xlsxErr) {
+    // Fallback to text if xlsx fails
+    const lines2=Array.from(document.getElementById('logBox').querySelectorAll('.ll')).map(l=>l.innerText).join('\n');
+    const blob2=new Blob([lines2],{type:'text/plain'});
+    const a2=document.createElement('a');a2.href=URL.createObjectURL(blob2);a2.download='sendease_log.txt';a2.style.display='none';
+    document.body.appendChild(a2);a2.click();document.body.removeChild(a2);
+  }
 }
 </script>
 </body>
