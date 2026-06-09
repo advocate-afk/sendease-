@@ -1,0 +1,27 @@
+{
+  "name": "SendEase — Bulk Email Tool",
+  "short_name": "SendEase",
+  "description": "Send bulk emails with attachments — no setup needed",
+  "start_url": "./app.html",
+  "display": "standalone",
+  "background_color": "#f5f3ee",
+  "theme_color": "#e8420a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "screenshots": [],
+  "prefer_related_applications": false
+}
