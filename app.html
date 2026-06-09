@@ -7,165 +7,267 @@
 <meta name="theme-color" content="#e8420a"/>
 <link rel="manifest" href="manifest.json"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#07080f;--s1:#0c0e1a;--s2:#111524;--s3:#181d2e;
-  --border:#1f2840;--a:#e8420a;--ag:rgba(232,66,10,.15);--ab:rgba(232,66,10,.07);
-  --a2:#ff6b35;--green:#1fcea8;--red:#ff4f6e;--yellow:#fbbf24;--blue:#4f8aff;
-  --text:#dde6f5;--muted:#4a5c7a;
-  --f:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace;
+  --bg:#ffffff;--bg2:#f8f7f5;--bg3:#f0ede8;
+  --ink:#111111;--ink2:#333333;--muted:#888888;--border:#e5e5e5;--border2:#d0d0d0;
+  --accent:#e8420a;--accent2:#ff6b35;--acbg:#fff4f0;--acborder:#ffd4c4;
+  --green:#0d9e73;--greenbg:#e8f8f3;--greenborder:#9adfc6;
+  --red:#d93025;--redbg:#fdf0ee;
+  --yellow:#b45309;--yellowbg:#fefce8;
+  --blue:#1d4ed8;--bluebg:#eff6ff;
+  --f:'Syne',sans-serif;--fb:'Inter',sans-serif;--fm:'JetBrains Mono',monospace;
 }
-body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 900px 600px at 50% 0%,rgba(232,66,10,.04),transparent);pointer-events:none;z-index:0}
-.shell{display:grid;grid-template-columns:68px 1fr;min-height:100vh;position:relative;z-index:1}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--fb);min-height:100vh;overflow-x:hidden}
 
-.rail{background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:4px;position:sticky;top:0;height:100vh;}
-.rail-logo{width:38px;height:38px;border-radius:10px;background:var(--a);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:18px;box-shadow:0 0 20px rgba(232,66,10,.4)}
-.rail-btn{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);transition:all .15s;border:1px solid transparent;}
-.rail-btn:hover{background:var(--s2);color:var(--text)}.rail-btn.active{background:var(--ab);color:var(--a);border-color:rgba(232,66,10,.25)}
-.rail-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.back-link{font-size:11px;color:var(--muted);text-decoration:none;margin-top:auto;padding:8px;text-align:center;line-height:1.4;transition:color .15s}
-.back-link:hover{color:var(--text)}
+/* SHELL */
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
 
-.content{padding:44px 48px;max-width:960px}
-.hdr{margin-bottom:32px}
-.hdr-title{font-family:var(--f);font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:6px}
-.hdr-title span{color:var(--a)}
-.hdr-sub{font-size:14px;color:var(--muted)}
+/* SIDEBAR */
+.sidebar{
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  padding:24px 0;
+  position:sticky;top:0;height:100vh;
+  overflow-y:auto;
+}
+.sidebar-logo{
+  display:flex;align-items:center;gap:10px;
+  padding:0 20px 24px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:8px;
+}
+.logo-icon{
+  width:36px;height:36px;border-radius:9px;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;flex-shrink:0;
+  box-shadow:0 2px 8px rgba(232,66,10,.3);
+}
+.logo-text{font-family:var(--f);font-size:17px;font-weight:800;color:var(--ink);letter-spacing:-0.5px}
+.logo-text span{color:var(--accent)}
 
-.wizard{display:flex;align-items:center;margin-bottom:36px}
-.w-step{display:flex;flex-direction:column;align-items:center;gap:5px}
-.w-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:var(--f);border:2px solid var(--border);color:var(--muted);background:var(--s2);transition:all .3s;}
-.w-circle.done{background:var(--a);border-color:var(--a);color:#fff;box-shadow:0 0 12px var(--ag)}
-.w-circle.active{background:var(--s2);border-color:var(--a);color:var(--a)}
-.w-label{font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
-.w-label.active{color:var(--a)}
-.w-line{flex:1;height:2px;background:var(--border);margin-bottom:16px;transition:background .3s}
-.w-line.done{background:var(--a)}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 20px;
+  font-size:13px;font-weight:500;color:var(--muted);
+  cursor:pointer;transition:all .15s;
+  border-left:3px solid transparent;
+  user-select:none;
+}
+.nav-item:hover{background:var(--bg3);color:var(--ink)}
+.nav-item.active{background:var(--acbg);color:var(--accent);border-left-color:var(--accent);font-weight:600}
+.nav-item.done{color:var(--green)}
+.nav-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.nav-item .step-num{width:20px;height:20px;border-radius:50%;background:var(--border);color:var(--muted);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.nav-item.active .step-num{background:var(--accent);color:#fff}
+.nav-item.done .step-num{background:var(--green);color:#fff}
 
-.card{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:26px 30px;margin-bottom:18px;position:relative;overflow:hidden;}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,66,10,.25),transparent)}
-.card-title{font-size:14px;font-weight:700;font-family:var(--f);margin-bottom:18px;display:flex;align-items:center;gap:8px}
-.card-title svg{width:16px;height:16px;stroke:var(--a);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sidebar-bottom{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border)}
+.sidebar-bottom a{font-size:12px;color:var(--muted);text-decoration:none;display:block;margin-bottom:6px;transition:color .15s}
+.sidebar-bottom a:hover{color:var(--ink)}
 
-/* SETUP WIZARD */
-.setup-box{background:linear-gradient(135deg,rgba(232,66,10,.07),rgba(255,107,53,.03));border:1px solid rgba(232,66,10,.2);border-radius:18px;padding:28px;margin-bottom:18px;}
-.setup-box-title{font-family:var(--f);font-size:18px;font-weight:800;margin-bottom:6px}
-.setup-box-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.7}
-.wizard-steps{display:flex;flex-direction:column;gap:0;margin-bottom:22px}
-.wz-row{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);align-items:flex-start}
-.wz-row:last-child{border-bottom:none;padding-bottom:0}
-.wz-num{width:28px;height:28px;border-radius:50%;background:var(--ab);border:1px solid rgba(232,66,10,.3);color:var(--a2);font-size:12px;font-weight:800;font-family:var(--f);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.wz-content{flex:1}
-.wz-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;font-family:var(--f)}
-.wz-desc{font-size:12px;color:var(--muted);line-height:1.7}
-.wz-desc a{color:var(--blue);text-decoration:none}
-.wz-desc a:hover{text-decoration:underline}
-.wz-desc code{font-family:var(--fm);font-size:10px;background:var(--s3);padding:1px 6px;border-radius:4px;color:var(--a2);border:1px solid var(--border)}
-.wz-img{margin-top:8px;background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:11px;color:var(--muted);font-family:var(--fm);line-height:1.8}
-.wz-img .path{color:var(--a2)}
-.wz-img .btn-like{display:inline-block;background:rgba(232,66,10,.15);color:var(--a2);border:1px solid rgba(232,66,10,.3);border-radius:4px;padding:1px 7px;font-size:10px;font-family:var(--f);font-weight:700}
-.wz-img .sel{color:var(--green)}
+/* CONTENT */
+.content{padding:40px 48px;max-width:860px}
+.page-title{font-family:var(--f);font-size:24px;font-weight:800;letter-spacing:-0.8px;color:var(--ink);margin-bottom:6px}
+.page-title span{color:var(--accent)}
+.page-sub{font-size:13px;color:var(--muted);margin-bottom:32px}
 
-.connected-pill{display:inline-flex;align-items:center;gap:9px;background:rgba(31,206,168,.1);border:1px solid rgba(31,206,168,.25);color:var(--green);border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;font-family:var(--f)}
-.connected-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+/* CARDS */
+.card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:16px;}
+.card-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px;font-family:var(--f)}
+.card-title svg{width:15px;height:15px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* CONNECT SETUP */
+.connect-hero{
+  background:linear-gradient(135deg,var(--acbg),var(--bg));
+  border:1px solid var(--acborder);
+  border-radius:16px;padding:28px;margin-bottom:16px;
+}
+.connect-hero-title{font-family:var(--f);font-size:20px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.connect-hero-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:24px;max-width:480px}
+
+.setup-steps{display:flex;flex-direction:column;gap:0;margin-bottom:24px}
+.ss-row{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.ss-row:last-child{border-bottom:none;padding-bottom:0}
+.ss-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--accent);color:#fff;
+  font-size:11px;font-weight:700;font-family:var(--f);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.ss-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.ss-desc{font-size:12px;color:var(--muted);line-height:1.7}
+.ss-desc a{color:var(--blue);text-decoration:none;font-weight:500}
+.ss-desc a:hover{text-decoration:underline}
+.ss-desc strong{color:var(--ink2);font-weight:600}
+.ss-code{
+  margin-top:8px;background:var(--bg2);
+  border:1px solid var(--border);border-radius:8px;
+  padding:9px 14px;font-size:11px;color:var(--ink2);
+  font-family:var(--fm);line-height:1.8;
+}
+.ss-code .hl{color:var(--accent);font-weight:600}
+.ss-code .ok{color:var(--green);font-weight:600}
+.ss-code .btn{
+  display:inline-block;background:var(--acbg);color:var(--accent);
+  border:1px solid var(--acborder);border-radius:4px;
+  padding:1px 8px;font-size:10px;font-family:var(--f);font-weight:700;
+}
+
+.connected-box{
+  display:none;align-items:center;gap:12px;
+  background:var(--greenbg);border:1px solid var(--greenborder);
+  border-radius:10px;padding:12px 18px;margin-bottom:20px;
+}
+.connected-box.show{display:flex}
+.conn-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.conn-text{font-size:13px;font-weight:600;color:var(--green);flex:1}
+.conn-disc{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;text-decoration:underline;font-family:var(--fb)}
+.conn-disc:hover{color:var(--red)}
 
-.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
-.mode-card{border:2px solid var(--border);border-radius:16px;padding:22px 20px;cursor:pointer;background:var(--s2);transition:all .2s;position:relative;}
-.mode-card:hover{border-color:var(--a);background:var(--ab)}
-.mode-card.selected{border-color:var(--a);background:var(--ab)}
-.mode-card.selected::after{content:'✓';position:absolute;top:12px;right:14px;color:var(--a);font-weight:800;font-size:16px}
-.mode-icon{font-size:28px;margin-bottom:10px}
-.mode-title{font-family:var(--f);font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px}
-.mode-desc{font-size:12px;color:var(--muted);line-height:1.6}
-.mode-tag{display:inline-block;margin-top:8px;font-size:10px;font-weight:700;font-family:var(--f);text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:4px}
-.tag-orange{background:var(--ab);color:var(--a2)}.tag-blue{background:rgba(79,138,255,.1);color:var(--blue)}
-
-.drop-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
-.drop-zone{border:2px dashed var(--border);border-radius:14px;padding:32px 20px;text-align:center;cursor:pointer;background:var(--s2);transition:all .2s;position:relative;}
-.drop-zone:hover,.drop-zone.drag{border-color:var(--a);background:var(--ab)}
-.drop-zone.done{border-color:rgba(31,206,168,.4);background:rgba(31,206,168,.05)}
-.dz-icon{font-size:28px;margin-bottom:8px;display:block}
-.dz-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;font-family:var(--f)}
-.dz-sub{font-size:11px;color:var(--muted)}
-.dz-ok{font-size:12px;color:var(--green);margin-top:6px;font-weight:600}
-.dz-input{position:absolute;inset:0;opacity:0;cursor:pointer}
-
-.attached-files{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.attached-file{display:flex;align-items:center;gap:6px;background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--text)}
-.attached-file-remove{cursor:pointer;color:var(--muted);font-size:13px;line-height:1;transition:color .15s}
-.attached-file-remove:hover{color:var(--red)}
-
-.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.fg label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
-.fg input,.fg select,.fg textarea{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 13px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none;transition:border-color .15s;width:100%;}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--a)}
-.fg input::placeholder,.fg textarea::placeholder{color:var(--muted)}
+/* FORM */
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.fg label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.fg input,.fg select,.fg textarea{
+  background:var(--bg);border:1px solid var(--border2);border-radius:9px;
+  padding:10px 13px;color:var(--ink);font-family:var(--fb);font-size:13px;
+  outline:none;transition:border-color .15s;width:100%;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,66,10,.08)}
+.fg input::placeholder,.fg textarea::placeholder{color:#bbb}
 .fg textarea{resize:vertical;min-height:90px;line-height:1.6}
-.fg select option{background:var(--s2)}
+.fg select option{background:var(--bg)}
 .form2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-.draft-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
-.draft-head{background:var(--s3);padding:9px 14px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border);}
-.draft-body{padding:14px;display:flex;flex-direction:column;gap:9px}
-.var-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:3px}
-.chip{background:var(--ab);border:1px solid rgba(232,66,10,.2);color:var(--a2);border-radius:5px;padding:3px 9px;font-size:10px;font-family:var(--fm);cursor:pointer;transition:all .15s;font-weight:500;}
-.chip:hover{background:var(--ag)}
-.chip-label{font-size:9px;color:var(--muted);margin-right:4px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+/* MODE CARDS */
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.mode-card{
+  border:2px solid var(--border);border-radius:12px;
+  padding:20px;cursor:pointer;background:var(--bg);
+  transition:all .2s;position:relative;
+}
+.mode-card:hover{border-color:var(--accent);background:var(--acbg)}
+.mode-card.selected{border-color:var(--accent);background:var(--acbg)}
+.mode-card.selected::after{content:'✓';position:absolute;top:12px;right:14px;color:var(--accent);font-weight:800;font-size:15px}
+.mode-ico{font-size:26px;margin-bottom:8px}
+.mode-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:4px;font-family:var(--f)}
+.mode-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.mode-tag{display:inline-block;margin-top:8px;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.4px}
+.tag-ac{background:var(--acbg);color:var(--accent)}
+.tag-bl{background:var(--bluebg);color:var(--blue)}
 
-.tbl-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border)}
+/* DROP ZONES */
+.drop-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.drop-zone{
+  border:2px dashed var(--border2);border-radius:12px;
+  padding:28px 18px;text-align:center;cursor:pointer;
+  background:var(--bg2);transition:all .2s;position:relative;
+}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--accent);background:var(--acbg)}
+.drop-zone.done{border-color:var(--green);border-style:solid;background:var(--greenbg)}
+.dz-ico{font-size:26px;margin-bottom:7px;display:block}
+.dz-title{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.dz-sub{font-size:11px;color:var(--muted)}
+.dz-ok{font-size:11px;color:var(--green);margin-top:5px;font-weight:600}
+.dz-input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+.attached-files{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.attached-file{display:flex;align-items:center;gap:5px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:4px 9px;font-size:11px;color:var(--ink2)}
+.afrm{cursor:pointer;color:var(--muted);font-size:12px;transition:color .15s}
+.afrm:hover{color:var(--red)}
+
+/* EMAIL COMPOSE */
+.draft-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.draft-bar{background:var(--bg3);padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)}
+.draft-inner{padding:14px;display:flex;flex-direction:column;gap:10px}
+.var-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:2px}
+.chip{
+  background:var(--acbg);border:1px solid var(--acborder);color:var(--accent);
+  border-radius:5px;padding:3px 9px;font-size:10px;font-family:var(--fm);
+  cursor:pointer;transition:all .15s;font-weight:500;
+}
+.chip:hover{background:#ffe0d4}
+.chip-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-right:4px}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse;font-size:12px}
-th{background:var(--s3);color:var(--muted);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
-td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
-tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015)}
-.td-mono{font-family:var(--fm);font-size:11px}.td-email{color:var(--blue);font-size:11px}
+th{background:var(--bg2);color:var(--muted);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--ink);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg2)}
+.td-mono{font-family:var(--fm);font-size:11px}
+.td-email{color:var(--blue);font-size:11px}
 
+/* BADGES */
 .badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700;white-space:nowrap}
-.b-ok{background:rgba(31,206,168,.1);color:var(--green)}.b-warn{background:rgba(251,191,36,.1);color:var(--yellow)}
-.b-err{background:rgba(255,79,110,.1);color:var(--red)}.b-emp{background:rgba(79,138,255,.1);color:var(--blue)}
+.b-ok{background:var(--greenbg);color:var(--green)}
+.b-warn{background:var(--yellowbg);color:var(--yellow)}
+.b-err{background:var(--redbg);color:var(--red)}
+.b-emp{background:var(--bluebg);color:var(--blue)}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.stat{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
-.stat-n{font-size:28px;font-weight:800;line-height:1;margin-bottom:3px;font-family:var(--f)}.stat-l{font-size:11px;color:var(--muted)}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.stat{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.stat-n{font-size:26px;font-weight:700;line-height:1;margin-bottom:3px;font-family:var(--f)}
+.stat-l{font-size:11px;color:var(--muted)}
 
-.prog-wrap{margin:14px 0}
-.prog-bar{height:5px;background:var(--s3);border-radius:100px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--a),var(--a2));border-radius:100px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+/* PROGRESS */
+.prog-wrap{margin:12px 0}
+.prog-bar{height:6px;background:var(--border);border-radius:100px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px;transition:width .4s cubic-bezier(.4,0,.2,1)}
 .prog-info{display:flex;justify-content:space-between;margin-top:5px;font-size:11px;color:var(--muted)}
 
-.log{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;height:220px;overflow-y:auto;font-family:var(--fm);font-size:11px;display:flex;flex-direction:column;gap:2px;}
-.log::-webkit-scrollbar{width:3px}.log::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.ll{display:flex;gap:8px;line-height:1.5}.lt{color:var(--muted);flex-shrink:0;font-size:10px}
-.lk{flex-shrink:0;font-weight:700;font-size:10px;min-width:40px}
+/* LOG */
+.log{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;height:200px;
+  overflow-y:auto;font-family:var(--fm);font-size:11px;
+  display:flex;flex-direction:column;gap:2px;
+}
+.log::-webkit-scrollbar{width:3px}
+.log::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.ll{display:flex;gap:8px;line-height:1.6}
+.lt{color:#bbb;flex-shrink:0;font-size:10px}
+.lk{flex-shrink:0;font-weight:700;font-size:10px;min-width:38px}
 .lok{color:var(--green)}.lwarn{color:var(--yellow)}.lerr{color:var(--red)}.linfo{color:var(--blue)}
 
+/* BUTTONS */
 .btns{display:flex;gap:9px;justify-content:flex-end;margin-top:20px}
-.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:10px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .15s;}
-.btn-p{background:var(--a);color:#fff;box-shadow:0 4px 16px rgba(232,66,10,.3)}
-.btn-p:hover{background:#c73508;transform:translateY(-1px)}.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.btn-g{background:var(--s2);color:var(--text);border:1px solid var(--border)}
-.btn-g:hover{border-color:var(--a);color:var(--a)}
-.btn-green{background:linear-gradient(135deg,#0d9a73,#1fcea8);color:#fff;box-shadow:0 4px 16px rgba(31,206,168,.2)}
-.btn-green:hover{transform:translateY(-1px)}.btn-green:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:9px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .15s;}
+.btn-p{background:var(--accent);color:#fff;box-shadow:0 2px 10px rgba(232,66,10,.25)}
+.btn-p:hover{background:#c73508;transform:translateY(-1px)}
+.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-g{background:var(--bg2);color:var(--ink2);border:1px solid var(--border2)}
+.btn-g:hover{border-color:var(--accent);color:var(--accent);background:var(--acbg)}
+.btn-green{background:var(--green);color:#fff;box-shadow:0 2px 10px rgba(13,158,115,.2)}
+.btn-green:hover{background:#0a7d5c;transform:translateY(-1px)}
+.btn-green:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
-.mapper{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.notice{border-radius:10px;padding:11px 14px;font-size:12px;display:flex;align-items:flex-start;gap:9px;margin-bottom:14px;}
-.notice-warn{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);color:var(--yellow)}
-.notice-info{background:rgba(79,138,255,.06);border:1px solid rgba(79,138,255,.15);color:#7aa8ff}
-.notice-ok{background:rgba(31,206,168,.07);border:1px solid rgba(31,206,168,.18);color:var(--green)}
+/* NOTICE */
+.notice{border-radius:9px;padding:10px 14px;font-size:12px;display:flex;align-items:flex-start;gap:9px;margin-bottom:14px}
+.n-warn{background:var(--yellowbg);border:1px solid #fde68a;color:var(--yellow)}
+.n-info{background:var(--bluebg);border:1px solid #bfdbfe;color:var(--blue)}
+.n-ok{background:var(--greenbg);border:1px solid var(--greenborder);color:var(--green)}
 
-.done-banner{background:rgba(31,206,168,.06);border:1px solid rgba(31,206,168,.18);border-radius:16px;padding:26px 28px;text-align:center;margin-bottom:20px;animation:fadeUp .4s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.done-icon{font-size:44px;margin-bottom:10px}
-.done-title{font-size:20px;font-weight:800;color:var(--green);font-family:var(--f);margin-bottom:5px}
+/* DONE BANNER */
+.done-banner{background:var(--greenbg);border:1px solid var(--greenborder);border-radius:14px;padding:24px;text-align:center;margin-bottom:16px}
+.done-ico{font-size:40px;margin-bottom:8px}
+.done-title{font-size:18px;font-weight:800;color:var(--green);font-family:var(--f);margin-bottom:4px}
 .done-sub{font-size:13px;color:var(--muted)}
 
-@media(max-width:680px){
-  .shell{grid-template-columns:1fr}.rail{display:none}.content{padding:24px 16px}
+.mapper{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+@media(max-width:700px){
+  .shell{grid-template-columns:1fr}.sidebar{display:none}.content{padding:24px 16px}
   .form2,.drop-grid,.stats,.mapper,.mode-grid{grid-template-columns:1fr}
 }
 </style>
@@ -173,148 +275,120 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
 <body>
 <div class="shell">
 
-<nav class="rail">
-  <div class="rail-logo">✉</div>
-  <div class="rail-btn active" id="rb0" onclick="goStep(0)" title="Setup">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 0 0 4.93 19.07"/><path d="M4.93 4.93A10 10 0 0 1 19.07 19.07"/></svg>
-  </div>
-  <div class="rail-btn" id="rb1" onclick="goStep(1)" title="Mode">
-    <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-  </div>
-  <div class="rail-btn" id="rb2" onclick="goStep(2)" title="Upload">
-    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-  </div>
-  <div class="rail-btn" id="rb3" onclick="goStep(3)" title="Columns">
-    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-  </div>
-  <div class="rail-btn" id="rb4" onclick="goStep(4)" title="Email">
-    <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-  </div>
-  <div class="rail-btn" id="rb5" onclick="goStep(5)" title="Preview">
-    <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-  </div>
-  <div class="rail-btn" id="rb6" onclick="goStep(6)" title="Send">
-    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-  </div>
-  <a href="index.html" class="back-link">← Home</a>
-</nav>
-
-<div class="content">
-  <div class="hdr">
-    <div class="hdr-title">Send<span>Ease</span></div>
-    <div class="hdr-sub">Bulk email with any attachment — free, no server needed</div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">✉</div>
+    <div class="logo-text">Send<span>Ease</span></div>
   </div>
 
-  <div class="wizard">
-    <div class="w-step"><div class="w-circle active" id="wc0">1</div><div class="w-label active" id="wl0">Setup</div></div>
-    <div class="w-line" id="wln0"></div>
-    <div class="w-step"><div class="w-circle" id="wc1">2</div><div class="w-label" id="wl1">Mode</div></div>
-    <div class="w-line" id="wln1"></div>
-    <div class="w-step"><div class="w-circle" id="wc2">3</div><div class="w-label" id="wl2">Upload</div></div>
-    <div class="w-line" id="wln2"></div>
-    <div class="w-step"><div class="w-circle" id="wc3">4</div><div class="w-label" id="wl3">Columns</div></div>
-    <div class="w-line" id="wln3"></div>
-    <div class="w-step"><div class="w-circle" id="wc4">5</div><div class="w-label" id="wl4">Email</div></div>
-    <div class="w-line" id="wln4"></div>
-    <div class="w-step"><div class="w-circle" id="wc5">6</div><div class="w-label" id="wl5">Preview</div></div>
-    <div class="w-line" id="wln5"></div>
-    <div class="w-step"><div class="w-circle" id="wc6">7</div><div class="w-label" id="wl6">Send</div></div>
+  <div class="nav-item active" id="nb0" onclick="goStep(0)">
+    <div class="step-num" id="sn0">1</div>
+    <span>Connect Gmail</span>
+  </div>
+  <div class="nav-item" id="nb1" onclick="goStep(1)">
+    <div class="step-num" id="sn1">2</div>
+    <span>Choose Mode</span>
+  </div>
+  <div class="nav-item" id="nb2" onclick="goStep(2)">
+    <div class="step-num" id="sn2">3</div>
+    <span>Upload Files</span>
+  </div>
+  <div class="nav-item" id="nb3" onclick="goStep(3)">
+    <div class="step-num" id="sn3">4</div>
+    <span>Map Columns</span>
+  </div>
+  <div class="nav-item" id="nb4" onclick="goStep(4)">
+    <div class="step-num" id="sn4">5</div>
+    <span>Compose Email</span>
+  </div>
+  <div class="nav-item" id="nb5" onclick="goStep(5)">
+    <div class="step-num" id="sn5">6</div>
+    <span>Preview</span>
+  </div>
+  <div class="nav-item" id="nb6" onclick="goStep(6)">
+    <div class="step-num" id="sn6">7</div>
+    <span>Send</span>
   </div>
 
-  <!-- STEP 0: SETUP -->
+  <div class="sidebar-bottom">
+    <a href="index.html">← Back to home</a>
+    <a href="Code.gs" target="_blank">📄 Download Code.gs</a>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="content">
+  <div class="page-title">Send<span>Ease</span></div>
+  <div class="page-sub" id="pageSub">Bulk email with any attachment — free, straight from your Gmail</div>
+
+  <!-- STEP 0: CONNECT -->
   <div id="step0">
-    <div class="setup-box">
-      <div class="setup-box-title">🔗 Connect Your Gmail</div>
-      <div class="setup-box-sub">One-time setup — 3 minutes. Your emails send directly from your own Gmail. Free forever via Google Apps Script.</div>
+    <div class="connect-hero">
+      <div class="connect-hero-title">🔗 Connect Your Gmail</div>
+      <div class="connect-hero-sub">One-time setup — takes about 3 minutes. After this, your emails go directly from your Gmail. Completely free via Google Apps Script.</div>
 
-      <!-- Connected state -->
-      <div id="connectedState" style="display:none;margin-bottom:20px;text-align:center">
-        <div class="connected-pill" style="display:inline-flex">
-          <div class="connected-dot"></div>
-          <span id="connectedEmail">Connected</span>
-          <button onclick="disconnect()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;margin-left:6px">✕</button>
-        </div>
+      <div class="connected-box" id="connBox">
+        <div class="conn-dot"></div>
+        <div class="conn-text" id="connLabel">Gmail connected</div>
+        <button class="conn-disc" onclick="disconnect()">Disconnect</button>
       </div>
 
-      <!-- Setup steps -->
-      <div id="disconnectedState">
-        <div class="wizard-steps">
-
-          <div class="wz-row">
-            <div class="wz-num">1</div>
-            <div class="wz-content">
-              <div class="wz-title">Open Google Apps Script</div>
-              <div class="wz-desc">
-                Go to <a href="https://script.google.com" target="_blank">script.google.com</a> (sign in with your Gmail) → Click <strong>New Project</strong>
-              </div>
+      <div id="setupSteps">
+        <div class="setup-steps">
+          <div class="ss-row">
+            <div class="ss-num">1</div>
+            <div>
+              <div class="ss-title">Open Google Apps Script</div>
+              <div class="ss-desc">Go to <a href="https://script.google.com" target="_blank">script.google.com</a> → Sign in with your Gmail → Click <strong>New Project</strong></div>
             </div>
           </div>
-
-          <div class="wz-row">
-            <div class="wz-num">2</div>
-            <div class="wz-content">
-              <div class="wz-title">Paste the Code</div>
-              <div class="wz-desc">
-                Delete everything in the editor → Copy the code from <a href="Code.gs" target="_blank">Code.gs</a> → Paste it → Press <code>Ctrl+S</code> to save
-              </div>
-              <div class="wz-img">
-                <span class="path">📄 Code.gs</span> → Select All → Delete → Paste → <span class="btn-like">Ctrl+S</span>
-              </div>
+          <div class="ss-row">
+            <div class="ss-num">2</div>
+            <div>
+              <div class="ss-title">Paste the code</div>
+              <div class="ss-desc">Select all text in the editor and delete it → Download <a href="Code.gs" target="_blank">Code.gs</a> → Open it → Copy all → Paste in editor → Press <strong>Ctrl+S</strong></div>
+              <div class="ss-code"><span class="hl">Code.gs</span> → Select All → Delete → Paste → <span class="btn">Ctrl+S</span></div>
             </div>
           </div>
-
-          <div class="wz-row">
-            <div class="wz-num">3</div>
-            <div class="wz-content">
-              <div class="wz-title">Deploy as Web App</div>
-              <div class="wz-desc">
-                Click <strong>Deploy</strong> (top right) → <strong>New Deployment</strong> → Type: <code>Web App</code><br/>
-                Set <strong>Execute as: Me</strong> &nbsp;|&nbsp; <strong>Who has access: Anyone</strong> → Click <strong>Deploy</strong>
-              </div>
-              <div class="wz-img">
-                <span class="btn-like">Deploy</span> → New Deployment → Web App → Execute as: <span class="sel">Me</span> → Access: <span class="sel">Anyone</span> → <span class="btn-like">Deploy</span>
-              </div>
+          <div class="ss-row">
+            <div class="ss-num">3</div>
+            <div>
+              <div class="ss-title">Deploy as Web App</div>
+              <div class="ss-desc">Click <strong>Deploy</strong> (top right) → <strong>New Deployment</strong> → Type: <strong>Web App</strong> → Execute as: <strong>Me</strong> → Who has access: <strong>Anyone</strong> → Click <strong>Deploy</strong></div>
+              <div class="ss-code"><span class="btn">Deploy</span> → New Deployment → Web App → Execute as: <span class="ok">Me</span> → Access: <span class="ok">Anyone</span> → <span class="btn">Deploy</span></div>
             </div>
           </div>
-
-          <div class="wz-row">
-            <div class="wz-num">4</div>
-            <div class="wz-content">
-              <div class="wz-title">Allow Permissions</div>
-              <div class="wz-desc">
-                Google will ask for permission → Click <strong>Authorize access</strong> → Choose your Gmail account → Click <strong>Advanced</strong> → <strong>Go to (project name)</strong> → <strong>Allow</strong>
-              </div>
+          <div class="ss-row">
+            <div class="ss-num">4</div>
+            <div>
+              <div class="ss-title">Allow permissions</div>
+              <div class="ss-desc">Google will ask to authorize → Click <strong>Authorize access</strong> → Choose your Gmail → Click <strong>Advanced</strong> → <strong>Go to (project)</strong> → <strong>Allow</strong></div>
             </div>
           </div>
-
-          <div class="wz-row">
-            <div class="wz-num">5</div>
-            <div class="wz-content">
-              <div class="wz-title">Copy the URL &amp; Paste Below</div>
-              <div class="wz-desc">
-                After deploy, you'll see a <strong>Web App URL</strong> — copy it and paste below
-              </div>
-              <div class="wz-img">
-                Web app URL: <span class="path">https://script.google.com/macros/s/XXXXX.../exec</span>
-              </div>
+          <div class="ss-row">
+            <div class="ss-num">5</div>
+            <div>
+              <div class="ss-title">Copy the URL & paste below</div>
+              <div class="ss-desc">After deploy you'll get a <strong>Web App URL</strong> — copy it and paste in the box below</div>
+              <div class="ss-code">Web app URL: <span class="hl">https://script.google.com/macros/s/XXXXX.../exec</span></div>
             </div>
           </div>
-
         </div>
 
         <div class="fg">
-          <label>Paste your Web App URL here</label>
+          <label>Your Web App URL</label>
           <input type="url" id="scriptUrl" placeholder="https://script.google.com/macros/s/XXXXX/exec" oninput="checkUrl()"/>
         </div>
         <button class="btn btn-p" id="btnConnect" onclick="testConnect()" disabled style="width:100%;justify-content:center">
           <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/></svg>
-          Test &amp; Connect
+          Test & Connect
         </button>
       </div>
     </div>
 
     <div class="btns">
-      <button class="btn btn-p" onclick="goStep(1)" id="btnStep1" disabled>
+      <button class="btn btn-p" id="btnStep1" onclick="goStep(1)" disabled>
         Next: Choose Mode
         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
@@ -326,27 +400,27 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
     <div class="card">
       <div class="card-title">
         <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        Select Sending Mode
+        Choose Sending Mode
       </div>
       <div class="mode-grid">
         <div class="mode-card" id="modeBroadcast" onclick="selectMode('broadcast')">
-          <div class="mode-icon">📢</div>
+          <div class="mode-ico">📢</div>
           <div class="mode-title">Broadcast</div>
-          <div class="mode-desc">Same file(s) to everyone — newsletters, announcements, offer letters, event invites.</div>
-          <div class="mode-tag tag-orange">1 file → everyone</div>
+          <div class="mode-desc">Same file(s) to everyone — newsletters, announcements, offer letters.</div>
+          <div class="mode-tag tag-ac">1 file → everyone</div>
         </div>
         <div class="mode-card" id="modePersonal" onclick="selectMode('personal')">
-          <div class="mode-icon">🎯</div>
+          <div class="mode-ico">🎯</div>
           <div class="mode-title">Personal</div>
-          <div class="mode-desc">Different file per person matched by ID — payslips, Form 16, individual reports.</div>
-          <div class="mode-tag tag-blue">1 unique file per person</div>
+          <div class="mode-desc">Different file per person, matched by ID — payslips, Form 16, reports.</div>
+          <div class="mode-tag tag-bl">Unique file per person</div>
         </div>
       </div>
-      <div id="modeHint" style="font-size:12px;color:var(--muted);text-align:center;padding:8px">Select a mode to continue</div>
+      <div id="modeHint" style="font-size:12px;color:var(--muted);text-align:center;padding:6px">Select a mode to continue</div>
     </div>
     <div class="btns">
       <button class="btn btn-g" onclick="goStep(0)">← Back</button>
-      <button class="btn btn-p" onclick="goStep(2)" id="btnStep2" disabled>
+      <button class="btn btn-p" id="btnStep2" onclick="goStep(2)" disabled>
         Next: Upload Files <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
@@ -360,18 +434,18 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
         Upload Files
       </div>
       <div id="uploadBroadcast">
-        <div class="notice notice-info"><span>📢</span><div><strong>Broadcast:</strong> Same file(s) go to everyone in your list.</div></div>
+        <div class="notice n-info"><span>📢</span><div><strong>Broadcast mode:</strong> Same file(s) go to everyone.</div></div>
         <div class="drop-grid">
           <div class="drop-zone" id="dzExcel" ondragover="dov(event,'dzExcel')" ondragleave="dlv('dzExcel')" ondrop="dropExcel(event)">
             <input type="file" class="dz-input" accept=".xlsx,.xls,.csv" onchange="loadExcel(this.files[0])">
-            <span class="dz-icon">📊</span>
+            <span class="dz-ico">📊</span>
             <div class="dz-title">Recipient List</div>
-            <div class="dz-sub">Excel or CSV — Name, Email columns</div>
+            <div class="dz-sub">Excel or CSV — Name, Email</div>
             <div class="dz-ok" id="excelOk" style="display:none">✓ Loaded</div>
           </div>
           <div class="drop-zone" id="dzBroadcast" ondragover="dov(event,'dzBroadcast')" ondragleave="dlv('dzBroadcast')" ondrop="dropBroadcast(event)">
             <input type="file" class="dz-input" accept="*/*" multiple onchange="loadBroadcastFiles(this.files)">
-            <span class="dz-icon">📎</span>
+            <span class="dz-ico">📎</span>
             <div class="dz-title">Attachment(s)</div>
             <div class="dz-sub">Any file — PDF, image, Word, ZIP</div>
             <div class="dz-ok" id="broadcastOk" style="display:none">✓ 0 files</div>
@@ -380,32 +454,32 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
         <div id="broadcastFileList" class="attached-files"></div>
       </div>
       <div id="uploadPersonal" style="display:none">
-        <div class="notice notice-info"><span>🎯</span><div><strong>Personal:</strong> Each person gets their own file, matched by ID in filename.</div></div>
+        <div class="notice n-info"><span>🎯</span><div><strong>Personal mode:</strong> Each person gets their own file matched by ID in filename.</div></div>
         <div class="drop-grid">
           <div class="drop-zone" id="dzExcel2" ondragover="dov(event,'dzExcel2')" ondragleave="dlv('dzExcel2')" ondrop="dropExcel2(event)">
             <input type="file" class="dz-input" accept=".xlsx,.xls,.csv" onchange="loadExcel(this.files[0])">
-            <span class="dz-icon">📊</span>
+            <span class="dz-ico">📊</span>
             <div class="dz-title">Recipient List</div>
-            <div class="dz-sub">Excel or CSV — Name, Email, ID/PAN</div>
+            <div class="dz-sub">Excel or CSV — Name, Email, ID</div>
             <div class="dz-ok" id="excelOk2" style="display:none">✓ Loaded</div>
           </div>
           <div class="drop-zone" id="dzPdf" ondragover="dov(event,'dzPdf')" ondragleave="dlv('dzPdf')" ondrop="dropPdfs(event)">
             <input type="file" class="dz-input" accept="*/*" multiple onchange="loadPdfs(this.files)">
-            <span class="dz-icon">📄</span>
+            <span class="dz-ico">📄</span>
             <div class="dz-title">Individual Files</div>
             <div class="dz-sub">All files — matched by ID in filename</div>
             <div class="dz-ok" id="pdfOk" style="display:none">✓ 0 files</div>
           </div>
         </div>
-        <div class="notice notice-warn" style="margin-top:4px">
+        <div class="notice n-warn" style="margin-top:4px">
           <span>💡</span>
-          <div>Filename must contain the ID: <code style="font-family:var(--fm);font-size:10px;background:var(--s3);padding:1px 5px;border-radius:3px">Payslip_ABCDE1234F.pdf</code> or <code style="font-family:var(--fm);font-size:10px;background:var(--s3);padding:1px 5px;border-radius:3px">Report_EMP001.pdf</code></div>
+          <div>Filename must contain the ID: <code style="font-family:var(--fm);font-size:10px;background:var(--bg3);padding:1px 5px;border-radius:3px">Payslip_ABCDE1234F.pdf</code> or <code style="font-family:var(--fm);font-size:10px;background:var(--bg3);padding:1px 5px;border-radius:3px">Report_EMP001.pdf</code></div>
         </div>
       </div>
     </div>
     <div class="btns">
       <button class="btn btn-g" onclick="goStep(1)">← Back</button>
-      <button class="btn btn-p" onclick="goStep(3)" id="btnStep3" disabled>
+      <button class="btn btn-p" id="btnStep3" onclick="goStep(3)" disabled>
         Next: Map Columns <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
@@ -419,7 +493,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
         Map Excel Columns
       </div>
       <div class="mapper" id="colMapper"></div>
-      <div id="personalColExtra" style="display:none">
+      <div id="personalExtra" style="display:none">
         <div class="form2" style="margin-top:8px">
           <div class="fg"><label>ID Column (PAN / Employee ID)</label><select id="cId"></select></div>
           <div class="fg"><label>Match type</label>
@@ -430,36 +504,36 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.015
           </div>
         </div>
       </div>
-      <div class="fg" style="margin-top:4px">
-        <label>Sender Name (shown in email)</label>
-        <input type="text" id="senderName" value="The Team" style="max-width:240px"/>
+      <div class="fg" style="margin-top:8px">
+        <label>Sender name (shown in email)</label>
+        <input type="text" id="senderName" value="The Team" style="max-width:220px"/>
       </div>
     </div>
     <div class="btns">
       <button class="btn btn-g" onclick="goStep(2)">← Back</button>
       <button class="btn btn-p" onclick="buildAndGo()">
-        Next: Email Draft <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        Next: Compose Email <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
   </div>
 
-  <!-- STEP 4: EMAIL -->
+  <!-- STEP 4: COMPOSE -->
   <div id="step4" style="display:none">
     <div class="card">
       <div class="card-title">
         <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Compose Email
       </div>
-      <div style="padding:6px 0 14px">
-        <span class="chip-label">Click to insert →</span>
+      <div style="padding:4px 0 12px">
+        <span class="chip-lbl">Insert →</span>
         <div class="var-chips" id="varChips"></div>
       </div>
-      <div class="draft-card">
-        <div class="draft-head">✉ New Message</div>
-        <div class="draft-body">
-          <div class="fg" style="margin:0"><label>Subject</label><input type="text" id="emailSubject" value="Important document for {{name}}"></div>
+      <div class="draft-wrap">
+        <div class="draft-bar">✉ New Message</div>
+        <div class="draft-inner">
+          <div class="fg" style="margin:0"><label>Subject</label><input type="text" id="emailSubject" value="Important document for {{name}}"/></div>
           <div class="fg" style="margin:0"><label>Body</label>
-            <textarea id="emailBody" rows="10">Dear {{name}},
+            <textarea id="emailBody" rows="9">Dear {{name}},
 
 Please find your document attached.
 
@@ -472,7 +546,7 @@ The Team</textarea>
       </div>
       <div class="fg">
         <label>Emails per batch (50 recommended)</label>
-        <input type="number" id="batchSize" value="50" min="1" max="100" style="max-width:130px">
+        <input type="number" id="batchSize" value="50" min="1" max="100" style="max-width:120px"/>
       </div>
     </div>
     <div class="btns">
@@ -488,7 +562,7 @@ The Team</textarea>
     <div class="card">
       <div class="card-title">
         <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        Preview &amp; Confirm
+        Preview & Confirm
       </div>
       <div class="stats" id="statsBar"></div>
       <div class="tbl-wrap">
@@ -497,7 +571,7 @@ The Team</textarea>
           <tbody id="previewTbody"></tbody>
         </table>
       </div>
-      <div class="btns" style="margin-top:18px">
+      <div class="btns" style="margin-top:16px">
         <button class="btn btn-g" onclick="goStep(4)">← Back</button>
         <button class="btn btn-green" onclick="goStep(6)">
           <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -515,7 +589,7 @@ The Team</textarea>
         Sending
       </div>
       <div id="doneBanner" style="display:none" class="done-banner">
-        <div class="done-icon">🎉</div>
+        <div class="done-ico">🎉</div>
         <div class="done-title" id="doneTitle"></div>
         <div class="done-sub" id="doneSub"></div>
       </div>
@@ -526,8 +600,8 @@ The Team</textarea>
         </div>
         <div class="log" id="logBox"></div>
         <div class="btns">
-          <button class="btn btn-g" onclick="goStep(5)" id="btnBackSend">← Back</button>
-          <button class="btn btn-green" onclick="startSend()" id="btnGo">
+          <button class="btn btn-g" id="btnBackSend" onclick="goStep(5)">← Back</button>
+          <button class="btn btn-green" id="btnGo" onclick="startSend()">
             <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             <span id="btnGoTxt">🚀 Start Sending</span>
           </button>
@@ -536,29 +610,25 @@ The Team</textarea>
     </div>
   </div>
 
-</div>
+</main>
 </div>
 
 <script>
 let excelRows=[],excelCols=[],pdfMap={},broadcastFiles=[],matched=[];
-let isSending=false,scriptUrl='',connectedEmail='',sendMode='broadcast';
-const TOTAL_STEPS=7;
+let isSending=false,scriptUrl='',connEmail='',sendMode='broadcast';
+const STEPS=7;
 
 window.onload=()=>{
-  const saved=localStorage.getItem('se_script_url');
-  if(saved){
-    scriptUrl=saved;
-    document.getElementById('scriptUrl').value=saved;
+  const s=localStorage.getItem('se_url');
+  if(s){
+    scriptUrl=s;
+    document.getElementById('scriptUrl').value=s;
     checkUrl();
-    // Auto-verify saved URL
-    fetch(saved+'?action=ping').then(r=>r.json()).then(d=>{
-      if(d.status==='ok'){connectedEmail=d.email||'Gmail connected';showConnected();}
-    }).catch(()=>{
-      // URL saved but can't ping — show connected anyway (offline or CORS)
-      connectedEmail='Gmail (saved)';showConnected();
-    });
+    fetch(s+'?action=ping').then(r=>r.json()).then(d=>{
+      if(d.status==='ok'){connEmail=d.email||'Gmail connected';showConn();}
+    }).catch(()=>{connEmail='Gmail connected';showConn();});
   }
-  buildVarChips();
+  buildChips();
   if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 };
 
@@ -571,70 +641,62 @@ async function testConnect(){
   const url=document.getElementById('scriptUrl').value.trim();
   if(!url)return;
   const btn=document.getElementById('btnConnect');
-  btn.disabled=true;btn.innerHTML='⏳ Testing...';
+  btn.disabled=true;btn.textContent='Testing...';
   try{
-    const res=await fetch(url+'?action=ping');
-    const d=await res.json();
-    if(d.status==='ok'){
-      scriptUrl=url;connectedEmail=d.email||'Gmail connected';
-      localStorage.setItem('se_script_url',url);showConnected();
-    } else throw new Error(d.message||'Error');
-  }catch(err){
+    const r=await fetch(url+'?action=ping');
+    const d=await r.json();
+    if(d.status==='ok'){scriptUrl=url;connEmail=d.email||'Gmail connected';localStorage.setItem('se_url',url);showConn();}
+    else throw new Error(d.message);
+  }catch{
     if(url.includes('script.google.com/macros/s/')&&url.endsWith('/exec')){
-      scriptUrl=url;connectedEmail='Gmail connected';
-      localStorage.setItem('se_script_url',url);showConnected();
+      scriptUrl=url;connEmail='Gmail connected';localStorage.setItem('se_url',url);showConn();
     } else {
-      btn.disabled=false;
-      btn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><polyline points="9 11 12 14 22 4"/></svg> Test &amp; Connect';
-      alert('❌ Invalid URL.\n\nExpected format:\nhttps://script.google.com/macros/s/XXXXX/exec\n\nMake sure you deployed as Web App.');
+      btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><polyline points="9 11 12 14 22 4"/></svg> Test & Connect';
+      alert('❌ URL not valid.\n\nExpected:\nhttps://script.google.com/macros/s/XXXXX/exec\n\nMake sure you deployed as Web App with access: Anyone.');
     }
   }
 }
 
-function showConnected(){
-  document.getElementById('disconnectedState').style.display='none';
-  document.getElementById('connectedState').style.display='';
-  document.getElementById('connectedEmail').textContent='✓ '+connectedEmail;
+function showConn(){
+  document.getElementById('setupSteps').style.display='none';
+  const b=document.getElementById('connBox');b.classList.add('show');
+  document.getElementById('connLabel').textContent='✓ '+connEmail;
   document.getElementById('btnStep1').disabled=false;
 }
 
 function disconnect(){
-  scriptUrl='';localStorage.removeItem('se_script_url');
+  scriptUrl='';localStorage.removeItem('se_url');
   document.getElementById('scriptUrl').value='';
-  document.getElementById('disconnectedState').style.display='';
-  document.getElementById('connectedState').style.display='none';
+  document.getElementById('setupSteps').style.display='';
+  document.getElementById('connBox').classList.remove('show');
   document.getElementById('btnStep1').disabled=true;
   const btn=document.getElementById('btnConnect');
-  btn.disabled=true;
-  btn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><polyline points="9 11 12 14 22 4"/></svg> Test &amp; Connect';
+  btn.disabled=true;btn.innerHTML='<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><polyline points="9 11 12 14 22 4"/></svg> Test & Connect';
 }
 
 function goStep(n){
-  for(let i=0;i<TOTAL_STEPS;i++){
+  for(let i=0;i<STEPS;i++){
     document.getElementById('step'+i).style.display=i===n?'':'none';
-    document.getElementById('rb'+i).classList.toggle('active',i===n);
-    const wc=document.getElementById('wc'+i),wl=document.getElementById('wl'+i);
-    if(i<n){wc.classList.add('done');wc.classList.remove('active')}
-    else if(i===n){wc.classList.add('active');wc.classList.remove('done')}
-    else{wc.classList.remove('done','active')}
-    wl.classList.toggle('active',i===n);
-    const wln=document.getElementById('wln'+i);
-    if(wln)wln.classList.toggle('done',i<n);
+    const nb=document.getElementById('nb'+i);
+    nb.classList.remove('active','done');
+    if(i===n)nb.classList.add('active');
+    else if(i<n)nb.classList.add('done');
+    const sn=document.getElementById('sn'+i);
+    if(i<n)sn.textContent='✓';
+    else sn.textContent=i+1;
   }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function selectMode(mode){
-  sendMode=mode;
-  document.getElementById('modeBroadcast').classList.toggle('selected',mode==='broadcast');
-  document.getElementById('modePersonal').classList.toggle('selected',mode==='personal');
-  document.getElementById('modeHint').textContent=mode==='broadcast'
-    ?'📢 Same file(s) will go to everyone'
-    :'🎯 Each person gets their own matched file';
+function selectMode(m){
+  sendMode=m;
+  document.getElementById('modeBroadcast').classList.toggle('selected',m==='broadcast');
+  document.getElementById('modePersonal').classList.toggle('selected',m==='personal');
+  document.getElementById('modeHint').textContent=m==='broadcast'?'📢 Same file(s) to everyone':'🎯 Each person gets their own file';
   document.getElementById('btnStep2').disabled=false;
-  document.getElementById('uploadBroadcast').style.display=mode==='broadcast'?'':'none';
-  document.getElementById('uploadPersonal').style.display=mode==='personal'?'':'none';
-  checkUploadReady();
+  document.getElementById('uploadBroadcast').style.display=m==='broadcast'?'':'none';
+  document.getElementById('uploadPersonal').style.display=m==='personal'?'':'none';
+  checkReady();
 }
 
 function dov(e,id){e.preventDefault();document.getElementById(id).classList.add('drag')}
@@ -644,141 +706,118 @@ function dropExcel2(e){e.preventDefault();dlv('dzExcel2');loadExcel(e.dataTransf
 function dropBroadcast(e){e.preventDefault();dlv('dzBroadcast');loadBroadcastFiles(e.dataTransfer.files)}
 function dropPdfs(e){e.preventDefault();dlv('dzPdf');loadPdfs(e.dataTransfer.files)}
 
-function fileIcon(name){
-  const ext=(name||'').split('.').pop().toLowerCase();
-  if(ext==='pdf')return'📄';
-  if(['jpg','jpeg','png','gif','webp'].includes(ext))return'🖼️';
-  if(['xlsx','xls','csv'].includes(ext))return'📊';
-  if(['doc','docx'].includes(ext))return'📝';
-  if(['zip','rar','7z'].includes(ext))return'🗜️';
-  return'📎';
+function fIco(n){
+  const e=(n||'').split('.').pop().toLowerCase();
+  return e==='pdf'?'📄':['jpg','jpeg','png','gif','webp'].includes(e)?'🖼️':['xlsx','xls','csv'].includes(e)?'📊':['doc','docx'].includes(e)?'📝':['zip','rar'].includes(e)?'🗜️':'📎';
 }
 
 function loadExcel(file){
   if(!file)return;
   const r=new FileReader();
-  r.onload=(e)=>{
+  r.onload=e=>{
     const wb=XLSX.read(e.target.result,{type:'array'});
     const ws=wb.Sheets[wb.SheetNames[0]];
     const data=XLSX.utils.sheet_to_json(ws,{defval:''});
     excelRows=data;excelCols=data.length?Object.keys(data[0]):[];
-    const txt=`✓ ${data.length} rows loaded`;
+    const txt=`✓ ${data.length} rows`;
     ['excelOk','excelOk2'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent=txt;el.style.display='';}});
     ['dzExcel','dzExcel2'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('done');});
-    buildColMapper();checkUploadReady();
+    buildMapper();checkReady();
   };
   r.readAsArrayBuffer(file);
 }
 
 function loadBroadcastFiles(files){
-  const arr=Array.from(files);let loaded=0;
+  const arr=Array.from(files);let done=0;
   arr.forEach(f=>{
     const r=new FileReader();
-    r.onload=(e)=>{
+    r.onload=e=>{
       broadcastFiles.push({name:f.name,base64:e.target.result.split(',')[1],type:f.type||'application/octet-stream'});
-      loaded++;
-      if(loaded===arr.length){
+      done++;
+      if(done===arr.length){
         document.getElementById('broadcastOk').textContent=`✓ ${broadcastFiles.length} file(s)`;
         document.getElementById('broadcastOk').style.display='';
         document.getElementById('dzBroadcast').classList.add('done');
-        renderBroadcastList();checkUploadReady();
+        renderBList();checkReady();
       }
     };
     r.readAsDataURL(f);
   });
 }
 
-function renderBroadcastList(){
+function renderBList(){
   document.getElementById('broadcastFileList').innerHTML=broadcastFiles.map((f,i)=>`
-    <div class="attached-file">
-      <span>${fileIcon(f.name)}</span><span>${f.name}</span>
-      <span class="attached-file-remove" onclick="removeBroadcastFile(${i})">✕</span>
-    </div>`).join('');
+    <div class="attached-file">${fIco(f.name)} ${f.name} <span class="afrm" onclick="rmBFile(${i})">✕</span></div>`).join('');
 }
-
-function removeBroadcastFile(i){
-  broadcastFiles.splice(i,1);renderBroadcastList();
-  if(!broadcastFiles.length){document.getElementById('broadcastOk').style.display='none';document.getElementById('dzBroadcast').classList.remove('done');}
-  checkUploadReady();
-}
+function rmBFile(i){broadcastFiles.splice(i,1);renderBList();if(!broadcastFiles.length){document.getElementById('broadcastOk').style.display='none';document.getElementById('dzBroadcast').classList.remove('done');}checkReady();}
 
 function loadPdfs(files){
-  const arr=Array.from(files);let loaded=0;
+  const arr=Array.from(files);let done=0;
   arr.forEach(f=>{
     const r=new FileReader();
-    r.onload=(e)=>{
-      const name=f.name;
-      let m=name.match(/([A-Z]{5}[0-9]{4}[A-Z])/i);
+    r.onload=e=>{
+      const n=f.name;
+      let m=n.match(/([A-Z]{5}[0-9]{4}[A-Z])/i);
       const pan=m?m[1].toUpperCase():null;
-      let empId=null;
-      const em=name.match(/[_\-\s]([A-Z0-9]{3,15})[_\-\s\.]/i);
-      if(em)empId=em[1].toUpperCase();
-      const key=pan||empId||f.name.replace(/\.[^.]+$/,'').toUpperCase();
+      let emp=null;
+      const em=n.match(/[_\-\s]([A-Z0-9]{3,15})[_\-\s\.]/i);
+      if(em)emp=em[1].toUpperCase();
+      const key=pan||emp||f.name.replace(/\.[^.]+$/,'').toUpperCase();
       if(!pdfMap[key])pdfMap[key]=[];
       pdfMap[key].push({name:f.name,base64:e.target.result.split(',')[1],type:f.type||'application/octet-stream'});
-      loaded++;
-      if(loaded===arr.length){
-        const u=Object.keys(pdfMap).length;
-        document.getElementById('pdfOk').textContent=`✓ ${arr.length} files (${u} IDs matched)`;
+      done++;
+      if(done===arr.length){
+        document.getElementById('pdfOk').textContent=`✓ ${arr.length} files (${Object.keys(pdfMap).length} IDs)`;
         document.getElementById('pdfOk').style.display='';
         document.getElementById('dzPdf').classList.add('done');
-        checkUploadReady();
+        checkReady();
       }
     };
     r.readAsDataURL(f);
   });
 }
 
-function checkUploadReady(){
-  document.getElementById('btnStep3').disabled=excelRows.length===0;
-}
+function checkReady(){document.getElementById('btnStep3').disabled=excelRows.length===0;}
 
-const reqCols=[
-  {id:'cName',label:'Name Column',hints:['name','employee name','emp name','fullname','full name','recipient']},
-  {id:'cEmail',label:'Email Column',hints:['email','mail','email id','emailid','e-mail','email address']},
+const rCols=[
+  {id:'cName',label:'Name Column',hints:['name','employee name','emp name','fullname','recipient']},
+  {id:'cEmail',label:'Email Column',hints:['email','mail','email id','emailid','e-mail']},
 ];
-
-function autoDetect(hints){
-  const lower=excelCols.map(c=>c.toLowerCase().trim());
-  for(const h of hints){const i=lower.findIndex(c=>c.includes(h));if(i>=0)return excelCols[i];}
+function autoD(hints){
+  const low=excelCols.map(c=>c.toLowerCase().trim());
+  for(const h of hints){const i=low.findIndex(c=>c.includes(h));if(i>=0)return excelCols[i];}
   return excelCols[0]||'';
 }
-
-function buildColMapper(){
-  const wrap=document.getElementById('colMapper');wrap.innerHTML='';
-  reqCols.forEach(col=>{
-    const d=autoDetect(col.hints);
+function buildMapper(){
+  const w=document.getElementById('colMapper');w.innerHTML='';
+  rCols.forEach(col=>{
+    const d=autoD(col.hints);
     const el=document.createElement('div');el.className='fg';
     el.innerHTML=`<label>${col.label}</label><select id="${col.id}">${excelCols.map(c=>`<option${c===d?' selected':''}>${c}</option>`).join('')}</select>`;
-    wrap.appendChild(el);
+    w.appendChild(el);
   });
   const idSel=document.getElementById('cId');
-  if(idSel){
-    const d=autoDetect(['pan','emp id','employee id','empid','id','staff id']);
-    idSel.innerHTML=excelCols.map(c=>`<option${c===d?' selected':''}>${c}</option>`).join('');
-  }
-  if(document.getElementById('personalColExtra'))
-    document.getElementById('personalColExtra').style.display=sendMode==='personal'?'':'none';
+  if(idSel){const d=autoD(['pan','emp id','employee id','empid','id','staff id']);idSel.innerHTML=excelCols.map(c=>`<option${c===d?' selected':''}>${c}</option>`).join('');}
+  if(document.getElementById('personalExtra'))
+    document.getElementById('personalExtra').style.display=sendMode==='personal'?'':'none';
 }
 
 function buildAndGo(){
-  const cName=document.getElementById('cName').value;
-  const cEmail=document.getElementById('cEmail').value;
+  const cn=document.getElementById('cName').value;
+  const ce=document.getElementById('cEmail').value;
   if(sendMode==='broadcast'){
-    matched=excelRows.map((row,idx)=>{
-      const name=String(row[cName]||'').trim();
-      const email=String(row[cEmail]||'').trim();
+    matched=excelRows.map((row,i)=>{
+      const name=String(row[cn]||'').trim(),email=String(row[ce]||'').trim();
       let status='ready';
       if(!email||!email.includes('@'))status='invalid-email';
       else if(!name)status='no-name';
-      return{idx:idx+1,name,email,files:broadcastFiles,fileNames:broadcastFiles.map(f=>f.name),status};
+      return{idx:i+1,name,email,files:broadcastFiles,fileNames:broadcastFiles.map(f=>f.name),status};
     });
   } else {
-    const cId=document.getElementById('cId').value;
-    matched=excelRows.map((row,idx)=>{
-      const name=String(row[cName]||'').trim();
-      const email=String(row[cEmail]||'').trim();
-      const rawId=String(row[cId]||'').trim().toUpperCase();
+    const ci=document.getElementById('cId').value;
+    matched=excelRows.map((row,i)=>{
+      const name=String(row[cn]||'').trim(),email=String(row[ce]||'').trim();
+      const rawId=String(row[ci]||'').trim().toUpperCase();
       let files=[],fileNames=[],status='ready';
       if(!email||!email.includes('@'))status='invalid-email';
       else if(!rawId)status='no-id';
@@ -788,15 +827,13 @@ function buildAndGo(){
         if(pm&&pm.length){files=pm;fileNames=pm.map(f=>f.name);}
         else status=Object.keys(pdfMap).length?'no-file':'ready-no-attach';
       }
-      return{idx:idx+1,name,email,id:rawId,files,fileNames,status};
+      return{idx:i+1,name,email,id:rawId,files,fileNames,status};
     });
   }
   goStep(4);
 }
 
-function previewAndGo(){
-  renderStats();renderPreview();goStep(5);
-}
+function previewAndGo(){renderStats();renderPreview();goStep(5);}
 
 function renderStats(){
   const total=matched.length;
@@ -804,7 +841,7 @@ function renderStats(){
   const skip=matched.filter(r=>r.status!=='ready'&&r.status!=='ready-no-attach').length;
   const attach=matched.filter(r=>r.files&&r.files.length>0).length;
   document.getElementById('statsBar').innerHTML=`
-    <div class="stat"><div class="stat-n" style="color:var(--text)">${total}</div><div class="stat-l">Total</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--ink)">${total}</div><div class="stat-l">Total</div></div>
     <div class="stat"><div class="stat-n" style="color:var(--green)">${ready}</div><div class="stat-l">Ready</div></div>
     <div class="stat"><div class="stat-n" style="color:var(--yellow)">${skip}</div><div class="stat-l">Skipped</div></div>
     <div class="stat"><div class="stat-n" style="color:var(--blue)">${attach}</div><div class="stat-l">With File</div></div>`;
@@ -812,7 +849,7 @@ function renderStats(){
 
 function renderPreview(){
   document.getElementById('previewTbody').innerHTML=matched.map(r=>{
-    const stB={
+    const sb={
       ready:`<span class="badge b-ok">✓ Ready</span>`,
       'ready-no-attach':`<span class="badge b-emp">✓ No File</span>`,
       'no-file':`<span class="badge b-warn">⚠ No Match</span>`,
@@ -820,17 +857,17 @@ function renderPreview(){
       'no-id':`<span class="badge b-err">✗ No ID</span>`,
       'no-name':`<span class="badge b-warn">⚠ No Name</span>`,
     }[r.status]||`<span class="badge b-warn">${r.status}</span>`;
-    const attach=r.fileNames&&r.fileNames.length
-      ?`<span style="font-size:10px;color:var(--muted)">${r.fileNames.map(n=>fileIcon(n)).join(' ')} ${r.fileNames.length} file(s)</span>`
-      :`<span style="font-size:10px;color:var(--muted)">—</span>`;
-    return`<tr><td class="td-mono">${r.idx}</td><td style="font-weight:500">${r.name||'—'}</td><td class="td-email">${r.email||'—'}</td><td>${attach}</td><td>${stB}</td></tr>`;
+    const at=r.fileNames&&r.fileNames.length
+      ?`<span style="font-size:11px;color:var(--muted)">${r.fileNames.map(n=>fIco(n)).join(' ')} ${r.fileNames.length} file(s)</span>`
+      :`<span style="font-size:11px;color:#ccc">—</span>`;
+    return`<tr><td class="td-mono">${r.idx}</td><td style="font-weight:500">${r.name||'—'}</td><td class="td-email">${r.email||'—'}</td><td>${at}</td><td>${sb}</td></tr>`;
   }).join('');
 }
 
-const VARS=[{label:'{{name}}',desc:'Recipient name'},{label:'{{email}}',desc:'Email address'},{label:'{{id}}',desc:'Employee/PAN ID'},{label:'{{extra}}',desc:'Custom value'}];
-function buildVarChips(){
+const VARS=[{v:'{{name}}',d:'Name'},{v:'{{email}}',d:'Email'},{v:'{{id}}',d:'ID/PAN'},{v:'{{extra}}',d:'Extra'}];
+function buildChips(){
   const w=document.getElementById('varChips');if(!w)return;
-  w.innerHTML=VARS.map(v=>`<span class="chip" title="${v.desc}" onclick="insertVar('${v.label}')">${v.label}</span>`).join('');
+  w.innerHTML=VARS.map(v=>`<span class="chip" title="${v.d}" onclick="insertVar('${v.v}')">${v.v}</span>`).join('');
 }
 function insertVar(v){
   const ta=document.getElementById('emailBody');
@@ -838,33 +875,33 @@ function insertVar(v){
   ta.value=ta.value.slice(0,s)+v+ta.value.slice(e);
   ta.focus();ta.setSelectionRange(s+v.length,s+v.length);
 }
-function fillTemplate(tpl,row){
+function fill(tpl,row){
   return tpl.replace(/\{\{name\}\}/g,row.name||'').replace(/\{\{email\}\}/g,row.email||'').replace(/\{\{id\}\}/g,row.id||'').replace(/\{\{extra\}\}/g,row.id||'');
 }
 
 function addLog(type,msg){
   const box=document.getElementById('logBox');
   const now=new Date().toLocaleTimeString();
-  const colors={ok:'lok',warn:'lwarn',err:'lerr',info:'linfo'};
-  const keys={ok:'SENT',warn:'SKIP',err:'FAIL',info:'INFO'};
-  const div=document.createElement('div');div.className='ll';
-  div.innerHTML=`<span class="lt">${now}</span><span class="lk ${colors[type]||'linfo'}">${keys[type]||type}</span><span>${msg}</span>`;
-  box.appendChild(div);box.scrollTop=box.scrollHeight;
+  const clr={ok:'lok',warn:'lwarn',err:'lerr',info:'linfo'};
+  const lbl={ok:'SENT',warn:'SKIP',err:'FAIL',info:'INFO'};
+  const d=document.createElement('div');d.className='ll';
+  d.innerHTML=`<span class="lt">${now}</span><span class="lk ${clr[type]||'linfo'}">${lbl[type]||type}</span><span>${msg}</span>`;
+  box.appendChild(d);box.scrollTop=box.scrollHeight;
 }
-function setProgress(pct,label){
+function setProg(pct,lbl){
   document.getElementById('progFill').style.width=pct+'%';
   document.getElementById('progPct').textContent=pct+'%';
-  document.getElementById('progLabel').textContent=label;
+  document.getElementById('progLabel').textContent=lbl;
 }
-function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
-function chunk(arr,size){const r=[];for(let i=0;i<arr.length;i+=size)r.push(arr.slice(i,i+size));return r;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function chunk(arr,n){const r=[];for(let i=0;i<arr.length;i+=n)r.push(arr.slice(i,i+n));return r;}
 
 async function startSend(){
   if(isSending)return;isSending=true;
-  const subject=document.getElementById('emailSubject').value;
+  const subj=document.getElementById('emailSubject').value;
   const body=document.getElementById('emailBody').value;
-  const batchSize=parseInt(document.getElementById('batchSize').value)||50;
-  const senderName=document.getElementById('senderName').value||'SendEase';
+  const bs=parseInt(document.getElementById('batchSize').value)||50;
+  const sn=document.getElementById('senderName').value||'SendEase';
   document.getElementById('btnGo').disabled=true;
   document.getElementById('btnBackSend').disabled=true;
   document.getElementById('logBox').innerHTML='';
@@ -877,7 +914,7 @@ async function startSend(){
   skipped.forEach(r=>addLog('warn',`${r.name||r.email} — ${r.status}`));
 
   if(!toSend.length){
-    addLog('warn','No valid recipients to send!');
+    addLog('warn','No valid recipients!');
     isSending=false;
     document.getElementById('btnGo').disabled=false;
     document.getElementById('btnBackSend').disabled=false;
@@ -885,14 +922,13 @@ async function startSend(){
   }
 
   const records=toSend.map(row=>({
-    name:row.name,email:row.email,id:row.id||'',senderName,
-    subject:fillTemplate(subject,row),
-    body:fillTemplate(body,row),
+    name:row.name,email:row.email,id:row.id||'',senderName:sn,
+    subject:fill(subj,row),body:fill(body,row),
     attachments:(row.files||[]).map(f=>({name:f.name,base64:f.base64,type:f.type||'application/octet-stream'}))
   }));
 
-  const batches=chunk(records,batchSize);
-  let sentTotal=0,failedTotal=0;
+  const batches=chunk(records,bs);
+  let sent=0,failed=0;
 
   for(let bi=0;bi<batches.length;bi++){
     addLog('info',`Batch ${bi+1}/${batches.length} — ${batches[bi].length} emails...`);
@@ -905,28 +941,27 @@ async function startSend(){
       const data=await res.json();
       if(data.status==='ok'){
         data.results.forEach(r=>{
-          if(r.status==='sent'){addLog('ok',`${r.name} → ${r.email}`);sentTotal++;}
-          else if(r.status==='failed'){addLog('err',`${r.name}: ${r.reason}`);failedTotal++;}
+          if(r.status==='sent'){addLog('ok',`${r.name} → ${r.email}`);sent++;}
+          else if(r.status==='failed'){addLog('err',`${r.name}: ${r.reason}`);failed++;}
           else addLog('warn',`${r.name||r.email} — ${r.reason||r.status}`);
         });
-      } else {addLog('err',`Batch ${bi+1}: ${data.message}`);failedTotal+=batches[bi].length;}
-    }catch(err){addLog('err',`Batch ${bi+1} error: ${err.message}`);failedTotal+=batches[bi].length;}
-    setProgress(Math.round(((bi+1)/batches.length)*100),`Batch ${bi+1}/${batches.length} done`);
+      } else {addLog('err',`Batch ${bi+1}: ${data.message}`);failed+=batches[bi].length;}
+    }catch(e){addLog('err',`Batch ${bi+1}: ${e.message}`);failed+=batches[bi].length;}
+    setProg(Math.round(((bi+1)/batches.length)*100),`Batch ${bi+1}/${batches.length} done`);
     if(bi<batches.length-1)await sleep(1500);
   }
 
-  setProgress(100,'Complete!');isSending=false;
-  document.getElementById('doneTitle').textContent=`✓ ${sentTotal} emails sent!`;
-  document.getElementById('doneSub').textContent=`${failedTotal} failed · ${skipped.length} skipped`;
+  setProg(100,'Complete!');isSending=false;
+  document.getElementById('doneTitle').textContent=`✓ ${sent} emails sent!`;
+  document.getElementById('doneSub').textContent=`${failed} failed · ${skipped.length} skipped`;
   document.getElementById('doneBanner').style.display='';
   document.getElementById('btnGo').disabled=false;
   document.getElementById('btnBackSend').disabled=false;
   document.getElementById('btnGoTxt').textContent='🔁 Send Again';
 
-  const logLines=Array.from(document.getElementById('logBox').querySelectorAll('.ll')).map(l=>l.innerText).join('\n');
-  const blob=new Blob([logLines],{type:'text/plain'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='sendease_log.txt';a.style.display='none';
+  const lines=Array.from(document.getElementById('logBox').querySelectorAll('.ll')).map(l=>l.innerText).join('\n');
+  const blob=new Blob([lines],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sendease_log.txt';a.style.display='none';
   document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
 </script>
