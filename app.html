@@ -601,6 +601,7 @@ The Team</textarea>
         <div class="log" id="logBox"></div>
         <div class="btns">
           <button class="btn btn-g" id="btnBackSend" onclick="goStep(5)">← Back</button>
+          <button class="btn btn-g" onclick="confirmClearSession()" style="margin-left:8px">🗑 Clear Session</button>
           <button class="btn btn-green" id="btnGo" onclick="startSend()">
             <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             <span id="btnGoTxt">🚀 Start Sending</span>
@@ -802,6 +803,10 @@ function buildMapper(){
     document.getElementById('personalExtra').style.display=sendMode==='personal'?'':'none';
 }
 
+function validEmail(email){
+  // Checks: local@domain.tld — requires proper domain and TLD
+  return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(String(email).trim());
+}
 function buildAndGo(){
   const cn=document.getElementById('cName').value;
   const ce=document.getElementById('cEmail').value;
@@ -809,7 +814,7 @@ function buildAndGo(){
     matched=excelRows.map((row,i)=>{
       const name=String(row[cn]||'').trim(),email=String(row[ce]||'').trim();
       let status='ready';
-      if(!email||!email.includes('@'))status='invalid-email';
+      if(!email||!validEmail(email))status='invalid-email';
       else if(!name)status='no-name';
       return{idx:i+1,name,email,files:broadcastFiles,fileNames:broadcastFiles.map(f=>f.name),status};
     });
@@ -819,7 +824,7 @@ function buildAndGo(){
       const name=String(row[cn]||'').trim(),email=String(row[ce]||'').trim();
       const rawId=String(row[ci]||'').trim().toUpperCase();
       let files=[],fileNames=[],status='ready';
-      if(!email||!email.includes('@'))status='invalid-email';
+      if(!email||!validEmail(email))status='invalid-email';
       else if(!rawId)status='no-id';
       else{
         let pm=pdfMap[rawId];
@@ -893,11 +898,48 @@ function setProg(pct,lbl){
   document.getElementById('progPct').textContent=pct+'%';
   document.getElementById('progLabel').textContent=lbl;
 }
+function confirmClearSession(){
+  const s=sessionLoad();
+  if(!s||!s.emails||!s.emails.length){alert('Koi session save nahi hai.');return;}
+  if(confirm(`${s.emails.length} emails ka session hai.\nClear karne ke baad sab se shuru hoga.\nClear karein?`)){
+    sessionClear();
+    addLog('info',`✓ Session clear — ${s.emails.length} sent emails ka record hata diya`);
+  }
+}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function chunk(arr,n){const r=[];for(let i=0;i<arr.length;i+=n)r.push(arr.slice(i,i+n));return r;}
 
+// ── Session helpers (resume support) ──────────────────
+const SESSION_KEY='se_session';
+function sessionLoad(){try{const s=localStorage.getItem(SESSION_KEY);return s?JSON.parse(s):null;}catch{return null;}}
+function sessionAdd(email){try{const s=sessionLoad()||{emails:[]};if(!s.emails.includes(email))s.emails.push(email);localStorage.setItem(SESSION_KEY,JSON.stringify(s));}catch{}}
+function sessionClear(){localStorage.removeItem(SESSION_KEY);}
+
 async function startSend(){
-  if(isSending)return;isSending=true;
+  if(isSending)return;
+
+  // Resume logic
+  const session=sessionLoad();
+  let alreadySent=new Set();
+  if(session&&session.emails&&session.emails.length>0){
+    alreadySent=new Set(session.emails);
+    const allReady=matched.filter(r=>r.status==='ready'||r.status==='ready-no-attach');
+    const pending=allReady.filter(r=>!alreadySent.has(r.email));
+    if(alreadySent.size>0 && pending.length>0){
+      const ans=confirm(
+        `Pichli baar ${alreadySent.size} emails bheje gaye the.\n`+
+        `Abhi ${pending.length} baaki hain.\n\n`+
+        `OK  → Resume (sirf baaki wale bhejna)\n`+
+        `Cancel → Fresh start (sab dobara bhejna)`
+      );
+      if(!ans){alreadySent=new Set();sessionClear();}
+    } else if(pending.length===0 && alreadySent.size>0){
+      alert(`Sab ${alreadySent.size} emails pehle se bheje ja chuke hain!\nFresh start ke liye "Clear Session" karo.`);
+      return;
+    }
+  }
+
+  isSending=true;
   const subj=document.getElementById('emailSubject').value;
   const body=document.getElementById('emailBody').value;
   const bs=parseInt(document.getElementById('batchSize').value)||50;
@@ -907,14 +949,17 @@ async function startSend(){
   document.getElementById('logBox').innerHTML='';
   document.getElementById('doneBanner').style.display='none';
 
-  const toSend=matched.filter(r=>r.status==='ready'||r.status==='ready-no-attach');
+  const allReady=matched.filter(r=>r.status==='ready'||r.status==='ready-no-attach');
+  const toSend=allReady.filter(r=>!alreadySent.has(r.email));
+  const resumed=allReady.filter(r=>alreadySent.has(r.email));
   const skipped=matched.filter(r=>r.status!=='ready'&&r.status!=='ready-no-attach');
 
-  addLog('info',`Mode: ${sendMode==='broadcast'?'Broadcast':'Personal'} | Ready: ${toSend.length} | Skip: ${skipped.length}`);
-  skipped.forEach(r=>{r._finalStatus=r.status;r._reason='Skipped before send';addLog('warn',`${r.name||r.email} — ${r.status}`);});
+  addLog('info',`Mode: ${sendMode==='broadcast'?'Broadcast':'Personal'} | Ready: ${toSend.length} | Already sent: ${resumed.length} | Skip: ${skipped.length}`);
+  if(resumed.length>0) addLog('info',`⏭ Resuming — ${resumed.length} already sent emails skip kar rahe hain`);
+  skipped.forEach(r=>{r._finalStatus=r.status;r._reason='Skipped';addLog('warn',`${r.name||r.email} — ${r.status}`);});
 
   if(!toSend.length){
-    addLog('warn','No valid recipients!');
+    addLog('warn','Koi naya email nahi bhejne ko — sab already sent hain!');
     isSending=false;
     document.getElementById('btnGo').disabled=false;
     document.getElementById('btnBackSend').disabled=false;
@@ -940,12 +985,15 @@ async function startSend(){
       const data=await res.json();
       if(data.status==='ok'){
         data.results.forEach(r=>{
-          // Update matched record with final status
-          const rec = matched.find(m => m.email === r.email);
-          if(rec){ rec._finalStatus = r.status; rec._reason = r.reason || ''; }
-          if(r.status==='sent'){addLog('ok',`${r.name} → ${r.email}`);sent++;}
-          else if(r.status==='failed'){addLog('err',`${r.name}: ${r.reason}`);failed++;}
-          else addLog('warn',`${r.name||r.email} — ${r.reason||r.status}`);
+          const rec=matched.find(m=>m.email===r.email);
+          if(rec){rec._finalStatus=r.status;rec._reason=r.reason||'';}
+          if(r.status==='sent'){
+            addLog('ok',`${r.name} → ${r.email}`);
+            sent++;
+            sessionAdd(r.email); // save after each sent
+          } else if(r.status==='failed'){
+            addLog('err',`${r.name}: ${r.reason}`);failed++;
+          } else addLog('warn',`${r.name||r.email} — ${r.reason||r.status}`);
         });
       } else {addLog('err',`Batch ${bi+1}: ${data.message}`);failed+=batches[bi].length;}
     }catch(e){addLog('err',`Batch ${bi+1}: ${e.message}`);failed+=batches[bi].length;}
@@ -960,6 +1008,14 @@ async function startSend(){
   document.getElementById('btnGo').disabled=false;
   document.getElementById('btnBackSend').disabled=false;
   document.getElementById('btnGoTxt').textContent='🔁 Send Again';
+
+  // Clear session only if all successful
+  if(failed===0){
+    sessionClear();
+    addLog('info','✓ Session cleared — fresh start next time');
+  } else {
+    addLog('warn',`⚠ ${failed} failed — agli baar resume option milega`);
+  }
 
   // Build Excel report with color coding
   try {
