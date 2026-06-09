@@ -1,21 +1,20 @@
 // SendEase — Google Apps Script Backend
 // ─────────────────────────────────────
 // SETUP (one time only):
-// 1. Go to script.google.com → New Project → paste this entire file → Save (Ctrl+S)
-// 2. Click Deploy → New Deployment → Type: Web App
+// 1. script.google.com → New Project → paste this code → Save (Ctrl+S)
+// 2. Deploy → New Deployment → Web App
 //    Execute as: Me | Who has access: Anyone → Deploy
-// 3. Copy the Web App URL → paste in SendEase app
+// 3. Authorize → Allow
+// 4. Copy Web App URL → paste in SendEase app
 
 function doGet(e) {
   var action = e && e.parameter && e.parameter.action;
   if (action === 'ping') {
-    var result = JSON.stringify({
+    return ContentService.createTextOutput(JSON.stringify({
       status: 'ok',
       email: Session.getActiveUser().getEmail(),
       message: 'SendEase connected!'
-    });
-    return ContentService.createTextOutput(result)
-      .setMimeType(ContentService.MimeType.JSON);
+    })).setMimeType(ContentService.MimeType.JSON);
   }
   return ContentService.createTextOutput(JSON.stringify({ status: 'ok' }))
     .setMimeType(ContentService.MimeType.JSON);
@@ -23,15 +22,19 @@ function doGet(e) {
 
 function doPost(e) {
   try {
-    var payload = JSON.parse(e.postData.contents);
+    var raw = e.postData ? e.postData.contents : '{}';
+    var payload = JSON.parse(raw);
     var result;
+
     if (payload.action === 'send') {
       result = sendEmails(payload);
     } else {
       result = { status: 'error', message: 'Unknown action' };
     }
+
     return ContentService.createTextOutput(JSON.stringify(result))
       .setMimeType(ContentService.MimeType.JSON);
+
   } catch (err) {
     return ContentService.createTextOutput(JSON.stringify({
       status: 'error',
@@ -67,7 +70,6 @@ function sendEmails(payload) {
 
       var options = { name: rec.senderName || 'SendEase' };
       if (attachments.length > 0) options.attachments = attachments;
-      if (rec.htmlBody) options.htmlBody = rec.body;
 
       GmailApp.sendEmail(rec.email, rec.subject, rec.body, options);
       results.push({ email: rec.email, name: rec.name, status: 'sent' });
