@@ -248,6 +248,37 @@ footer p{font-size:12px;color:rgba(255,255,255,.35)}
   .steps,.feat-grid,.ucgrid{grid-template-columns:1fr}
   footer{flex-direction:column;text-align:center}.footer-links{justify-content:center}
 }
+
+/* PRICING */
+.pricing-sec{padding:88px 24px;background:var(--bg)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;max-width:900px;margin-left:auto;margin-right:auto}
+.price-card{background:var(--bg2);border:2px solid var(--border);border-radius:16px;padding:28px 24px;text-align:center;transition:all .2s;position:relative}
+.price-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.08)}
+.price-card.popular{border-color:var(--accent);background:var(--bg)}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:10px;font-weight:700;font-family:var(--f);padding:3px 14px;border-radius:100px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.price-credits{font-family:var(--f);font-size:36px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:4px}
+.price-credits span{font-size:14px;color:var(--muted);font-weight:400}
+.price-amt{font-size:28px;font-weight:800;font-family:var(--f);color:var(--accent);margin:10px 0 4px}
+.price-amt span{font-size:14px;color:var(--muted);font-weight:400}
+.price-per{font-size:11px;color:var(--muted);margin-bottom:18px}
+.price-btn{display:block;width:100%;padding:12px;border-radius:9px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .15s;text-decoration:none}
+.price-btn-main{background:var(--accent);color:#fff;box-shadow:0 3px 12px rgba(232,66,10,.25)}
+.price-btn-main:hover{background:#c73508}
+.price-btn-sec{background:var(--bg3);color:var(--ink);border:1px solid var(--border)}
+.price-btn-sec:hover{border-color:var(--accent);color:var(--accent)}
+.trial-note{font-size:12px;color:var(--muted);margin-top:10px}
+
+/* DOWNLOAD */
+.download-sec{background:var(--ink);padding:72px 24px;text-align:center}
+.download-sec h2{font-family:var(--f);font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.5px;color:#fff;margin-bottom:10px}
+.download-sec h2 span{color:var(--accent2)}
+.download-sec p{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto}
+.download-btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#fff;padding:16px 32px;border-radius:10px;font-family:var(--f);font-size:15px;font-weight:700;text-decoration:none;transition:all .15s;box-shadow:0 4px 20px rgba(232,66,10,.4)}
+.download-btn:hover{background:#c73508;transform:translateY(-2px)}
+.download-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.download-note{font-size:11px;color:rgba(255,255,255,.3);margin-top:14px}
+.os-badges{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:18px;flex-wrap:wrap}
+.os-badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:7px 14px;font-size:12px;color:rgba(255,255,255,.6)}
 </style>
 </head>
 <body>
@@ -383,6 +414,75 @@ footer p{font-size:12px;color:rgba(255,255,255,.35)}
 </div>
 </section>
 
+
+<!-- PRICING -->
+<section id="pricing" class="pricing-sec">
+<div class="section-inner" style="text-align:center">
+  <div class="tag-label">Pricing</div>
+  <h2 class="sh">Simple credit-based pricing</h2>
+  <p class="section-sub" style="margin:0 auto 8px">1 credit = 1 email. Buy once, use anytime. No subscription, no expiry.</p>
+  <p style="font-size:13px;color:var(--muted)">Start free with 50 trial emails — no credit card needed.</p>
+
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-credits">50 <span>credits</span></div>
+      <div class="price-amt">₹49</div>
+      <div class="price-per">₹0.98 per email</div>
+      <button class="price-btn price-btn-sec" onclick="buyPlan(49,'starter','50 Credits')">Buy ₹49 →</button>
+    </div>
+    <div class="price-card">
+      <div class="price-credits">500 <span>credits</span></div>
+      <div class="price-amt">₹299</div>
+      <div class="price-per">₹0.60 per email</div>
+      <button class="price-btn price-btn-sec" onclick="buyPlan(299,'standard','500 Credits')">Buy ₹299 →</button>
+    </div>
+    <div class="price-card popular">
+      <div class="popular-badge">⭐ Most Popular</div>
+      <div class="price-credits">2,000 <span>credits</span></div>
+      <div class="price-amt">₹999</div>
+      <div class="price-per">₹0.50 per email</div>
+      <button class="price-btn price-btn-main" onclick="buyPlan(999,'pro','2000 Credits')">Buy ₹999 →</button>
+    </div>
+    <div class="price-card">
+      <div class="price-credits">100 <span>credits</span></div>
+      <div class="price-amt">₹99</div>
+      <div class="price-per">₹0.99 per email</div>
+      <button class="price-btn price-btn-sec" onclick="buyPlan(99,'basic','100 Credits')">Buy ₹99 →</button>
+    </div>
+    <div class="price-card">
+      <div class="price-credits">1,000 <span>credits</span></div>
+      <div class="price-amt">₹699</div>
+      <div class="price-per">₹0.70 per email</div>
+      <button class="price-btn price-btn-sec" onclick="buyPlan(699,'popular','1000 Credits')">Buy ₹699 →</button>
+    </div>
+    <div class="price-card">
+      <div class="price-credits">5,000 <span>credits</span></div>
+      <div class="price-amt">₹1,999</div>
+      <div class="price-per">₹0.40 per email</div>
+      <button class="price-btn price-btn-sec" onclick="buyPlan(1999,'business','5000 Credits')">Buy ₹1,999 →</button>
+    </div>
+  </div>
+  <p class="trial-note">🎁 New users get <strong>50 free trial emails</strong> — no payment needed to start</p>
+</div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download" class="download-sec">
+  <h2>Download <span>SendEase</span></h2>
+  <p>Free desktop app for Windows. 50 trial emails included. No signup required.</p>
+  <a href="https://github.com/advocate-afk/sendease-/releases/latest/download/SendEase.exe" class="download-btn">
+    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Download for Windows — Free
+  </a>
+  <div class="os-badges">
+    <div class="os-badge">🖥️ Windows 10/11</div>
+    <div class="os-badge">📦 No install needed</div>
+    <div class="os-badge">🔒 Runs locally</div>
+    <div class="os-badge">🎁 50 free emails</div>
+  </div>
+  <p class="download-note">Also works on Mac & Linux via Python · Web version free at app.html</p>
+</section>
+
 <section id="install" class="pwa-sec">
   <h2>Use it <span>like an app</span></h2>
   <p>No App Store. No Play Store. Install directly from this page — phone, tablet, or desktop.</p>
@@ -439,7 +539,9 @@ footer p{font-size:12px;color:rgba(255,255,255,.35)}
   <a class="footer-logo" href="index.html">Send<span>Ease</span></a>
   <p>© 2025 SendEase · Built by <strong style="color:#fff">Prakash Sharma</strong></p>
   <div class="footer-links">
-    <a href="app.html">App</a>
+    <a href="app.html">Web App</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#download">Download</a>
     <a href="mailto:hello@sendease.in">Contact</a>
   </div>
 </footer>
@@ -492,5 +594,42 @@ document.getElementById('installModal').addEventListener('click',function(e){
 
 if(isInstalled) document.getElementById('pwaAlready').style.display='';
 </script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+const RAZORPAY_KEY = 'YOUR_RAZORPAY_KEY_ID_HERE'; // Replace with your Razorpay Key ID
+
+function buyPlan(amount, plan, description){
+  const options = {
+    key: RAZORPAY_KEY,
+    amount: amount * 100, // paise
+    currency: 'INR',
+    name: 'SendEase',
+    description: description,
+    image: '',
+    handler: function(response){
+      // Payment successful
+      alert(
+        '✅ Payment successful!\n\n' +
+        'Payment ID: ' + response.razorpay_payment_id + '\n\n' +
+        'Your license key will be emailed to you within a few minutes.\n' +
+        'Check your inbox (and spam folder).'
+      );
+    },
+    prefill: { name: '', email: '', contact: '' },
+    notes: { plan: plan },
+    theme: { color: '#e8420a' },
+    modal: {
+      ondismiss: function(){ console.log('Payment dismissed'); }
+    }
+  };
+  const rzp = new Razorpay(options);
+  rzp.on('payment.failed', function(resp){
+    alert('Payment failed: ' + resp.error.description);
+  });
+  rzp.open();
+}
+</script>
+
 </body>
 </html>
