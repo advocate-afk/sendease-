@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SendEase Admin — License Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f8f7f5;--white:#fff;--ink:#111;--muted:#888;--border:#e5e5e5;
+  --accent:#e8420a;--green:#0d9e73;--red:#d93025;--blue:#1d4ed8;--yellow:#b45309;
+  --f:'Syne',sans-serif;--fb:'Inter',sans-serif;--fm:'JetBrains Mono',monospace;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--fb);min-height:100vh}
+
+.topbar{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:16px 32px;display:flex;align-items:center;justify-content:space-between;
+}
+.topbar-logo{font-family:var(--f);font-size:18px;font-weight:800}
+.topbar-logo span{color:var(--accent)}
+.topbar-right{display:flex;align-items:center;gap:10px}
+#adminStatus{font-size:12px;color:var(--muted)}
+
+.main{max-width:1100px;margin:0 auto;padding:32px 24px}
+
+/* LOGIN */
+.login-box{
+  background:var(--white);border:1px solid var(--border);border-radius:14px;
+  padding:40px;max-width:420px;margin:60px auto;text-align:center;
+}
+.login-box h2{font-family:var(--f);font-size:22px;font-weight:800;margin-bottom:8px}
+.login-box p{font-size:13px;color:var(--muted);margin-bottom:24px}
+.login-box input{
+  width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;
+  font-size:14px;font-family:var(--fb);outline:none;margin-bottom:12px;
+  background:var(--bg);
+}
+.login-box input:focus{border-color:var(--accent)}
+
+/* DASHBOARD */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat-box{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px 20px}
+.stat-n{font-size:28px;font-weight:700;font-family:var(--f);line-height:1;margin-bottom:4px}
+.stat-l{font-size:12px;color:var(--muted)}
+
+.section-title{font-family:var(--f);font-size:17px;font-weight:800;margin-bottom:14px}
+
+/* GENERATE FORM */
+.gen-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px}
+.form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.fg input,.fg select{
+  padding:9px 12px;border:1px solid var(--border);border-radius:8px;
+  font-size:13px;font-family:var(--fb);outline:none;background:var(--bg);
+}
+.fg input:focus,.fg select:focus{border-color:var(--accent)}
+
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 18px;border-radius:8px;font-family:var(--f);
+  font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .15s;
+}
+.btn-p{background:var(--accent);color:#fff}
+.btn-p:hover{background:#c73508}
+.btn-g{background:var(--bg);color:var(--ink);border:1px solid var(--border)}
+.btn-g:hover{border-color:var(--accent);color:var(--accent)}
+.btn-red{background:#fdf0ee;color:var(--red);border:1px solid #fecaca}
+.btn-red:hover{background:#fee2e2}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* KEY RESULT */
+.key-result{
+  display:none;background:#e8f8f3;border:1px solid #9adfc6;
+  border-radius:10px;padding:14px 18px;margin-top:14px;
+}
+.key-result.show{display:block}
+.key-val{font-family:var(--fm);font-size:16px;font-weight:700;color:var(--green);
+         letter-spacing:2px;margin:8px 0}
+.copy-btn{background:none;border:1px solid var(--green);color:var(--green);
+          border-radius:6px;padding:4px 12px;font-size:11px;cursor:pointer;
+          font-family:var(--f);font-weight:700}
+.copy-btn:hover{background:var(--green);color:#fff}
+
+/* TABLE */
+.tbl-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px}
+.tbl-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.tbl-head-title{font-family:var(--f);font-size:14px;font-weight:700}
+.search-inp{padding:7px 12px;border:1px solid var(--border);border-radius:7px;font-size:12px;width:220px;outline:none;font-family:var(--fb)}
+.search-inp:focus{border-color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--bg);color:var(--muted);font-size:10px;font-weight:600;
+   text-transform:uppercase;letter-spacing:.5px;padding:9px 16px;
+   text-align:left;border-bottom:1px solid var(--border)}
+td{padding:10px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.key-cell{font-family:var(--fm);font-size:11px;color:var(--ink);letter-spacing:.5px}
+.email-cell{color:var(--blue);font-size:11px}
+
+.badge{display:inline-block;padding:2px 9px;border-radius:100px;font-size:10px;font-weight:700}
+.b-active{background:#e8f8f3;color:var(--green)}
+.b-revoked{background:#fdf0ee;color:var(--red)}
+.b-lifetime{background:#eff6ff;color:var(--blue)}
+.b-annual{background:#fefce8;color:var(--yellow)}
+.b-free{background:#f3f4f6;color:#6b7280}
+
+.empty{text-align:center;padding:40px;color:var(--muted);font-size:13px}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--ink);color:#fff;padding:12px 20px;
+  border-radius:10px;font-size:13px;font-weight:500;
+  opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;
+}
+.toast.show{opacity:1}
+
+@media(max-width:680px){
+  .stats-row,.form-row{grid-template-columns:1fr}
+  .topbar{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">Send<span>Ease</span> Admin</div>
+  <div class="topbar-right">
+    <span id="adminStatus">Not connected</span>
+    <button class="btn btn-g" id="logoutBtn" onclick="logout()" style="display:none">Logout</button>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginSection" class="main">
+  <div class="login-box">
+    <div style="font-size:36px;margin-bottom:12px">🔐</div>
+    <h2>Admin Login</h2>
+    <p>Enter your server URL and admin key to continue</p>
+    <input type="url" id="serverUrl" placeholder="https://script.google.com/macros/s/XXXXX/exec"/>
+    <input type="password" id="adminKeyInp" placeholder="Admin secret key"/>
+    <button class="btn btn-p" onclick="adminLogin()" style="width:100%;justify-content:center">
+      Login →
+    </button>
+    <div id="loginErr" style="color:#d93025;font-size:12px;margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="main" style="display:none">
+
+  <!-- Stats -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat-box"><div class="stat-n" id="statTotal">—</div><div class="stat-l">Total Keys</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:var(--green)" id="statActive">—</div><div class="stat-l">Active</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:var(--red)" id="statRevoked">—</div><div class="stat-l">Revoked</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:var(--blue)" id="statLifetime">—</div><div class="stat-l">Lifetime</div></div>
+  </div>
+
+  <!-- Generate Key -->
+  <div class="gen-card">
+    <div class="section-title">🔑 Generate License Key</div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Customer Email (optional)</label>
+        <input type="email" id="genEmail" placeholder="customer@example.com"/>
+      </div>
+      <div class="fg">
+        <label>Plan</label>
+        <select id="genPlan">
+          <option value="lifetime">Lifetime</option>
+          <option value="annual">Annual</option>
+          <option value="free">Free (Gift)</option>
+        </select>
+      </div>
+      <button class="btn btn-p" onclick="generateKey()">
+        ✦ Generate Key
+      </button>
+    </div>
+    <div class="fg" style="margin-top:12px">
+      <label>Note (optional)</label>
+      <input type="text" id="genNote" placeholder="e.g. Friend, Promo, Influencer"/>
+    </div>
+
+    <div class="key-result" id="keyResult">
+      <div style="font-size:12px;color:var(--green);font-weight:600;margin-bottom:4px">✓ Key Generated!</div>
+      <div class="key-val" id="keyVal">—</div>
+      <button class="copy-btn" onclick="copyKey()">Copy Key</button>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px" id="keyEmailNote"></div>
+    </div>
+  </div>
+
+  <!-- Keys Table -->
+  <div class="tbl-card">
+    <div class="tbl-head">
+      <div class="tbl-head-title">All License Keys</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="text" class="search-inp" id="searchInp" placeholder="Search email or key..." oninput="filterTable()"/>
+        <button class="btn btn-g" onclick="loadKeys()">↻ Refresh</button>
+      </div>
+    </div>
+    <div id="tableWrap">
+      <div class="empty">Loading keys...</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let serverUrl='', adminKey='', allKeys=[];
+
+// ── LOGIN ──────────────────────────────────────────
+function adminLogin(){
+  const url=document.getElementById('serverUrl').value.trim();
+  const key=document.getElementById('adminKeyInp').value.trim();
+  if(!url||!key){showErr('Enter both URL and admin key');return;}
+  document.querySelector('.login-box .btn').disabled=true;
+  document.querySelector('.login-box .btn').textContent='Connecting...';
+  fetch(`${url}?action=ping`)
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.status==='ok'){
+        serverUrl=url; adminKey=key;
+        localStorage.setItem('se_admin_url',url);
+        localStorage.setItem('se_admin_key',key);
+        showDashboard();
+      } else { showErr('Connection failed: '+d.message); }
+    })
+    .catch(e=>{
+      // If ping works but CORS blocks — try anyway
+      serverUrl=url; adminKey=key;
+      localStorage.setItem('se_admin_url',url);
+      localStorage.setItem('se_admin_key',key);
+      showDashboard();
+    });
+}
+
+function showDashboard(){
+  document.getElementById('loginSection').style.display='none';
+  document.getElementById('dashboard').style.display='';
+  document.getElementById('adminStatus').textContent='Connected';
+  document.getElementById('logoutBtn').style.display='';
+  loadKeys();
+}
+
+function logout(){
+  localStorage.removeItem('se_admin_url');
+  localStorage.removeItem('se_admin_key');
+  serverUrl=''; adminKey='';
+  document.getElementById('loginSection').style.display='';
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('adminStatus').textContent='Not connected';
+  document.getElementById('logoutBtn').style.display='none';
+}
+
+function showErr(msg){
+  document.getElementById('loginErr').textContent=msg;
+  document.querySelector('.login-box .btn').disabled=false;
+  document.querySelector('.login-box .btn').textContent='Login →';
+}
+
+// ── GENERATE KEY ──────────────────────────────────
+async function generateKey(){
+  const email=document.getElementById('genEmail').value.trim();
+  const plan =document.getElementById('genPlan').value;
+  const note =document.getElementById('genNote').value.trim();
+  const url  =`${serverUrl}?action=generate&admin=${adminKey}&email=${encodeURIComponent(email)}&plan=${plan}&note=${encodeURIComponent(note)}`;
+  try{
+    const r=await fetch(url);
+    const d=await r.json();
+    if(d.status==='ok'){
+      document.getElementById('keyVal').textContent=d.key;
+      document.getElementById('keyResult').classList.add('show');
+      document.getElementById('keyEmailNote').textContent=
+        email ? `✉ Key sent to ${email}` : 'No email — copy and share manually';
+      document.getElementById('genEmail').value='';
+      document.getElementById('genNote').value='';
+      showToast('✓ Key generated!');
+      loadKeys();
+    } else { showToast('Error: '+d.message); }
+  }catch(e){ showToast('Error: '+e.message); }
+}
+
+function copyKey(){
+  const key=document.getElementById('keyVal').textContent;
+  navigator.clipboard.writeText(key).then(()=>showToast('✓ Copied!'));
+}
+
+// ── LOAD KEYS ─────────────────────────────────────
+async function loadKeys(){
+  document.getElementById('tableWrap').innerHTML='<div class="empty">Loading...</div>';
+  try{
+    const r=await fetch(`${serverUrl}?action=list&admin=${adminKey}`);
+    const d=await r.json();
+    if(d.status==='ok'){
+      allKeys=d.keys||[];
+      updateStats();
+      renderTable(allKeys);
+    } else { document.getElementById('tableWrap').innerHTML=`<div class="empty">Error: ${d.message}</div>`; }
+  }catch(e){
+    document.getElementById('tableWrap').innerHTML=`<div class="empty">Could not load keys. Check URL and admin key.</div>`;
+  }
+}
+
+function updateStats(){
+  document.getElementById('statTotal').textContent=allKeys.length;
+  document.getElementById('statActive').textContent=allKeys.filter(k=>k.status==='active').length;
+  document.getElementById('statRevoked').textContent=allKeys.filter(k=>k.status==='revoked').length;
+  document.getElementById('statLifetime').textContent=allKeys.filter(k=>k.plan==='lifetime').length;
+}
+
+function renderTable(keys){
+  if(!keys.length){
+    document.getElementById('tableWrap').innerHTML='<div class="empty">No keys yet. Generate your first key above.</div>';
+    return;
+  }
+  const rows=keys.map(k=>`
+    <tr>
+      <td class="key-cell">${k.key}</td>
+      <td class="email-cell">${k.email||'—'}</td>
+      <td><span class="badge b-${k.plan}">${k.plan}</span></td>
+      <td><span class="badge b-${k.status}">${k.status}</span></td>
+      <td style="color:var(--muted);font-size:11px">${k.date||'—'}</td>
+      <td style="color:var(--muted);font-size:11px">${k.note||'—'}</td>
+      <td>
+        ${k.status==='active'
+          ? `<button class="btn btn-red" onclick="revokeKey('${k.key}')">Revoke</button>`
+          : `<span style="color:var(--muted);font-size:11px">—</span>`}
+      </td>
+    </tr>`).join('');
+  document.getElementById('tableWrap').innerHTML=`
+    <table>
+      <thead><tr><th>License Key</th><th>Email</th><th>Plan</th><th>Status</th><th>Date</th><th>Note</th><th>Action</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function filterTable(){
+  const q=document.getElementById('searchInp').value.toLowerCase();
+  const filtered=allKeys.filter(k=>
+    (k.key||'').toLowerCase().includes(q)||
+    (k.email||'').toLowerCase().includes(q)||
+    (k.note||'').toLowerCase().includes(q)
+  );
+  renderTable(filtered);
+}
+
+// ── REVOKE ────────────────────────────────────────
+async function revokeKey(key){
+  if(!confirm(`Revoke key: ${key}?\n\nThis will deactivate the license immediately.`)) return;
+  try{
+    const r=await fetch(`${serverUrl}?action=revoke&admin=${adminKey}&key=${key}`);
+    const d=await r.json();
+    if(d.status==='ok'){showToast('✓ Key revoked');loadKeys();}
+    else showToast('Error: '+d.message);
+  }catch(e){showToast('Error: '+e.message);}
+}
+
+// ── TOAST ─────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ── AUTO LOGIN ────────────────────────────────────
+window.onload=()=>{
+  const url=localStorage.getItem('se_admin_url');
+  const key=localStorage.getItem('se_admin_key');
+  if(url&&key){
+    document.getElementById('serverUrl').value=url;
+    document.getElementById('adminKeyInp').value=key;
+    serverUrl=url; adminKey=key;
+    showDashboard();
+  }
+};
+</script>
+</body>
+</html>
