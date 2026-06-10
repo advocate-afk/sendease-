@@ -3,28 +3,32 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>SendEase — Bulk Email with Attachments, Free</title>
-<meta name="description" content="Send bulk emails with any attachment — PDFs, images, documents. Free. Works with your Gmail."/>
+<title>SendEase — Bulk Email with Attachments</title>
+<meta name="description" content="Send bulk emails with any attachment — PDFs, images, documents. Free web app. Desktop app with credits."/>
 <meta name="theme-color" content="#e8420a"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icon.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#ffffff;
-  --bg2:#f8f7f5;
-  --bg3:#f0ede8;
-  --ink:#111111;
-  --ink2:#333333;
-  --muted:#888888;
-  --border:#e5e5e5;
+  --bg:#fafaf8;
+  --bg2:#f2f0eb;
+  --bg3:#e8e4dc;
+  --ink:#0d0d0d;
+  --ink2:#2a2a2a;
+  --muted:#7a7a72;
+  --border:#dedad2;
   --accent:#e8420a;
-  --accent2:#ff6b35;
-  --green:#0d9e73;
-  --f:'Syne',sans-serif;
+  --accent2:#ff6535;
+  --acbg:#fff3ef;
+  --green:#0a8f65;
+  --greenbg:#edfaf4;
+  --blue:#1a56db;
+  --f:'Instrument Serif',serif;
   --fb:'Inter',sans-serif;
+  --fm:'JetBrains Mono',monospace;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--fb);overflow-x:hidden}
@@ -33,447 +37,673 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);overflow-x:hidd
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
-  padding:16px 48px;
-  background:rgba(255,255,255,.94);
-  backdrop-filter:blur(12px);
+  padding:0 48px;height:60px;
+  background:rgba(250,250,248,.95);
+  backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
 }
-.logo{font-family:var(--f);font-size:20px;font-weight:800;color:var(--ink);text-decoration:none;letter-spacing:-0.5px}
-.logo span{color:var(--accent)}
-.nav-links{display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;box-shadow:0 2px 8px rgba(232,66,10,.3);
+}
+.logo-text{font-family:var(--fb);font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-0.3px}
+.logo-text span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:32px}
 .nav-links a{font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .15s}
 .nav-links a:hover{color:var(--ink)}
-.nav-right{display:flex;align-items:center;gap:10px}
-.btn-install{
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-pill{
   display:none;align-items:center;gap:6px;
   background:var(--bg2);color:var(--ink);
-  padding:8px 16px;border-radius:8px;
-  font-size:13px;font-weight:600;
+  padding:7px 14px;border-radius:100px;
+  font-size:13px;font-weight:500;
   border:1px solid var(--border);cursor:pointer;
-  font-family:var(--fb);transition:all .15s;
+  transition:all .15s;
 }
-.btn-install.show{display:inline-flex}
-.btn-install:hover{background:var(--bg3);border-color:#ccc}
-.btn-install svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav-pill.show{display:inline-flex}
+.nav-pill:hover{background:var(--bg3)}
+.nav-pill svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .nav-cta{
-  background:var(--accent);color:#fff;
-  padding:10px 22px;border-radius:8px;
+  background:var(--ink);color:#fff;
+  padding:8px 20px;border-radius:100px;
   font-size:14px;font-weight:600;text-decoration:none;
-  font-family:var(--fb);transition:all .15s;
+  transition:all .15s;
 }
-.nav-cta:hover{background:#c73508;transform:translateY(-1px)}
+.nav-cta:hover{background:var(--accent)}
 
 /* HERO */
 .hero{
   min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:120px 24px 80px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:100px 24px 60px;
   text-align:center;
-  background:var(--bg);
-  position:relative;
+  position:relative;overflow:hidden;
 }
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 700px 400px at 50% 70%,rgba(232,66,10,.05),transparent);
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 80%,rgba(232,66,10,.06),transparent),
+    radial-gradient(ellipse 50% 40% at 80% 20%,rgba(232,66,10,.04),transparent);
   pointer-events:none;
 }
-.hero-pill{
+.hero-eyebrow{
   display:inline-flex;align-items:center;gap:8px;
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:100px;padding:6px 16px;
-  font-size:13px;color:var(--muted);
+  background:var(--acbg);border:1px solid rgba(232,66,10,.2);
+  border-radius:100px;padding:5px 14px 5px 6px;
+  font-size:12px;font-weight:500;color:var(--accent);
   margin-bottom:28px;
 }
-.hero-pill b{color:var(--accent);font-weight:600}
+.hero-eyebrow-dot{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--accent);color:#fff;
+  font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
 h1{
   font-family:var(--f);
-  font-size:clamp(42px,7vw,80px);
-  font-weight:800;
-  line-height:1;
-  letter-spacing:-2.5px;
+  font-size:clamp(52px,8vw,96px);
+  font-weight:400;
+  line-height:.95;
+  letter-spacing:-2px;
   color:var(--ink);
-  margin-bottom:24px;
+  margin-bottom:8px;
 }
-h1 em{font-style:normal;color:var(--accent)}
-.hero-sub{
-  font-size:18px;line-height:1.7;color:var(--muted);
-  max-width:520px;margin:0 auto 40px;font-weight:400;
+h1 em{font-style:italic;color:var(--accent)}
+.hero-sub2{
+  font-family:var(--f);
+  font-size:clamp(24px,3.5vw,40px);
+  font-weight:400;
+  color:var(--muted);
+  margin-bottom:28px;
+  font-style:italic;
 }
-.hero-sub strong{color:var(--ink2);font-weight:500}
-.hero-btns{display:flex;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn-main{
+.hero-desc{
+  font-size:16px;line-height:1.7;color:var(--muted);
+  max-width:480px;margin:0 auto 40px;font-weight:400;
+}
+.hero-desc strong{color:var(--ink2);font-weight:600}
+
+.hero-actions{display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.btn-hero-primary{
   display:inline-flex;align-items:center;gap:9px;
   background:var(--accent);color:#fff;
-  padding:15px 30px;border-radius:10px;
-  font-family:var(--fb);font-size:15px;font-weight:600;
-  text-decoration:none;transition:all .15s;
-  box-shadow:0 4px 20px rgba(232,66,10,.25);
+  padding:14px 28px;border-radius:100px;
+  font-size:15px;font-weight:600;
+  text-decoration:none;transition:all .2s;
+  box-shadow:0 4px 20px rgba(232,66,10,.3);
+  border:none;cursor:pointer;
 }
-.btn-main:hover{background:#c73508;transform:translateY(-2px);box-shadow:0 8px 28px rgba(232,66,10,.3)}
-.btn-main svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.btn-sec{
+.btn-hero-primary:hover{background:#c73508;transform:translateY(-2px);box-shadow:0 8px 28px rgba(232,66,10,.35)}
+.btn-hero-primary svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-hero-sec{
   display:inline-flex;align-items:center;gap:8px;
-  background:var(--bg);color:var(--ink);
-  padding:15px 24px;border-radius:10px;
+  background:transparent;color:var(--ink);
+  padding:14px 24px;border-radius:100px;
   border:1.5px solid var(--border);
   font-size:15px;font-weight:500;text-decoration:none;transition:all .15s;
 }
-.btn-sec:hover{border-color:var(--ink);background:var(--bg2)}
-
-.pwa-btn{
-  display:none;align-items:center;gap:9px;
-  background:var(--ink);color:#fff;
-  padding:15px 28px;border-radius:10px;
+.btn-hero-sec:hover{border-color:var(--ink);background:var(--bg2)}
+.btn-hero-install{
+  display:none;align-items:center;gap:8px;
+  background:var(--ink2);color:#fff;
+  padding:14px 24px;border-radius:100px;
   font-size:15px;font-weight:600;
   border:none;cursor:pointer;transition:all .15s;
 }
-.pwa-btn.show{display:inline-flex}
-.pwa-btn:hover{background:var(--ink2);transform:translateY(-2px)}
-.pwa-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-hero-install.show{display:inline-flex}
+.btn-hero-install:hover{background:var(--ink)}
+.btn-hero-install svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* DEMO MOCKUP */
-.demo-wrap{
-  margin-top:56px;width:100%;max-width:620px;
-  background:var(--bg2);
-  border:1px solid var(--border);
-  border-radius:16px;overflow:hidden;
-  box-shadow:0 20px 60px rgba(0,0,0,.08);
+/* STATS STRIP */
+.stats-strip{
+  display:flex;align-items:center;gap:32px;
+  flex-wrap:wrap;justify-content:center;
+  padding:0 24px;
 }
-.demo-topbar{
-  background:var(--bg3);
-  padding:10px 16px;
-  display:flex;align-items:center;gap:7px;
-  border-bottom:1px solid var(--border);
+.stat-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.stat-item strong{color:var(--ink);font-weight:700;font-size:15px}
+.stat-sep{width:1px;height:20px;background:var(--border)}
+
+/* DEMO CARD */
+.demo-outer{
+  margin-top:56px;width:100%;max-width:640px;
+  border-radius:20px;overflow:hidden;
+  box-shadow:0 24px 64px rgba(0,0,0,.1),0 0 0 1px var(--border);
+  background:var(--ink2);
 }
-.demo-dot{width:10px;height:10px;border-radius:50%}
-.demo-inner{padding:20px;display:flex;flex-direction:column;gap:10px}
+.demo-chrome{
+  background:rgba(255,255,255,.07);
+  padding:12px 16px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.dc{width:10px;height:10px;border-radius:50%}
+.demo-url{
+  flex:1;margin:0 12px;
+  background:rgba(255,255,255,.08);
+  border-radius:6px;padding:4px 12px;
+  font-size:11px;color:rgba(255,255,255,.4);
+  font-family:var(--fm);
+}
+.demo-body{padding:20px;display:flex;flex-direction:column;gap:8px;background:#111418}
+.demo-prog-wrap{margin-bottom:4px}
+.demo-prog-top{display:flex;justify-content:space-between;margin-bottom:6px;font-size:11px}
+.demo-prog-lbl{color:rgba(255,255,255,.4);font-family:var(--fm)}
+.demo-prog-pct{color:#1fcea8;font-weight:700;font-family:var(--fm)}
+.dbar{height:4px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden}
+.dbar-fill{height:100%;width:72%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px}
 .demo-row{
   display:flex;align-items:center;gap:10px;
-  background:var(--bg);border:1px solid var(--border);
-  border-radius:8px;padding:10px 14px;font-size:12px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:8px;padding:9px 12px;
 }
-.tag{padding:3px 9px;border-radius:100px;font-size:10px;font-weight:700;white-space:nowrap}
-.t-green{background:#e8f8f3;color:var(--green)}
-.t-blue{background:#e8f0ff;color:#3366dd}
-.t-orange{background:#fff0eb;color:var(--accent)}
-.demo-name{font-weight:600;color:var(--ink);min-width:110px;font-size:12px}
-.demo-email{color:var(--muted);font-size:11px}
-.demo-prog{height:4px;background:var(--border);border-radius:100px;margin:4px 0}
-.demo-prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:72%}
+.dtag{padding:2px 8px;border-radius:4px;font-size:9px;font-weight:700;white-space:nowrap;font-family:var(--fb)}
+.dt-sent{background:rgba(31,206,168,.15);color:#1fcea8}
+.dt-going{background:rgba(79,138,255,.15);color:#7aa8ff}
+.dt-skip{background:rgba(251,191,36,.15);color:#fbbf24}
+.dname{color:rgba(255,255,255,.8);font-size:12px;font-weight:500;min-width:110px}
+.demail{color:rgba(255,255,255,.3);font-size:11px;font-family:var(--fm)}
+.dfile{margin-left:auto;font-size:10px;color:rgba(255,255,255,.2);font-family:var(--fm)}
 
 /* SECTIONS */
-.section{padding:88px 24px}
-.section-inner{max-width:1080px;margin:0 auto}
-.tag-label{
+.sec{padding:96px 24px}
+.sec-inner{max-width:1080px;margin:0 auto}
+.sec-eyebrow{
   display:inline-block;
   font-size:11px;font-weight:600;
   text-transform:uppercase;letter-spacing:2px;
   color:var(--accent);margin-bottom:14px;
 }
-h2.sh{
+h2.sec-h{
   font-family:var(--f);
-  font-size:clamp(30px,4.5vw,48px);
-  font-weight:800;letter-spacing:-1.5px;
-  color:var(--ink);margin-bottom:14px;line-height:1.05;
+  font-size:clamp(36px,5vw,58px);
+  font-weight:400;
+  line-height:1;
+  letter-spacing:-1.5px;
+  color:var(--ink);
+  margin-bottom:14px;
 }
-.section-sub{font-size:16px;color:var(--muted);max-width:520px;line-height:1.7}
+h2.sec-h em{font-style:italic;color:var(--accent)}
+.sec-sub{font-size:16px;color:var(--muted);line-height:1.7;max-width:520px}
 
-/* STEPS */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:48px;background:var(--border);border-radius:14px;overflow:hidden}
-.step{background:var(--bg);padding:32px 28px;transition:background .2s}
-.step:hover{background:var(--ink);color:#fff}
-.step:hover .step-n{color:rgba(255,255,255,.15)}
-.step:hover .step-title{color:#fff}
-.step:hover .step-desc{color:rgba(255,255,255,.55)}
-.step-n{font-family:var(--f);font-size:42px;font-weight:800;color:var(--border);margin-bottom:16px;transition:color .2s}
-.step-ico{font-size:26px;margin-bottom:10px}
-.step-title{font-family:var(--f);font-size:18px;font-weight:700;color:var(--ink);margin-bottom:8px;transition:color .2s}
-.step-desc{font-size:13px;color:var(--muted);line-height:1.7;transition:color .2s}
+/* HOW IT WORKS */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:52px;background:var(--border);border-radius:16px;overflow:hidden}
+.step-card{background:var(--bg);padding:36px 28px;transition:all .25s;position:relative;cursor:default}
+.step-card::before{content:'';position:absolute;inset:0;background:var(--ink);opacity:0;transition:opacity .25s}
+.step-card:hover::before{opacity:1}
+.step-card>*{position:relative;z-index:1}
+.step-num{font-family:var(--f);font-size:56px;font-weight:400;color:var(--border);line-height:1;margin-bottom:16px;transition:color .25s;font-style:italic}
+.step-card:hover .step-num{color:rgba(255,255,255,.1)}
+.step-ico{font-size:28px;margin-bottom:10px}
+.step-title{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:8px;transition:color .25s}
+.step-card:hover .step-title{color:#fff}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.7;transition:color .25s}
+.step-card:hover .step-desc{color:rgba(255,255,255,.5)}
 
 /* USE CASES */
-.ucgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:48px}
-.uc{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px;display:flex;gap:16px;transition:all .2s}
-.uc:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.06)}
-.uc-ico{width:44px;height:44px;border-radius:10px;background:var(--bg2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px}
-.uc-title{font-weight:600;font-size:15px;color:var(--ink);margin-bottom:5px}
+.uc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:52px}
+.uc-card{
+  background:var(--bg);border:1.5px solid var(--border);
+  border-radius:16px;padding:28px;
+  display:flex;gap:18px;align-items:flex-start;
+  transition:all .2s;
+}
+.uc-card:hover{border-color:var(--accent);background:var(--acbg);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,66,10,.08)}
+.uc-ico{
+  width:48px;height:48px;border-radius:12px;
+  background:var(--bg2);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  transition:background .2s;
+}
+.uc-card:hover .uc-ico{background:rgba(232,66,10,.12)}
+.uc-name{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px}
 .uc-desc{font-size:13px;color:var(--muted);line-height:1.6}
-.uc-tag{display:inline-block;margin-top:8px;background:var(--bg2);color:var(--muted);font-size:10px;font-weight:600;padding:2px 9px;border-radius:100px;text-transform:uppercase;letter-spacing:.4px}
+.uc-tag{
+  display:inline-block;margin-top:10px;
+  background:var(--bg2);color:var(--muted);
+  font-size:10px;font-weight:600;
+  padding:3px 10px;border-radius:100px;
+  text-transform:uppercase;letter-spacing:.5px;
+}
 
 /* FEATURES */
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
-.feat{padding:24px;border-radius:12px;border:1px solid var(--border);background:var(--bg)}
-.feat-ico{font-size:22px;margin-bottom:12px}
-.feat-title{font-weight:600;font-size:15px;color:var(--ink);margin-bottom:6px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:52px}
+.feat-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:14px;padding:24px;
+  transition:border-color .15s;
+}
+.feat-card:hover{border-color:var(--accent)}
+.feat-ico{font-size:24px;margin-bottom:12px}
+.feat-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px}
 .feat-desc{font-size:13px;color:var(--muted);line-height:1.6}
 
-/* PWA SECTION */
-.pwa-sec{background:var(--ink);padding:80px 24px;text-align:center}
-.pwa-sec h2{font-family:var(--f);font-size:clamp(30px,4vw,50px);font-weight:800;letter-spacing:-1.5px;color:#fff;margin-bottom:12px}
-.pwa-sec h2 span{color:var(--accent2)}
-.pwa-sec p{font-size:15px;color:rgba(255,255,255,.5);margin-bottom:32px;max-width:440px;margin-left:auto;margin-right:auto}
-.pwa-badges{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:28px}
-.pwa-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 18px;font-size:13px;color:rgba(255,255,255,.6)}
-.pwa-badge svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.6}
+/* PRICING */
+.pricing-sec{padding:96px 24px;background:var(--ink)}
+.pricing-sec .sec-eyebrow{color:var(--accent2)}
+.pricing-sec h2.sec-h{color:#fff}
+.pricing-sec .sec-sub{color:rgba(255,255,255,.45)}
+.pricing-trial{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:100px;padding:7px 16px;
+  font-size:13px;color:rgba(255,255,255,.6);
+  margin-top:14px;
+}
+.pricing-trial span{color:#1fcea8;font-weight:600}
+
+/* 2x2 PRICING GRID */
+.price-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-top:48px;
+  max-width:760px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.price-card{
+  background:rgba(255,255,255,.05);
+  border:1.5px solid rgba(255,255,255,.1);
+  border-radius:18px;
+  padding:28px 24px;
+  transition:all .2s;
+  position:relative;
+  cursor:default;
+}
+.price-card:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
+.price-card.hot{background:rgba(232,66,10,.12);border-color:rgba(232,66,10,.4)}
+.price-card.hot:hover{background:rgba(232,66,10,.18)}
+.hot-badge{
+  position:absolute;top:-10px;left:24px;
+  background:var(--accent);color:#fff;
+  font-size:10px;font-weight:700;
+  padding:3px 12px;border-radius:100px;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.price-credits{font-family:var(--f);font-size:42px;font-weight:400;color:#fff;line-height:1;margin-bottom:4px;font-style:italic}
+.price-credits small{font-family:var(--fb);font-size:14px;color:rgba(255,255,255,.4);font-style:normal}
+.price-amount{font-size:28px;font-weight:800;color:var(--accent2);margin:10px 0 4px;font-family:var(--fb)}
+.price-per{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:20px}
+.price-buy{
+  display:block;width:100%;padding:12px;
+  border-radius:10px;
+  font-size:14px;font-weight:600;
+  cursor:pointer;border:none;
+  transition:all .15s;text-align:center;
+  font-family:var(--fb);
+}
+.price-buy-main{background:var(--accent);color:#fff;box-shadow:0 4px 16px rgba(232,66,10,.35)}
+.price-buy-main:hover{background:#c73508}
+.price-buy-sec{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.12)}
+.price-buy-sec:hover{background:rgba(255,255,255,.14);color:#fff}
+
+/* DOWNLOAD */
+.download-sec{
+  padding:88px 24px;
+  background:var(--bg2);
+  text-align:center;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.download-sec h2{
+  font-family:var(--f);
+  font-size:clamp(36px,5vw,60px);
+  font-weight:400;
+  letter-spacing:-1.5px;
+  color:var(--ink);
+  margin-bottom:10px;
+}
+.download-sec h2 em{font-style:italic;color:var(--accent)}
+.download-sec p{font-size:15px;color:var(--muted);margin-bottom:32px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.7}
+.download-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--ink);color:#fff;
+  padding:16px 32px;border-radius:100px;
+  font-size:16px;font-weight:700;
+  text-decoration:none;transition:all .2s;
+  box-shadow:0 4px 20px rgba(0,0,0,.15);
+  font-family:var(--fb);
+}
+.download-btn:hover{background:var(--accent);transform:translateY(-2px);box-shadow:0 8px 28px rgba(232,66,10,.3)}
+.download-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.os-badges{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;flex-wrap:wrap}
+.os-badge{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:100px;padding:6px 14px;
+  font-size:12px;color:var(--muted);font-weight:500;
+}
+
+/* PWA */
+.pwa-sec{background:var(--ink2);padding:72px 24px;text-align:center}
+.pwa-sec h2{font-family:var(--f);font-size:clamp(28px,4vw,48px);font-weight:400;letter-spacing:-1.5px;color:#fff;margin-bottom:10px}
+.pwa-sec h2 em{font-style:italic;color:var(--accent2)}
+.pwa-sec p{font-size:14px;color:rgba(255,255,255,.45);margin-bottom:28px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7}
+.pwa-badges{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.pwa-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:8px 16px;font-size:12px;color:rgba(255,255,255,.55)}
+.pwa-badge svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.6}
 .pwa-install-big{
   display:none;align-items:center;gap:9px;
   background:var(--accent);color:#fff;
-  padding:16px 32px;border-radius:10px;
+  padding:14px 28px;border-radius:100px;
   font-size:15px;font-weight:600;
   border:none;cursor:pointer;
-  box-shadow:0 4px 20px rgba(232,66,10,.4);
+  box-shadow:0 4px 20px rgba(232,66,10,.35);
   transition:all .15s;margin:0 auto;
+  font-family:var(--fb);
 }
 .pwa-install-big.show{display:inline-flex}
 .pwa-install-big:hover{background:#c73508;transform:translateY(-1px)}
-.pwa-install-big svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.pwa-hint{font-size:12px;color:rgba(255,255,255,.3);margin-top:12px}
+.pwa-install-big svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pwa-hint{font-size:12px;color:rgba(255,255,255,.25);margin-top:12px}
 
 /* CTA */
-.cta{background:var(--bg2);padding:80px 24px;text-align:center;border-top:1px solid var(--border)}
-.cta h2{font-family:var(--f);font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-1.5px;color:var(--ink);margin-bottom:12px}
-.cta h2 span{color:var(--accent)}
-.cta p{font-size:15px;color:var(--muted);margin-bottom:32px}
+.cta-sec{padding:88px 24px;text-align:center;background:var(--bg)}
+.cta-sec h2{font-family:var(--f);font-size:clamp(36px,5vw,64px);font-weight:400;letter-spacing:-2px;color:var(--ink);margin-bottom:12px}
+.cta-sec h2 em{font-style:italic;color:var(--accent)}
+.cta-sec p{font-size:15px;color:var(--muted);margin-bottom:32px}
 
 /* FOOTER */
-footer{background:var(--ink);padding:36px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
-.footer-logo{font-family:var(--f);font-size:17px;font-weight:800;color:#fff;text-decoration:none}
+footer{
+  background:var(--ink);
+  padding:32px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:14px;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.footer-logo{font-family:var(--fb);font-size:16px;font-weight:700;color:#fff;text-decoration:none}
 .footer-logo span{color:var(--accent)}
-footer p{font-size:12px;color:rgba(255,255,255,.35)}
-.footer-links{display:flex;gap:20px}
+footer p{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-links{display:flex;gap:24px}
 .footer-links a{font-size:12px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .15s}
 .footer-links a:hover{color:#fff}
 
+/* INSTALL MODAL */
+#installModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:20px}
+.modal-box{background:#fff;border-radius:20px;padding:32px;max-width:400px;width:100%;position:relative;max-height:90vh;overflow-y:auto}
+.modal-close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;line-height:1}
+.modal-close:hover{color:#333}
+.modal-title{font-size:20px;font-weight:800;color:var(--ink);margin-bottom:4px;font-family:var(--fb)}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.modal-step{background:var(--bg2);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.modal-step:last-child{margin-bottom:0}
+.modal-step-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.modal-step-desc{font-size:12px;color:var(--muted);line-height:1.7}
+.modal-step-desc strong{color:var(--ink2);font-weight:600}
+.modal-step-warn{font-size:11px;color:var(--accent);margin-top:4px}
+#autoInstallBtn{display:none;margin-top:16px}
+.btn-auto-install{
+  width:100%;background:var(--accent);color:#fff;
+  border:none;border-radius:10px;padding:13px;
+  font-size:14px;font-weight:700;cursor:pointer;
+  font-family:var(--fb);transition:background .15s;
+}
+.btn-auto-install:hover{background:#c73508}
+
 @media(max-width:768px){
-  nav{padding:14px 20px}.nav-links{display:none}
-  .steps,.feat-grid,.ucgrid{grid-template-columns:1fr}
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .steps-grid,.feat-grid,.uc-grid,.price-grid{grid-template-columns:1fr}
   footer{flex-direction:column;text-align:center}.footer-links{justify-content:center}
 }
-
-/* PRICING */
-.pricing-sec{padding:88px 24px;background:var(--bg)}
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;max-width:900px;margin-left:auto;margin-right:auto}
-.price-card{background:var(--bg2);border:2px solid var(--border);border-radius:16px;padding:28px 24px;text-align:center;transition:all .2s;position:relative}
-.price-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.08)}
-.price-card.popular{border-color:var(--accent);background:var(--bg)}
-.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:10px;font-weight:700;font-family:var(--f);padding:3px 14px;border-radius:100px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
-.price-credits{font-family:var(--f);font-size:36px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:4px}
-.price-credits span{font-size:14px;color:var(--muted);font-weight:400}
-.price-amt{font-size:28px;font-weight:800;font-family:var(--f);color:var(--accent);margin:10px 0 4px}
-.price-amt span{font-size:14px;color:var(--muted);font-weight:400}
-.price-per{font-size:11px;color:var(--muted);margin-bottom:18px}
-.price-btn{display:block;width:100%;padding:12px;border-radius:9px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .15s;text-decoration:none}
-.price-btn-main{background:var(--accent);color:#fff;box-shadow:0 3px 12px rgba(232,66,10,.25)}
-.price-btn-main:hover{background:#c73508}
-.price-btn-sec{background:var(--bg3);color:var(--ink);border:1px solid var(--border)}
-.price-btn-sec:hover{border-color:var(--accent);color:var(--accent)}
-.trial-note{font-size:12px;color:var(--muted);margin-top:10px}
-
-/* DOWNLOAD */
-.download-sec{background:var(--ink);padding:72px 24px;text-align:center}
-.download-sec h2{font-family:var(--f);font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.5px;color:#fff;margin-bottom:10px}
-.download-sec h2 span{color:var(--accent2)}
-.download-sec p{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto}
-.download-btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#fff;padding:16px 32px;border-radius:10px;font-family:var(--f);font-size:15px;font-weight:700;text-decoration:none;transition:all .15s;box-shadow:0 4px 20px rgba(232,66,10,.4)}
-.download-btn:hover{background:#c73508;transform:translateY(-2px)}
-.download-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.download-note{font-size:11px;color:rgba(255,255,255,.3);margin-top:14px}
-.os-badges{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:18px;flex-wrap:wrap}
-.os-badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:7px 14px;font-size:12px;color:rgba(255,255,255,.6)}
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <a class="logo" href="index.html">Send<span>Ease</span></a>
+  <a class="logo" href="index.html">
+    <div class="logo-mark">✉</div>
+    <div class="logo-text">Send<span>Ease</span></div>
+  </a>
   <div class="nav-links">
     <a href="#how">How it works</a>
-    <a href="#usecases">Use cases</a>
-    <a href="#install">Install</a>
+    <a href="#usecases">Who uses it</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#download">Download</a>
   </div>
   <div class="nav-right">
-    <button class="btn-install" id="navInstall" onclick="installPWA()">
+    <button class="nav-pill" id="navInstall" onclick="installPWA()">
       <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Install App
+      Install
     </button>
-    <a href="app.html" class="nav-cta">Launch App →</a>
+    <a href="app.html" class="nav-cta">Open Web App →</a>
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-pill"><b>Free</b> No server. No code. Just send.</div>
-  <h1>Bulk emails.<br/><em>Effortlessly.</em></h1>
-  <p class="hero-sub">Upload your list, attach <strong>any file</strong>, write your message — send to <strong>thousands in one click</strong>. Straight from your Gmail.</p>
-  <div class="hero-btns">
-    <a href="app.html" class="btn-main">
+  <div class="hero-bg"></div>
+  <div class="hero-eyebrow">
+    <div class="hero-eyebrow-dot">✓</div>
+    Free to start — 50 emails on us
+  </div>
+  <h1>Bulk emails,<br/><em>done right.</em></h1>
+  <p class="hero-sub2">With any attachment.</p>
+  <p class="hero-desc">Upload your list, attach <strong>any file</strong> — PDF, image, Word, ZIP — and send to hundreds or thousands. Straight from your Gmail.</p>
+
+  <div class="hero-actions">
+    <a href="app.html" class="btn-hero-primary">
       <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      Start Sending Free
+      Try Web App — Free
     </a>
-    <button class="pwa-btn" id="heroInstall" onclick="installPWA()">
+    <a href="#download" class="btn-hero-sec">
+      <svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download Desktop App
+    </a>
+    <button class="btn-hero-install" id="heroInstall" onclick="installPWA()">
       <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Install App
     </button>
-    <a href="#how" class="btn-sec">How it works</a>
   </div>
 
-  <div class="demo-wrap">
-    <div class="demo-topbar">
-      <div class="demo-dot" style="background:#ff5f57"></div>
-      <div class="demo-dot" style="background:#ffbd2e"></div>
-      <div class="demo-dot" style="background:#28c940"></div>
-      <span style="color:var(--muted);font-size:12px;margin-left:8px">SendEase — sending in progress</span>
+  <div class="stats-strip">
+    <div class="stat-item"><strong>50</strong> free emails to start</div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><strong>Any</strong> file attachment</div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><strong>Gmail</strong> — your account, your data</div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><strong>No</strong> subscription</div>
+  </div>
+
+  <div class="demo-outer">
+    <div class="demo-chrome">
+      <div class="dc" style="background:#ff5f57"></div>
+      <div class="dc" style="background:#ffbd2e"></div>
+      <div class="dc" style="background:#28c940"></div>
+      <div class="demo-url">sendease — sending in progress</div>
     </div>
-    <div class="demo-inner">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <span style="font-size:12px;color:var(--muted)">Sending 634 / 900 emails...</span>
-        <span style="font-size:12px;font-weight:600;color:var(--green)">70%</span>
-      </div>
-      <div class="demo-prog"><div class="demo-prog-fill"></div></div>
-      <div class="demo-row">
-        <div class="tag t-green">✓ SENT</div>
-        <div class="demo-name">Sarah Johnson</div>
-        <div class="demo-email">sarah.j@acme.com</div>
-        <div style="margin-left:auto;font-size:11px;color:var(--muted)">Payslip_June.pdf</div>
+    <div class="demo-body">
+      <div class="demo-prog-wrap">
+        <div class="demo-prog-top">
+          <span class="demo-prog-lbl">Sending 634 / 900 emails...</span>
+          <span class="demo-prog-pct">70%</span>
+        </div>
+        <div class="dbar"><div class="dbar-fill"></div></div>
       </div>
       <div class="demo-row">
-        <div class="tag t-green">✓ SENT</div>
-        <div class="demo-name">Marcus Lee</div>
-        <div class="demo-email">m.lee@globalco.com</div>
-        <div style="margin-left:auto;font-size:11px;color:var(--muted)">Offer_Letter.pdf</div>
+        <div class="dtag dt-sent">✓ SENT</div>
+        <div class="dname">Sarah Johnson</div>
+        <div class="demail">sarah.j@acme.com</div>
+        <div class="dfile">Payslip_June.pdf</div>
       </div>
       <div class="demo-row">
-        <div class="tag t-blue">⟳ SENDING</div>
-        <div class="demo-name">Aisha Patel</div>
-        <div class="demo-email">aisha.p@design.io</div>
-        <div style="margin-left:auto;font-size:11px;color:var(--muted)">Contract_May.pdf</div>
+        <div class="dtag dt-sent">✓ SENT</div>
+        <div class="dname">Marcus Lee</div>
+        <div class="demail">m.lee@globalco.com</div>
+        <div class="dfile">Offer_Letter.pdf</div>
       </div>
       <div class="demo-row">
-        <div class="tag t-orange">⚠ SKIP</div>
-        <div class="demo-name">Robert Chen</div>
-        <div class="demo-email" style="color:var(--accent)">Email missing</div>
-        <div style="margin-left:auto;font-size:11px;color:var(--muted)">—</div>
+        <div class="dtag dt-going">⟳ SENDING</div>
+        <div class="dname">Aisha Patel</div>
+        <div class="demail">aisha.p@design.io</div>
+        <div class="dfile">Contract_May.pdf</div>
+      </div>
+      <div class="demo-row">
+        <div class="dtag dt-skip">⚠ SKIP</div>
+        <div class="dname">Robert Chen</div>
+        <div class="demail" style="color:#fbbf24">Email missing</div>
+        <div class="dfile">—</div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="how" class="section" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-<div class="section-inner">
-  <div class="tag-label">How it works</div>
-  <h2 class="sh">Done in 3 steps</h2>
-  <p class="section-sub">No technical knowledge needed. Works in any browser.</p>
-  <div class="steps">
-    <div class="step">
-      <div class="step-n">01</div>
+<!-- HOW IT WORKS -->
+<section id="how" class="sec" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+<div class="sec-inner">
+  <div class="sec-eyebrow">How it works</div>
+  <h2 class="sec-h">Three steps.<br/><em>That's it.</em></h2>
+  <p class="sec-sub">No technical knowledge. Works in any browser, any device.</p>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
       <div class="step-ico">📊</div>
       <div class="step-title">Upload your list</div>
-      <div class="step-desc">Excel or CSV with Name and Email columns. That's all you need.</div>
+      <div class="step-desc">Excel or CSV with Name and Email columns. Nothing else required.</div>
     </div>
-    <div class="step">
-      <div class="step-n">02</div>
+    <div class="step-card">
+      <div class="step-num">2</div>
       <div class="step-ico">📎</div>
       <div class="step-title">Attach any file</div>
-      <div class="step-desc">One file to everyone, or a different file per person matched by ID.</div>
+      <div class="step-desc">One file to everyone, or a unique file per person — matched automatically by ID.</div>
     </div>
-    <div class="step">
-      <div class="step-n">03</div>
+    <div class="step-card">
+      <div class="step-num">3</div>
       <div class="step-ico">🚀</div>
-      <div class="step-title">Send!</div>
-      <div class="step-desc">Write your message, preview all recipients, and send in one click.</div>
+      <div class="step-title">Send</div>
+      <div class="step-desc">Write your message, preview all recipients, and hit send. Watch it go live.</div>
     </div>
   </div>
 </div>
 </section>
 
-<section id="usecases" class="section">
-<div class="section-inner">
-  <div class="tag-label">Use cases</div>
-  <h2 class="sh">Who uses SendEase?</h2>
-  <p class="section-sub">Anyone who sends documents to people — at any scale.</p>
-  <div class="ucgrid">
-    <div class="uc"><div class="uc-ico">🏢</div><div><div class="uc-title">HR & Payroll Teams</div><div class="uc-desc">Payslips, appointment letters, tax forms — matched per person or sent to all at once.</div><div class="uc-tag">Most popular</div></div></div>
-    <div class="uc"><div class="uc-ico">🧾</div><div><div class="uc-title">Accountants & Firms</div><div class="uc-desc">Client statements, tax returns, notices — send to all clients in a few clicks.</div><div class="uc-tag">Finance</div></div></div>
-    <div class="uc"><div class="uc-ico">📣</div><div><div class="uc-title">Marketing Teams</div><div class="uc-desc">Offers, brochures, catalogs — one campaign to thousands instantly.</div><div class="uc-tag">Marketing</div></div></div>
-    <div class="uc"><div class="uc-ico">🎓</div><div><div class="uc-title">Schools & Institutes</div><div class="uc-desc">Report cards, admit cards, certificates — send to every parent in one click.</div><div class="uc-tag">Education</div></div></div>
+<!-- USE CASES -->
+<section id="usecases" class="sec">
+<div class="sec-inner">
+  <div class="sec-eyebrow">Who uses SendEase</div>
+  <h2 class="sec-h">Built for people who<br/><em>send documents.</em></h2>
+  <p class="sec-sub">Not just marketers. Anyone who sends files to a list of people.</p>
+  <div class="uc-grid">
+    <div class="uc-card">
+      <div class="uc-ico">🏢</div>
+      <div>
+        <div class="uc-name">HR & Payroll Teams</div>
+        <div class="uc-desc">Payslips, appointment letters, Form 16, tax documents — matched per employee or sent to all at once.</div>
+        <div class="uc-tag">Most popular</div>
+      </div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-ico">🧾</div>
+      <div>
+        <div class="uc-name">Accountants & CA Firms</div>
+        <div class="uc-desc">Client statements, ITR acknowledgements, audit reports — bulk delivery in minutes.</div>
+        <div class="uc-tag">Finance</div>
+      </div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-ico">📣</div>
+      <div>
+        <div class="uc-name">Marketing Teams</div>
+        <div class="uc-desc">Offers, brochures, product catalogs — personalized campaigns to thousands of customers.</div>
+        <div class="uc-tag">Marketing</div>
+      </div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-ico">🎓</div>
+      <div>
+        <div class="uc-name">Schools & Institutes</div>
+        <div class="uc-desc">Report cards, admit cards, fee receipts, certificates — send to every parent in one click.</div>
+        <div class="uc-tag">Education</div>
+      </div>
+    </div>
   </div>
 </div>
 </section>
 
-<section class="section" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-<div class="section-inner">
-  <div class="tag-label">Features</div>
-  <h2 class="sh">Everything you need.</h2>
-  <p class="section-sub">Simple for anyone. Powerful enough for thousands of emails.</p>
+<!-- FEATURES -->
+<section class="sec" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+<div class="sec-inner">
+  <div class="sec-eyebrow">Features</div>
+  <h2 class="sec-h">Everything you need.<br/><em>Nothing you don't.</em></h2>
   <div class="feat-grid">
-    <div class="feat"><div class="feat-ico">📎</div><div class="feat-title">Any file type</div><div class="feat-desc">PDF, images, Word, Excel, ZIP — any attachment works.</div></div>
-    <div class="feat"><div class="feat-ico">✉️</div><div class="feat-title">Personalized messages</div><div class="feat-desc">{{name}}, {{id}} variables — every email feels personal.</div></div>
-    <div class="feat"><div class="feat-ico">📊</div><div class="feat-title">Live progress log</div><div class="feat-desc">Watch emails send in real time. Download the full log when done.</div></div>
-    <div class="feat"><div class="feat-ico">🔒</div><div class="feat-title">Sent from your Gmail</div><div class="feat-desc">Emails come from your own account — nobody else touches your data.</div></div>
-    <div class="feat"><div class="feat-ico">⚡</div><div class="feat-title">Batch processing</div><div class="feat-desc">Smart rate-limit handling — send 500 to 5,000 emails safely.</div></div>
-    <div class="feat"><div class="feat-ico">📱</div><div class="feat-title">Install as app</div><div class="feat-desc">Add to home screen or desktop — works on phone, tablet, and PC.</div></div>
+    <div class="feat-card"><div class="feat-ico">📎</div><div class="feat-title">Any file type</div><div class="feat-desc">PDF, images, Word, Excel, ZIP — every format supported as attachment.</div></div>
+    <div class="feat-card"><div class="feat-ico">✉️</div><div class="feat-title">Personalised messages</div><div class="feat-desc">{{name}}, {{id}} variables — every email feels individually written.</div></div>
+    <div class="feat-card"><div class="feat-ico">📊</div><div class="feat-title">Live sending log</div><div class="feat-desc">Watch emails go out in real time. Download a color-coded Excel report when done.</div></div>
+    <div class="feat-card"><div class="feat-ico">🔒</div><div class="feat-title">Your Gmail, your data</div><div class="feat-desc">Emails leave from your own account. No third-party servers. No data exposure.</div></div>
+    <div class="feat-card"><div class="feat-ico">⏸️</div><div class="feat-title">Resume anytime</div><div class="feat-desc">Interrupted mid-send? Pick up exactly where you left off — no duplicates.</div></div>
+    <div class="feat-card"><div class="feat-ico">📱</div><div class="feat-title">Install as app</div><div class="feat-desc">Add to phone or desktop from the browser — no App Store needed.</div></div>
   </div>
 </div>
 </section>
-
 
 <!-- PRICING -->
 <section id="pricing" class="pricing-sec">
-<div class="section-inner" style="text-align:center">
-  <div class="tag-label">Pricing</div>
-  <h2 class="sh">Simple credit-based pricing</h2>
-  <p class="section-sub" style="margin:0 auto 8px">1 credit = 1 email. Buy once, use anytime. No subscription, no expiry.</p>
-  <p style="font-size:13px;color:var(--muted)">Start free with 50 trial emails — no credit card needed.</p>
+<div class="sec-inner" style="text-align:center">
+  <div class="sec-eyebrow">Pricing</div>
+  <h2 class="sec-h" style="color:#fff">Pay as you send.<br/><em>No surprises.</em></h2>
+  <p class="sec-sub" style="color:rgba(255,255,255,.45);margin:0 auto">One credit, one email. Buy once, use whenever. Credits never expire.</p>
+  <div class="pricing-trial">🎁 New users get <span>50 free emails</span> — no payment needed</div>
 
-  <div class="pricing-grid">
+  <div class="price-grid">
     <div class="price-card">
-      <div class="price-credits">500 <span>credits</span></div>
-      <div class="price-amt">₹299</div>
+      <div class="price-credits">500 <small>credits</small></div>
+      <div class="price-amount">₹299</div>
       <div class="price-per">₹0.60 per email</div>
-      <button class="price-btn price-btn-sec" onclick="buyPlan(299,'standard','500 Credits')">Buy ₹299 →</button>
+      <button class="price-buy price-buy-sec" onclick="buyPlan(299,'standard','500 Credits')">Buy ₹299</button>
     </div>
     <div class="price-card">
-      <div class="price-credits">1,000 <span>credits</span></div>
-      <div class="price-amt">₹499</div>
+      <div class="price-credits">1,000 <small>credits</small></div>
+      <div class="price-amount">₹499</div>
       <div class="price-per">₹0.50 per email</div>
-      <button class="price-btn price-btn-sec" onclick="buyPlan(499,'popular','1000 Credits')">Buy ₹499 →</button>
+      <button class="price-buy price-buy-sec" onclick="buyPlan(499,'popular','1000 Credits')">Buy ₹499</button>
     </div>
-    <div class="price-card popular">
-      <div class="popular-badge">⭐ Most Popular</div>
-      <div class="price-credits">2,000 <span>credits</span></div>
-      <div class="price-amt">₹999</div>
+    <div class="price-card hot">
+      <div class="hot-badge">⭐ Most Popular</div>
+      <div class="price-credits">2,000 <small>credits</small></div>
+      <div class="price-amount">₹999</div>
       <div class="price-per">₹0.50 per email</div>
-      <button class="price-btn price-btn-main" onclick="buyPlan(999,'pro','2000 Credits')">Buy ₹999 →</button>
+      <button class="price-buy price-buy-main" onclick="buyPlan(999,'pro','2000 Credits')">Buy ₹999</button>
     </div>
     <div class="price-card">
-      <div class="price-credits">5,000 <span>credits</span></div>
-      <div class="price-amt">₹1,999</div>
+      <div class="price-credits">5,000 <small>credits</small></div>
+      <div class="price-amount">₹1,999</div>
       <div class="price-per">₹0.40 per email</div>
-      <button class="price-btn price-btn-sec" onclick="buyPlan(1999,'business','5000 Credits')">Buy ₹1,999 →</button>
+      <button class="price-buy price-buy-sec" onclick="buyPlan(1999,'business','5000 Credits')">Buy ₹1,999</button>
     </div>
   </div>
-  <p class="trial-note">🎁 New users get <strong>50 free trial emails</strong> — no payment needed to start</p>
 </div>
 </section>
 
 <!-- DOWNLOAD -->
 <section id="download" class="download-sec">
-  <h2>Download <span>SendEase</span></h2>
-  <p>Free desktop app for Windows. 50 trial emails included. No signup required.</p>
+  <div class="sec-eyebrow" style="color:var(--accent)">Desktop App</div>
+  <h2>Download <em>SendEase</em></h2>
+  <p>Free Windows app. 50 trial emails included. No signup, no install wizard — just run and go.</p>
   <a href="https://github.com/advocate-afk/sendease-/releases/latest/download/SendEase.exe" class="download-btn">
     <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     Download for Windows — Free
   </a>
   <div class="os-badges">
-    <div class="os-badge">🖥️ Windows 10/11</div>
-    <div class="os-badge">📦 No install needed</div>
-    <div class="os-badge">🔒 Runs locally</div>
-    <div class="os-badge">🎁 50 free emails</div>
+    <div class="os-badge">🖥️ Windows 10 / 11</div>
+    <div class="os-badge">📦 Single .exe file</div>
+    <div class="os-badge">🔒 Runs on your machine</div>
+    <div class="os-badge">🎁 50 free emails included</div>
   </div>
-  <p class="download-note">Also works on Mac & Linux via Python · Web version free at app.html</p>
+  <p style="font-size:12px;color:var(--muted);margin-top:16px">Also works on Mac & Linux via Python · <a href="app.html" style="color:var(--accent);text-decoration:none">Web version</a> is free and unlimited</p>
 </section>
 
+<!-- PWA -->
 <section id="install" class="pwa-sec">
-  <h2>Use it <span>like an app</span></h2>
-  <p>No App Store. No Play Store. Install directly from this page — phone, tablet, or desktop.</p>
+  <h2>Use it <em>like an app</em></h2>
+  <p>No App Store. No Play Store. Install from this page on any device.</p>
   <div class="pwa-badges">
     <div class="pwa-badge"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>Android & iPhone</div>
     <div class="pwa-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Windows, Mac & Linux</div>
@@ -486,46 +716,23 @@ footer p{font-size:12px;color:rgba(255,255,255,.35)}
   <p class="pwa-hint" id="pwaAlready" style="display:none">Already installed! 🎉</p>
 </section>
 
-<!-- INSTALL MODAL -->
-<div id="installModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999;align-items:center;justify-content:center;padding:20px">
-  <div style="background:#fff;border-radius:18px;padding:28px;max-width:400px;width:100%;position:relative;max-height:90vh;overflow-y:auto">
-    <button onclick="closeModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;line-height:1">✕</button>
-    <div style="font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:#111;margin-bottom:4px">Install SendEase</div>
-    <div style="font-size:13px;color:#888;margin-bottom:20px">Apne device ke hisaab se steps follow karo</div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div style="background:#f8f7f5;border-radius:10px;padding:14px 16px">
-        <div style="font-weight:700;font-size:13px;color:#111;margin-bottom:5px">🖥️ Chrome / Edge — Windows, Mac</div>
-        <div style="font-size:12px;color:#555;line-height:1.8">Address bar mein right side pe <strong>install icon ⊕</strong> dikhe tab click karo → <strong>Install</strong><br/>Ya: 3 dots menu → <strong>Cast, save and share → Install page as app</strong></div>
-      </div>
-      <div style="background:#f8f7f5;border-radius:10px;padding:14px 16px">
-        <div style="font-weight:700;font-size:13px;color:#111;margin-bottom:5px">🤖 Android — Chrome</div>
-        <div style="font-size:12px;color:#555;line-height:1.8">Browser ke <strong>3 dots menu</strong> → <strong>Add to Home screen</strong> → Add</div>
-      </div>
-      <div style="background:#f8f7f5;border-radius:10px;padding:14px 16px">
-        <div style="font-weight:700;font-size:13px;color:#111;margin-bottom:5px">🍎 iPhone / iPad — Safari</div>
-        <div style="font-size:12px;color:#555;line-height:1.8">Neeche <strong>Share button (□↑)</strong> → <strong>Add to Home Screen</strong> → Add<br/><span style="color:#e8420a;font-size:11px">⚠ Safari mein open karna zaroori hai, Chrome mein nahi hoga</span></div>
-      </div>
-    </div>
-    <div id="autoBtn" style="display:none;margin-top:16px">
-      <button onclick="doAutoInstall()" style="width:100%;background:#e8420a;color:#fff;border:none;border-radius:9px;padding:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#c73508'" onmouseout="this.style.background='#e8420a'">
-        ⚡ Install Now — One Click
-      </button>
-    </div>
+<!-- CTA -->
+<section class="cta-sec">
+  <h2>Start sending<br/><em>today.</em></h2>
+  <p>No signup. No credit card. 50 free emails waiting.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <a href="app.html" class="btn-hero-primary">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Open Web App — Free
+    </a>
+    <a href="#download" class="btn-hero-sec">Download Desktop App</a>
   </div>
-</div>
-
-<section class="cta">
-  <h2>Try it now — <span>free</span></h2>
-  <p>No signup. No credit card. Ready in seconds.</p>
-  <a href="app.html" class="btn-main" style="display:inline-flex">
-    <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    Start Sending Free
-  </a>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <a class="footer-logo" href="index.html">Send<span>Ease</span></a>
-  <p>© 2025 SendEase · Built by <strong style="color:#fff">Prakash Sharma</strong></p>
+  <p>© 2025 SendEase · Built by <strong style="color:rgba(255,255,255,.7)">Prakash Sharma</strong></p>
   <div class="footer-links">
     <a href="app.html">Web App</a>
     <a href="#pricing">Pricing</a>
@@ -534,90 +741,92 @@ footer p{font-size:12px;color:rgba(255,255,255,.35)}
   </div>
 </footer>
 
+<!-- INSTALL MODAL -->
+<div id="installModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">Install SendEase</div>
+    <div class="modal-sub">Follow the steps for your device</div>
+    <div class="modal-step">
+      <div class="modal-step-title">🖥️ Chrome / Edge — Windows, Mac</div>
+      <div class="modal-step-desc">Look for the <strong>install icon ⊕</strong> in the address bar → click it → <strong>Install</strong><br/>Or: 3-dot menu → <strong>Install page as app</strong></div>
+    </div>
+    <div class="modal-step">
+      <div class="modal-step-title">🤖 Android — Chrome</div>
+      <div class="modal-step-desc">3-dot menu → <strong>Add to Home screen</strong> → Add</div>
+    </div>
+    <div class="modal-step">
+      <div class="modal-step-title">🍎 iPhone / iPad — Safari</div>
+      <div class="modal-step-desc">Share button (□↑) → <strong>Add to Home Screen</strong> → Add</div>
+      <div class="modal-step-warn">⚠ Must use Safari, not Chrome</div>
+    </div>
+    <div id="autoInstallBtn">
+      <button class="btn-auto-install" onclick="doAutoInstall()">⚡ Install Now — One Click</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 
+const RAZORPAY_KEY = 'rzp_test_Szr63kMAimBp1D';
+
+// PWA
 let deferredPrompt=null;
 const isInstalled=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 
 window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();
-  deferredPrompt=e;
-  document.getElementById('autoBtn').style.display='block';
-  // Also show nav + hero install buttons
-  document.getElementById('navInstall').classList.add('show');
-  document.getElementById('heroInstall').classList.add('show');
+  e.preventDefault();deferredPrompt=e;
+  if(!isInstalled){
+    document.getElementById('navInstall').classList.add('show');
+    document.getElementById('heroInstall').classList.add('show');
+  }
 });
-
 window.addEventListener('appinstalled',()=>{
+  ['navInstall','heroInstall'].forEach(id=>document.getElementById(id).classList.remove('show'));
   document.getElementById('pwaAlready').style.display='';
   closeModal();
 });
 
 function installPWA(){
   if(isInstalled){document.getElementById('pwaAlready').style.display='';return;}
-  // Show modal always
   const m=document.getElementById('installModal');
   m.style.display='flex';
-  // If browser supports auto install, show that button too
-  if(deferredPrompt) document.getElementById('autoBtn').style.display='block';
+  if(deferredPrompt) document.getElementById('autoInstallBtn').style.display='block';
 }
-
 async function doAutoInstall(){
   if(!deferredPrompt)return;
   deferredPrompt.prompt();
   const{outcome}=await deferredPrompt.userChoice;
   deferredPrompt=null;
-  if(outcome==='accepted') closeModal();
+  if(outcome==='accepted')closeModal();
 }
-
-function closeModal(){
-  document.getElementById('installModal').style.display='none';
-}
-
-// Close modal on outside click
-document.getElementById('installModal').addEventListener('click',function(e){
-  if(e.target===this) closeModal();
-});
-
+function closeModal(){document.getElementById('installModal').style.display='none';}
 if(isInstalled) document.getElementById('pwaAlready').style.display='';
-</script>
 
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script>
-const RAZORPAY_KEY = 'rzp_test_Szr63kMAimBp1D'; // Replace with your Razorpay Key ID
-
-function buyPlan(amount, plan, description){
-  const options = {
-    key: RAZORPAY_KEY,
-    amount: amount * 100, // paise
-    currency: 'INR',
-    name: 'SendEase',
-    description: description,
-    image: '',
-    handler: function(response){
-      // Payment successful
-      alert(
-        '✅ Payment successful!\n\n' +
-        'Payment ID: ' + response.razorpay_payment_id + '\n\n' +
-        'Your license key will be emailed to you within a few minutes.\n' +
-        'Check your inbox (and spam folder).'
-      );
+// Razorpay
+function buyPlan(amount,plan,description){
+  const options={
+    key:RAZORPAY_KEY,
+    amount:amount*100,
+    currency:'INR',
+    name:'SendEase',
+    description:description,
+    handler:function(response){
+      alert('✅ Payment successful!\n\nPayment ID: '+response.razorpay_payment_id+'\n\nYour license key will be emailed to you within a few minutes.\nPlease check your inbox and spam folder.');
     },
-    prefill: { name: '', email: '', contact: '' },
-    notes: { plan: plan },
-    theme: { color: '#e8420a' },
-    modal: {
-      ondismiss: function(){ console.log('Payment dismissed'); }
-    }
+    prefill:{name:'',email:'',contact:''},
+    notes:{plan:plan},
+    theme:{color:'#e8420a'},
+    modal:{ondismiss:function(){}}
   };
-  const rzp = new Razorpay(options);
-  rzp.on('payment.failed', function(resp){
-    alert('Payment failed: ' + resp.error.description);
+  const rzp=new Razorpay(options);
+  rzp.on('payment.failed',function(resp){
+    alert('Payment failed: '+resp.error.description);
   });
   rzp.open();
 }
 </script>
-
 </body>
 </html>
