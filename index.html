@@ -425,16 +425,16 @@ footer p{font-size:12px;color:rgba(255,255,255,.35)}
 
   <div class="pricing-grid">
     <div class="price-card">
-      <div class="price-credits">50 <span>credits</span></div>
-      <div class="price-amt">₹49</div>
-      <div class="price-per">₹0.98 per email</div>
-      <button class="price-btn price-btn-sec" onclick="buyPlan(49,'starter','50 Credits')">Buy ₹49 →</button>
-    </div>
-    <div class="price-card">
       <div class="price-credits">500 <span>credits</span></div>
       <div class="price-amt">₹299</div>
       <div class="price-per">₹0.60 per email</div>
       <button class="price-btn price-btn-sec" onclick="buyPlan(299,'standard','500 Credits')">Buy ₹299 →</button>
+    </div>
+    <div class="price-card">
+      <div class="price-credits">1,000 <span>credits</span></div>
+      <div class="price-amt">₹499</div>
+      <div class="price-per">₹0.50 per email</div>
+      <button class="price-btn price-btn-sec" onclick="buyPlan(499,'popular','1000 Credits')">Buy ₹499 →</button>
     </div>
     <div class="price-card popular">
       <div class="popular-badge">⭐ Most Popular</div>
@@ -442,18 +442,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.35)}
       <div class="price-amt">₹999</div>
       <div class="price-per">₹0.50 per email</div>
       <button class="price-btn price-btn-main" onclick="buyPlan(999,'pro','2000 Credits')">Buy ₹999 →</button>
-    </div>
-    <div class="price-card">
-      <div class="price-credits">100 <span>credits</span></div>
-      <div class="price-amt">₹99</div>
-      <div class="price-per">₹0.99 per email</div>
-      <button class="price-btn price-btn-sec" onclick="buyPlan(99,'basic','100 Credits')">Buy ₹99 →</button>
-    </div>
-    <div class="price-card">
-      <div class="price-credits">1,000 <span>credits</span></div>
-      <div class="price-amt">₹699</div>
-      <div class="price-per">₹0.70 per email</div>
-      <button class="price-btn price-btn-sec" onclick="buyPlan(699,'popular','1000 Credits')">Buy ₹699 →</button>
     </div>
     <div class="price-card">
       <div class="price-credits">5,000 <span>credits</span></div>
@@ -597,7 +585,7 @@ if(isInstalled) document.getElementById('pwaAlready').style.display='';
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-const RAZORPAY_KEY = 'rzp_test_Szr63kMAimBp1D'; // Replace with your Razorpay Key ID
+const RAZORPAY_KEY = 'YOUR_RAZORPAY_KEY_ID_HERE'; // Replace with your Razorpay Key ID
 
 function buyPlan(amount, plan, description){
   const options = {
