@@ -435,6 +435,12 @@ tr:hover td{background:var(--bg2)}
       </div>
       <div id="uploadBroadcast">
         <div class="notice n-info"><span>📢</span><div><strong>Broadcast mode:</strong> Same file(s) go to everyone.</div></div>
+        <div style="margin-bottom:12px">
+          <button onclick="downloadSampleExcel('broadcast')" style="display:inline-flex;align-items:center;gap:6px;background:var(--acbg);color:var(--accent);border:1px solid var(--acborder);border-radius:7px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .15s" onmouseover="this.style.background='#ffe0d4'" onmouseout="this.style.background='var(--acbg)'">
+            📥 Download Sample Excel
+          </button>
+          <span style="font-size:11px;color:var(--muted);margin-left:8px">Fill this format and upload</span>
+        </div>
         <div class="drop-grid">
           <div class="drop-zone" id="dzExcel" ondragover="dov(event,'dzExcel')" ondragleave="dlv('dzExcel')" ondrop="dropExcel(event)">
             <input type="file" class="dz-input" accept=".xlsx,.xls,.csv" onchange="loadExcel(this.files[0])">
@@ -455,6 +461,12 @@ tr:hover td{background:var(--bg2)}
       </div>
       <div id="uploadPersonal" style="display:none">
         <div class="notice n-info"><span>🎯</span><div><strong>Personal mode:</strong> Each person gets their own file matched by ID in filename.</div></div>
+        <div style="margin-bottom:12px">
+          <button onclick="downloadSampleExcel('personal')" style="display:inline-flex;align-items:center;gap:6px;background:var(--acbg);color:var(--accent);border:1px solid var(--acborder);border-radius:7px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .15s" onmouseover="this.style.background='#ffe0d4'" onmouseout="this.style.background='var(--acbg)'">
+            📥 Download Sample Excel
+          </button>
+          <span style="font-size:11px;color:var(--muted);margin-left:8px">Fill this format and upload (ID column = PAN/Employee ID)</span>
+        </div>
         <div class="drop-grid">
           <div class="drop-zone" id="dzExcel2" ondragover="dov(event,'dzExcel2')" ondragleave="dlv('dzExcel2')" ondrop="dropExcel2(event)">
             <input type="file" class="dz-input" accept=".xlsx,.xls,.csv" onchange="loadExcel(this.files[0])">
@@ -774,6 +786,31 @@ function loadPdfs(files){
     };
     r.readAsDataURL(f);
   });
+}
+
+function downloadSampleExcel(mode){
+  // Build sample data
+  const broadcastData = [
+    ['Name','Email'],
+    ['John Smith','john.smith@example.com'],
+    ['Sara Lee','sara.lee@example.com'],
+    ['Amit Kumar','amit.kumar@example.com'],
+    ['Priya Sharma','priya.sharma@example.com'],
+    ['Rahul Verma','rahul.verma@example.com'],
+  ];
+  const personalData = [
+    ['Name','Email','ID'],
+    ['John Smith','john.smith@example.com','EMP001'],
+    ['Sara Lee','sara.lee@example.com','EMP002'],
+    ['Amit Kumar','amit.kumar@example.com','ABCDE1234F'],
+    ['Priya Sharma','priya.sharma@example.com','EMP004'],
+    ['Rahul Verma','rahul.verma@example.com','XYZPQ5678R'],
+  ];
+  const data = mode==='personal' ? personalData : broadcastData;
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Recipients');
+  XLSX.writeFile(wb, mode==='personal' ? 'sample_personal.xlsx' : 'sample_broadcast.xlsx');
 }
 
 function checkReady(){document.getElementById('btnStep3').disabled=excelRows.length===0;}
