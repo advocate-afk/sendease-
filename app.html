@@ -757,18 +757,16 @@ function loadPdfs(files){
   arr.forEach(f=>{
     const r=new FileReader();
     r.onload=e=>{
-      const n=f.name;
-      let m=n.match(/([A-Z]{5}[0-9]{4}[A-Z])/i);
-      const pan=m?m[1].toUpperCase():null;
-      let emp=null;
-      const em=n.match(/[_\-\s]([A-Z0-9]{3,15})[_\-\s\.]/i);
-      if(em)emp=em[1].toUpperCase();
-      const key=pan||emp||f.name.replace(/\.[^.]+$/,'').toUpperCase();
-      if(!pdfMap[key])pdfMap[key]=[];
-      pdfMap[key].push({name:f.name,base64:e.target.result.split(',')[1],type:f.type||'application/octet-stream'});
+      // Store all files in flat list — match by ID at preview time
+      if(!pdfMap['__all__']) pdfMap['__all__']=[];
+      pdfMap['__all__'].push({
+        name:f.name,
+        base64:e.target.result.split(',')[1],
+        type:f.type||'application/octet-stream'
+      });
       done++;
       if(done===arr.length){
-        document.getElementById('pdfOk').textContent=`✓ ${arr.length} files (${Object.keys(pdfMap).length} IDs)`;
+        document.getElementById('pdfOk').textContent=`✓ ${arr.length} files loaded`;
         document.getElementById('pdfOk').style.display='';
         document.getElementById('dzPdf').classList.add('done');
         checkReady();
@@ -827,10 +825,11 @@ function buildAndGo(){
       if(!email||!validEmail(email))status='invalid-email';
       else if(!rawId)status='no-id';
       else{
-        let pm=pdfMap[rawId];
-        if(!pm){const k=Object.keys(pdfMap).find(k=>k.includes(rawId)||rawId.includes(k));if(k)pm=pdfMap[k];}
-        if(pm&&pm.length){files=pm;fileNames=pm.map(f=>f.name);}
-        else status=Object.keys(pdfMap).length?'no-file':'ready-no-attach';
+        // Match ALL files whose filename contains the ID (case-insensitive)
+        const allFiles=pdfMap['__all__']||[];
+        const pm=allFiles.filter(f=>f.name.toUpperCase().includes(rawId.toUpperCase()));
+        if(pm.length){files=pm;fileNames=pm.map(f=>f.name);}
+        else status=allFiles.length?'no-file':'ready-no-attach';
       }
       return{idx:i+1,name,email,id:rawId,files,fileNames,status};
     });
