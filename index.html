@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> <link rel="icon" type="image/png" href="icon.png"/>
+<head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>SendEase — Bulk Email with Attachments</title>
@@ -495,7 +495,7 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
     </a>
     <a href="#download" class="btn-hero-sec">
       <svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Download Desktop App
+      Download for Windows
     </a>
     <button class="btn-hero-install" id="heroInstall" onclick="installPWA()">
       <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -657,26 +657,26 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
       <div class="price-credits">500 <small>credits</small></div>
       <div class="price-amount">₹299</div>
       <div class="price-per">₹0.60 per email</div>
-      <button class="price-buy price-buy-sec" onclick="buyPlan(299,'standard','500 Credits')">Buy ₹299</button>
+      <button class="price-buy price-buy-sec" onclick="buyPlan(299,'standard','SendEase — 500 Credits')">Buy ₹299</button>
     </div>
     <div class="price-card">
       <div class="price-credits">1,000 <small>credits</small></div>
       <div class="price-amount">₹499</div>
       <div class="price-per">₹0.50 per email</div>
-      <button class="price-buy price-buy-sec" onclick="buyPlan(499,'popular','1000 Credits')">Buy ₹499</button>
+      <button class="price-buy price-buy-sec" onclick="buyPlan(499,'popular','SendEase — 1000 Credits')">Buy ₹499</button>
     </div>
     <div class="price-card hot">
       <div class="hot-badge">⭐ Most Popular</div>
       <div class="price-credits">2,000 <small>credits</small></div>
       <div class="price-amount">₹999</div>
       <div class="price-per">₹0.50 per email</div>
-      <button class="price-buy price-buy-main" onclick="buyPlan(999,'pro','2000 Credits')">Buy ₹999</button>
+      <button class="price-buy price-buy-main" onclick="buyPlan(999,'pro','SendEase — 2000 Credits')">Buy ₹999</button>
     </div>
     <div class="price-card">
       <div class="price-credits">5,000 <small>credits</small></div>
       <div class="price-amount">₹1,999</div>
       <div class="price-per">₹0.40 per email</div>
-      <button class="price-buy price-buy-sec" onclick="buyPlan(1999,'business','5000 Credits')">Buy ₹1,999</button>
+      <button class="price-buy price-buy-sec" onclick="buyPlan(1999,'business','SendEase — 5000 Credits')">Buy ₹1,999</button>
     </div>
   </div>
 </div>
@@ -697,7 +697,10 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
     <div class="os-badge">🔒 Runs on your machine</div>
     <div class="os-badge">🎁 50 free emails included</div>
   </div>
-  <p style="font-size:12px;color:var(--muted);margin-top:16px">Also works on Mac & Linux via Python · <a href="app.html" style="color:var(--accent);text-decoration:none">Web version</a> is free and unlimited</p>
+  <p style="font-size:12px;color:var(--muted);margin-top:16px">
+    🖥️ <strong>Windows users</strong> — Download the app above &nbsp;|&nbsp;
+    🍎 <strong>Mac / Linux users</strong> — <a href="app.html" style="color:var(--accent);text-decoration:none">Use the Web App →</a>
+  </p>
 </section>
 
 <!-- PWA -->
@@ -723,16 +726,16 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
     <a href="app.html" class="btn-hero-primary">
       <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      Open Web App — Free
+      Open Web App — Mac & Linux
     </a>
-    <a href="#download" class="btn-hero-sec">Download Desktop App</a>
+    <a href="#download" class="btn-hero-sec">Download for Windows</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <a class="footer-logo" href="index.html">Send<span>Ease</span></a>
-  <p>© 2026 SendEase · Built by <strong style="color:rgba(255,255,255,.7)">GuruPriya Parashar</strong></p>
+  <p>© 2025 SendEase · Built by <strong style="color:rgba(255,255,255,.7)">Prakash Sharma</strong></p>
   <div class="footer-links">
     <a href="app.html">Web App</a>
     <a href="#pricing">Pricing</a>
@@ -770,7 +773,7 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
 <script>
 if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 
-const RAZORPAY_KEY = 'rzp_live_T0Bjnmizt0JMDB';
+const RAZORPAY_KEY = 'rzp_test_Szr63kMAimBp1D';
 
 // PWA
 let deferredPrompt=null;
