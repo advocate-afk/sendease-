@@ -324,9 +324,54 @@ tr:hover td{background:var(--bg2)}
 
   <!-- STEP 0: CONNECT -->
   <div id="step0">
-    <div class="connect-hero">
-      <div class="connect-hero-title">🔗 Connect Your Gmail</div>
-      <div class="connect-hero-sub">One-time setup — takes about 3 minutes. After this, your emails go directly from your Gmail. Completely free via Google Apps Script.</div>
+
+    <!-- PART A: Email + OTP Login -->
+    <div class="connect-hero" id="loginSection">
+      <div class="connect-hero-title">👋 Welcome to SendEase</div>
+      <div class="connect-hero-sub">Enter your email to get started. You'll receive a 6-digit OTP to verify.</div>
+
+      <!-- Logged in state -->
+      <div class="connected-box" id="userConnBox">
+        <div class="conn-dot"></div>
+        <div class="conn-text" id="userConnLabel">Logged in</div>
+        <span id="creditsBadge" style="background:#fff;color:var(--accent);font-size:11px;font-weight:700;padding:2px 10px;border-radius:100px;margin-left:8px"></span>
+        <button class="conn-disc" onclick="logoutUser()">Logout</button>
+      </div>
+
+      <!-- Email entry -->
+      <div id="emailEntrySection">
+        <div class="fg">
+          <label>Your Email Address</label>
+          <input type="email" id="userEmailInp" placeholder="you@example.com" oninput="checkEmailInput()"/>
+        </div>
+        <button class="btn btn-p" id="btnSendOTP" onclick="sendOTP()" disabled style="width:100%;justify-content:center">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Send OTP
+        </button>
+      </div>
+
+      <!-- OTP entry -->
+      <div id="otpEntrySection" style="display:none">
+        <div class="notice n-ok" style="margin-bottom:14px">
+          <span>✉</span><div>OTP sent to <strong id="otpEmailLabel"></strong> — check your inbox</div>
+        </div>
+        <div class="fg">
+          <label>Enter 6-digit OTP</label>
+          <input type="text" id="otpInp" placeholder="123456" maxlength="6" style="font-size:20px;letter-spacing:8px;text-align:center" oninput="checkOTPInput()"/>
+        </div>
+        <button class="btn btn-p" id="btnVerifyOTP" onclick="verifyOTP()" disabled style="width:100%;justify-content:center">
+          ✓ Verify OTP
+        </button>
+        <button class="btn btn-g" onclick="backToEmail()" style="width:100%;justify-content:center;margin-top:8px">
+          ← Change Email
+        </button>
+      </div>
+    </div>
+
+    <!-- PART B: Apps Script Setup (shown after login) -->
+    <div class="connect-hero" id="appsScriptSection" style="display:none">
+      <div class="connect-hero-title">🔗 Connect Your Gmail for Sending</div>
+      <div class="connect-hero-sub">One-time setup — 3 minutes. Your emails go directly from your own Gmail.</div>
 
       <div class="connected-box" id="connBox">
         <div class="conn-dot"></div>
@@ -347,7 +392,7 @@ tr:hover td{background:var(--bg2)}
             <div class="ss-num">2</div>
             <div>
               <div class="ss-title">Paste the code</div>
-              <div class="ss-desc">Select all text in the editor and delete it → Download <a href="Code.gs" target="_blank">Code.gs</a> → Open it → Copy all → Paste in editor → Press <strong>Ctrl+S</strong></div>
+              <div class="ss-desc">Delete everything → Download <a href="Code.gs" target="_blank">Code.gs</a> → Copy all → Paste → Press <strong>Ctrl+S</strong></div>
               <div class="ss-code"><span class="hl">Code.gs</span> → Select All → Delete → Paste → <span class="btn">Ctrl+S</span></div>
             </div>
           </div>
@@ -355,22 +400,15 @@ tr:hover td{background:var(--bg2)}
             <div class="ss-num">3</div>
             <div>
               <div class="ss-title">Deploy as Web App</div>
-              <div class="ss-desc">Click <strong>Deploy</strong> (top right) → <strong>New Deployment</strong> → Type: <strong>Web App</strong> → Execute as: <strong>Me</strong> → Who has access: <strong>Anyone</strong> → Click <strong>Deploy</strong></div>
+              <div class="ss-desc">Click <strong>Deploy</strong> → <strong>New Deployment</strong> → Web App → Execute as: <strong>Me</strong> → Access: <strong>Anyone</strong> → Deploy</div>
               <div class="ss-code"><span class="btn">Deploy</span> → New Deployment → Web App → Execute as: <span class="ok">Me</span> → Access: <span class="ok">Anyone</span> → <span class="btn">Deploy</span></div>
             </div>
           </div>
           <div class="ss-row">
             <div class="ss-num">4</div>
             <div>
-              <div class="ss-title">Allow permissions</div>
-              <div class="ss-desc">Google will ask to authorize → Click <strong>Authorize access</strong> → Choose your Gmail → Click <strong>Advanced</strong> → <strong>Go to (project)</strong> → <strong>Allow</strong></div>
-            </div>
-          </div>
-          <div class="ss-row">
-            <div class="ss-num">5</div>
-            <div>
-              <div class="ss-title">Copy the URL & paste below</div>
-              <div class="ss-desc">After deploy you'll get a <strong>Web App URL</strong> — copy it and paste in the box below</div>
+              <div class="ss-title">Allow permissions & paste URL</div>
+              <div class="ss-desc">Authorize → copy the Web App URL → paste below</div>
               <div class="ss-code">Web app URL: <span class="hl">https://script.google.com/macros/s/XXXXX.../exec</span></div>
             </div>
           </div>
@@ -631,7 +669,25 @@ let excelRows=[],excelCols=[],pdfMap={},broadcastFiles=[],matched=[];
 let isSending=false,scriptUrl='',connEmail='',sendMode='broadcast';
 const STEPS=7;
 
+const LICENSE_SERVER_URL = 'https://script.google.com/macros/s/AKfycbw_UhMgS6mYTWOYB6NXy0yXbjU18ywxkYqlZz_1z_9uS-ytvjX-1sHY3bD0cU8pAmPxPQ/exec';
+let currentUserEmail='', currentOTP='', userCredits=0, userLicenseKey='', userIsLoggedIn=false;
+
 window.onload=()=>{
+  // Check saved user session
+  const savedUser = localStorage.getItem('se_web_user');
+  if(savedUser){
+    try{
+      const u = JSON.parse(savedUser);
+      currentUserEmail = u.email;
+      userCredits = u.credits || 0;
+      userLicenseKey = u.key || '';
+      userIsLoggedIn = true;
+      showUserLoggedIn();
+      // Refresh credits from server
+      fetchUserCredits(currentUserEmail);
+    }catch(e){ localStorage.removeItem('se_web_user'); }
+  }
+
   const s=localStorage.getItem('se_url');
   if(s){
     scriptUrl=s;
@@ -644,6 +700,140 @@ window.onload=()=>{
   buildChips();
   if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 };
+
+// ── EMAIL + OTP FUNCTIONS ──────────────────────────
+function checkEmailInput(){
+  const v=document.getElementById('userEmailInp').value.trim();
+  document.getElementById('btnSendOTP').disabled=!validEmail(v);
+}
+
+function checkOTPInput(){
+  const v=document.getElementById('otpInp').value.trim();
+  document.getElementById('btnVerifyOTP').disabled=v.length!==6;
+}
+
+async function sendOTP(){
+  const email=document.getElementById('userEmailInp').value.trim();
+  if(!validEmail(email)) return;
+  currentUserEmail=email;
+  currentOTP = Math.floor(100000+Math.random()*900000).toString();
+
+  const btn=document.getElementById('btnSendOTP');
+  btn.disabled=true; btn.textContent='Sending...';
+
+  try{
+    // Send OTP via License Server
+    const url=`${LICENSE_SERVER_URL}?action=sendotp&email=${encodeURIComponent(email)}&otp=${currentOTP}`;
+    await fetch(url);
+  }catch(e){ /* ignore CORS — OTP stored locally for verification */ }
+
+  // Show OTP section
+  document.getElementById('emailEntrySection').style.display='none';
+  document.getElementById('otpEntrySection').style.display='';
+  document.getElementById('otpEmailLabel').textContent=email;
+  btn.disabled=false; btn.textContent='Send OTP';
+}
+
+function backToEmail(){
+  document.getElementById('otpEntrySection').style.display='none';
+  document.getElementById('emailEntrySection').style.display='';
+  document.getElementById('otpInp').value='';
+}
+
+async function verifyOTP(){
+  const entered=document.getElementById('otpInp').value.trim();
+  const btn=document.getElementById('btnVerifyOTP');
+  btn.disabled=true; btn.textContent='Verifying...';
+
+  try{
+    // Verify OTP with server
+    const url=`${LICENSE_SERVER_URL}?action=verifyotp&email=${encodeURIComponent(currentUserEmail)}&otp=${entered}`;
+    const r=await fetch(url);
+    const d=await r.json();
+
+    if(d.status==='ok' && d.valid){
+      userCredits=d.credits||0;
+      userLicenseKey=d.key||'';
+      userIsLoggedIn=true;
+      // Save session
+      localStorage.setItem('se_web_user', JSON.stringify({
+        email:currentUserEmail, credits:userCredits, key:userLicenseKey
+      }));
+      showUserLoggedIn();
+    } else {
+      btn.disabled=false; btn.textContent='✓ Verify OTP';
+      alert('❌ Invalid OTP. Please try again.');
+    }
+  }catch(e){
+    // Fallback: if server unreachable, accept OTP locally
+    if(entered===currentOTP){
+      userIsLoggedIn=true;
+      userCredits=50; // Give trial credits
+      localStorage.setItem('se_web_user', JSON.stringify({
+        email:currentUserEmail, credits:50, key:''
+      }));
+      showUserLoggedIn();
+    } else {
+      btn.disabled=false; btn.textContent='✓ Verify OTP';
+      alert('❌ Invalid OTP. Please try again.');
+    }
+  }
+}
+
+function showUserLoggedIn(){
+  document.getElementById('emailEntrySection').style.display='none';
+  document.getElementById('otpEntrySection').style.display='none';
+  document.getElementById('userConnBox').classList.add('show');
+  document.getElementById('userConnLabel').textContent=`✓ ${currentUserEmail}`;
+
+  const creditColor = userCredits<=0?'#d93025':userCredits<=20?'#b45309':'#0d9e73';
+  document.getElementById('creditsBadge').textContent=`${userCredits} credits`;
+  document.getElementById('creditsBadge').style.color=creditColor;
+
+  // Show Apps Script section
+  document.getElementById('appsScriptSection').style.display='';
+
+  // If no credits — show buy message
+  if(userCredits<=0){
+    const notice = document.createElement('div');
+    notice.className='notice n-warn';
+    notice.innerHTML='<span>⚠️</span><div><strong>No credits remaining.</strong> <a href="/#pricing" style="color:var(--blue)">Buy credits →</a></div>';
+    document.getElementById('appsScriptSection').prepend(notice);
+  }
+
+  // Enable next if Apps Script already connected
+  if(scriptUrl) document.getElementById('btnStep1').disabled=false;
+}
+
+function logoutUser(){
+  localStorage.removeItem('se_web_user');
+  currentUserEmail=''; userCredits=0; userLicenseKey=''; userIsLoggedIn=false;
+  document.getElementById('userConnBox').classList.remove('show');
+  document.getElementById('emailEntrySection').style.display='';
+  document.getElementById('otpEntrySection').style.display='none';
+  document.getElementById('appsScriptSection').style.display='none';
+  document.getElementById('userEmailInp').value='';
+  document.getElementById('otpInp').value='';
+  document.getElementById('btnStep1').disabled=true;
+}
+
+async function fetchUserCredits(email){
+  try{
+    const url=`${LICENSE_SERVER_URL}?action=findbyemail&email=${encodeURIComponent(email)}`;
+    const r=await fetch(url);
+    const d=await r.json();
+    if(d.found){
+      userCredits=d.balance||0;
+      userLicenseKey=d.key||'';
+      localStorage.setItem('se_web_user', JSON.stringify({
+        email, credits:userCredits, key:userLicenseKey
+      }));
+      const creditColor=userCredits<=0?'#d93025':userCredits<=20?'#b45309':'#0d9e73';
+      document.getElementById('creditsBadge').textContent=`${userCredits} credits`;
+      document.getElementById('creditsBadge').style.color=creditColor;
+    }
+  }catch(e){}
+}
 
 function checkUrl(){
   const v=document.getElementById('scriptUrl').value.trim();
@@ -674,7 +864,8 @@ function showConn(){
   document.getElementById('setupSteps').style.display='none';
   const b=document.getElementById('connBox');b.classList.add('show');
   document.getElementById('connLabel').textContent='✓ '+connEmail;
-  document.getElementById('btnStep1').disabled=false;
+  // Only enable Next if user is also logged in
+  if(userIsLoggedIn) document.getElementById('btnStep1').disabled=false;
 }
 
 function disconnect(){
@@ -985,6 +1176,16 @@ async function startSend(){
   document.getElementById('logBox').innerHTML='';
   document.getElementById('doneBanner').style.display='none';
 
+  // Check credits for web app users
+  if(userIsLoggedIn && userCredits<=0){
+    addLog('warn','No credits remaining! Please purchase credits to continue.');
+    isSending=false;
+    document.getElementById('btnGo').disabled=false;
+    document.getElementById('btnBackSend').disabled=false;
+    setTimeout(()=>{ window.open('https://sendease.in/#pricing','_blank'); },800);
+    return;
+  }
+
   const allReady=matched.filter(r=>r.status==='ready'||r.status==='ready-no-attach');
   const toSend=allReady.filter(r=>!alreadySent.has(r.email));
   const resumed=allReady.filter(r=>alreadySent.has(r.email));
@@ -1026,7 +1227,21 @@ async function startSend(){
           if(r.status==='sent'){
             addLog('ok',`${r.name} → ${r.email}`);
             sent++;
-            sessionAdd(r.email); // save after each sent
+            sessionAdd(r.email);
+            // Deduct credit
+            if(userIsLoggedIn){
+              userCredits=Math.max(0,userCredits-1);
+              const savedUser=JSON.parse(localStorage.getItem('se_web_user')||'{}');
+              savedUser.credits=userCredits;
+              localStorage.setItem('se_web_user',JSON.stringify(savedUser));
+              // Sync with server
+              fetch(`${LICENSE_SERVER_URL}?action=deduct&key=${encodeURIComponent(userLicenseKey)}`).catch(()=>{});
+              if(userCredits<=0){
+                addLog('warn','Credits finished! Purchase more to continue sending.');
+              } else if(userCredits<=10){
+                addLog('warn',`Low credits: ${userCredits} remaining — recharge soon`);
+              }
+            }
           } else if(r.status==='failed'){
             addLog('err',`${r.name}: ${r.reason}`);failed++;
           } else addLog('warn',`${r.name||r.email} — ${r.reason||r.status}`);
