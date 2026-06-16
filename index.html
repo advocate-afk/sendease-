@@ -14,182 +14,55 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#fafaf8;
-  --bg2:#f2f0eb;
-  --bg3:#e8e4dc;
-  --ink:#0d0d0d;
-  --ink2:#2a2a2a;
-  --muted:#7a7a72;
-  --border:#dedad2;
-  --accent:#e8420a;
-  --accent2:#ff6535;
-  --acbg:#fff3ef;
-  --green:#0a8f65;
-  --greenbg:#edfaf4;
-  --blue:#1a56db;
-  --f:'Instrument Serif',serif;
-  --fb:'Inter',sans-serif;
-  --fm:'JetBrains Mono',monospace;
+  --bg:#fafaf8;--bg2:#f2f0eb;--bg3:#e8e4dc;--ink:#0d0d0d;--ink2:#2a2a2a;
+  --muted:#7a7a72;--border:#dedad2;--accent:#e8420a;--accent2:#ff6535;
+  --acbg:#fff3ef;--green:#0a8f65;--greenbg:#edfaf4;--blue:#1a56db;
+  --f:'Instrument Serif',serif;--fb:'Inter',sans-serif;--fm:'JetBrains Mono',monospace;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--fb);overflow-x:hidden}
-
-/* NAV */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 48px;height:60px;
-  background:rgba(250,250,248,.95);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;background:rgba(250,250,248,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-mark{
-  width:32px;height:32px;border-radius:8px;
-  background:var(--accent);
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;box-shadow:0 2px 8px rgba(232,66,10,.3);
-}
+.logo-mark{width:32px;height:32px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 2px 8px rgba(232,66,10,.3)}
 .logo-text{font-family:var(--fb);font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-0.3px}
 .logo-text span{color:var(--accent)}
 .nav-links{display:flex;align-items:center;gap:32px}
 .nav-links a{font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .15s}
 .nav-links a:hover{color:var(--ink)}
 .nav-right{display:flex;align-items:center;gap:8px}
-.nav-pill{
-  display:none;align-items:center;gap:6px;
-  background:var(--bg2);color:var(--ink);
-  padding:7px 14px;border-radius:100px;
-  font-size:13px;font-weight:500;
-  border:1px solid var(--border);cursor:pointer;
-  transition:all .15s;
-}
+.nav-pill{display:none;align-items:center;gap:6px;background:var(--bg2);color:var(--ink);padding:7px 14px;border-radius:100px;font-size:13px;font-weight:500;border:1px solid var(--border);cursor:pointer;transition:all .15s}
 .nav-pill.show{display:inline-flex}
 .nav-pill:hover{background:var(--bg3)}
 .nav-pill svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.nav-cta{
-  background:var(--ink);color:#fff;
-  padding:8px 20px;border-radius:100px;
-  font-size:14px;font-weight:600;text-decoration:none;
-  transition:all .15s;
-}
+.nav-cta{background:var(--ink);color:#fff;padding:8px 20px;border-radius:100px;font-size:14px;font-weight:600;text-decoration:none;transition:all .15s}
 .nav-cta:hover{background:var(--accent)}
-
-/* HERO */
-.hero{
-  min-height:100vh;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:100px 24px 60px;
-  text-align:center;
-  position:relative;overflow:hidden;
-}
-.hero-bg{
-  position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 60% 50% at 20% 80%,rgba(232,66,10,.06),transparent),
-    radial-gradient(ellipse 50% 40% at 80% 20%,rgba(232,66,10,.04),transparent);
-  pointer-events:none;
-}
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--acbg);border:1px solid rgba(232,66,10,.2);
-  border-radius:100px;padding:5px 14px 5px 6px;
-  font-size:12px;font-weight:500;color:var(--accent);
-  margin-bottom:28px;
-}
-.hero-eyebrow-dot{
-  width:20px;height:20px;border-radius:50%;
-  background:var(--accent);color:#fff;
-  font-size:10px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;
-}
-h1{
-  font-family:var(--f);
-  font-size:clamp(52px,8vw,96px);
-  font-weight:400;
-  line-height:.95;
-  letter-spacing:-2px;
-  color:var(--ink);
-  margin-bottom:8px;
-}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px 60px;text-align:center;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 20% 80%,rgba(232,66,10,.06),transparent),radial-gradient(ellipse 50% 40% at 80% 20%,rgba(232,66,10,.04),transparent);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--acbg);border:1px solid rgba(232,66,10,.2);border-radius:100px;padding:5px 14px 5px 6px;font-size:12px;font-weight:500;color:var(--accent);margin-bottom:28px}
+.hero-eyebrow-dot{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+h1{font-family:var(--f);font-size:clamp(52px,8vw,96px);font-weight:400;line-height:.95;letter-spacing:-2px;color:var(--ink);margin-bottom:8px}
 h1 em{font-style:italic;color:var(--accent)}
-.hero-sub2{
-  font-family:var(--f);
-  font-size:clamp(24px,3.5vw,40px);
-  font-weight:400;
-  color:var(--muted);
-  margin-bottom:28px;
-  font-style:italic;
-}
-.hero-desc{
-  font-size:16px;line-height:1.7;color:var(--muted);
-  max-width:480px;margin:0 auto 40px;font-weight:400;
-}
+.hero-sub2{font-family:var(--f);font-size:clamp(24px,3.5vw,40px);font-weight:400;color:var(--muted);margin-bottom:28px;font-style:italic}
+.hero-desc{font-size:16px;line-height:1.7;color:var(--muted);max-width:480px;margin:0 auto 40px;font-weight:400}
 .hero-desc strong{color:var(--ink2);font-weight:600}
-
 .hero-actions{display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
-.btn-hero-primary{
-  display:inline-flex;align-items:center;gap:9px;
-  background:var(--accent);color:#fff;
-  padding:14px 28px;border-radius:100px;
-  font-size:15px;font-weight:600;
-  text-decoration:none;transition:all .2s;
-  box-shadow:0 4px 20px rgba(232,66,10,.3);
-  border:none;cursor:pointer;
-}
+.btn-hero-primary{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#fff;padding:14px 28px;border-radius:100px;font-size:15px;font-weight:600;text-decoration:none;transition:all .2s;box-shadow:0 4px 20px rgba(232,66,10,.3);border:none;cursor:pointer}
 .btn-hero-primary:hover{background:#c73508;transform:translateY(-2px);box-shadow:0 8px 28px rgba(232,66,10,.35)}
 .btn-hero-primary svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.btn-hero-sec{
-  display:inline-flex;align-items:center;gap:8px;
-  background:transparent;color:var(--ink);
-  padding:14px 24px;border-radius:100px;
-  border:1.5px solid var(--border);
-  font-size:15px;font-weight:500;text-decoration:none;transition:all .15s;
-}
+.btn-hero-sec{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--ink);padding:14px 24px;border-radius:100px;border:1.5px solid var(--border);font-size:15px;font-weight:500;text-decoration:none;transition:all .15s}
 .btn-hero-sec:hover{border-color:var(--ink);background:var(--bg2)}
-.btn-hero-install{
-  display:none;align-items:center;gap:8px;
-  background:var(--ink2);color:#fff;
-  padding:14px 24px;border-radius:100px;
-  font-size:15px;font-weight:600;
-  border:none;cursor:pointer;transition:all .15s;
-}
+.btn-hero-install{display:none;align-items:center;gap:8px;background:var(--ink2);color:#fff;padding:14px 24px;border-radius:100px;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:all .15s}
 .btn-hero-install.show{display:inline-flex}
 .btn-hero-install:hover{background:var(--ink)}
 .btn-hero-install svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-
-/* STATS STRIP */
-.stats-strip{
-  display:flex;align-items:center;gap:32px;
-  flex-wrap:wrap;justify-content:center;
-  padding:0 24px;
-}
+.stats-strip{display:flex;align-items:center;gap:32px;flex-wrap:wrap;justify-content:center;padding:0 24px}
 .stat-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
 .stat-item strong{color:var(--ink);font-weight:700;font-size:15px}
 .stat-sep{width:1px;height:20px;background:var(--border)}
-
-/* DEMO CARD */
-.demo-outer{
-  margin-top:56px;width:100%;max-width:640px;
-  border-radius:20px;overflow:hidden;
-  box-shadow:0 24px 64px rgba(0,0,0,.1),0 0 0 1px var(--border);
-  background:var(--ink2);
-}
-.demo-chrome{
-  background:rgba(255,255,255,.07);
-  padding:12px 16px;
-  display:flex;align-items:center;gap:8px;
-  border-bottom:1px solid rgba(255,255,255,.07);
-}
+.demo-outer{margin-top:56px;width:100%;max-width:640px;border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.1),0 0 0 1px var(--border);background:var(--ink2)}
+.demo-chrome{background:rgba(255,255,255,.07);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.07)}
 .dc{width:10px;height:10px;border-radius:50%}
-.demo-url{
-  flex:1;margin:0 12px;
-  background:rgba(255,255,255,.08);
-  border-radius:6px;padding:4px 12px;
-  font-size:11px;color:rgba(255,255,255,.4);
-  font-family:var(--fm);
-}
+.demo-url{flex:1;margin:0 12px;background:rgba(255,255,255,.08);border-radius:6px;padding:4px 12px;font-size:11px;color:rgba(255,255,255,.4);font-family:var(--fm)}
 .demo-body{padding:20px;display:flex;flex-direction:column;gap:8px;background:#111418}
 .demo-prog-wrap{margin-bottom:4px}
 .demo-prog-top{display:flex;justify-content:space-between;margin-bottom:6px;font-size:11px}
@@ -197,12 +70,7 @@ h1 em{font-style:italic;color:var(--accent)}
 .demo-prog-pct{color:#1fcea8;font-weight:700;font-family:var(--fm)}
 .dbar{height:4px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden}
 .dbar-fill{height:100%;width:72%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px}
-.demo-row{
-  display:flex;align-items:center;gap:10px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.05);
-  border-radius:8px;padding:9px 12px;
-}
+.demo-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:9px 12px}
 .dtag{padding:2px 8px;border-radius:4px;font-size:9px;font-weight:700;white-space:nowrap;font-family:var(--fb)}
 .dt-sent{background:rgba(31,206,168,.15);color:#1fcea8}
 .dt-going{background:rgba(79,138,255,.15);color:#7aa8ff}
@@ -210,29 +78,12 @@ h1 em{font-style:italic;color:var(--accent)}
 .dname{color:rgba(255,255,255,.8);font-size:12px;font-weight:500;min-width:110px}
 .demail{color:rgba(255,255,255,.3);font-size:11px;font-family:var(--fm)}
 .dfile{margin-left:auto;font-size:10px;color:rgba(255,255,255,.2);font-family:var(--fm)}
-
-/* SECTIONS */
 .sec{padding:96px 24px}
 .sec-inner{max-width:1080px;margin:0 auto}
-.sec-eyebrow{
-  display:inline-block;
-  font-size:11px;font-weight:600;
-  text-transform:uppercase;letter-spacing:2px;
-  color:var(--accent);margin-bottom:14px;
-}
-h2.sec-h{
-  font-family:var(--f);
-  font-size:clamp(36px,5vw,58px);
-  font-weight:400;
-  line-height:1;
-  letter-spacing:-1.5px;
-  color:var(--ink);
-  margin-bottom:14px;
-}
+.sec-eyebrow{display:inline-block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--accent);margin-bottom:14px}
+h2.sec-h{font-family:var(--f);font-size:clamp(36px,5vw,58px);font-weight:400;line-height:1;letter-spacing:-1.5px;color:var(--ink);margin-bottom:14px}
 h2.sec-h em{font-style:italic;color:var(--accent)}
 .sec-sub{font-size:16px;color:var(--muted);line-height:1.7;max-width:520px}
-
-/* HOW IT WORKS */
 .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:52px;background:var(--border);border-radius:16px;overflow:hidden}
 .step-card{background:var(--bg);padding:36px 28px;transition:all .25s;position:relative;cursor:default}
 .step-card::before{content:'';position:absolute;inset:0;background:var(--ink);opacity:0;transition:opacity .25s}
@@ -245,143 +96,50 @@ h2.sec-h em{font-style:italic;color:var(--accent)}
 .step-card:hover .step-title{color:#fff}
 .step-desc{font-size:13px;color:var(--muted);line-height:1.7;transition:color .25s}
 .step-card:hover .step-desc{color:rgba(255,255,255,.5)}
-
-/* USE CASES */
 .uc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:52px}
-.uc-card{
-  background:var(--bg);border:1.5px solid var(--border);
-  border-radius:16px;padding:28px;
-  display:flex;gap:18px;align-items:flex-start;
-  transition:all .2s;
-}
+.uc-card{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;padding:28px;display:flex;gap:18px;align-items:flex-start;transition:all .2s}
 .uc-card:hover{border-color:var(--accent);background:var(--acbg);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,66,10,.08)}
-.uc-ico{
-  width:48px;height:48px;border-radius:12px;
-  background:var(--bg2);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:22px;
-  transition:background .2s;
-}
+.uc-ico{width:48px;height:48px;border-radius:12px;background:var(--bg2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;transition:background .2s}
 .uc-card:hover .uc-ico{background:rgba(232,66,10,.12)}
 .uc-name{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px}
 .uc-desc{font-size:13px;color:var(--muted);line-height:1.6}
-.uc-tag{
-  display:inline-block;margin-top:10px;
-  background:var(--bg2);color:var(--muted);
-  font-size:10px;font-weight:600;
-  padding:3px 10px;border-radius:100px;
-  text-transform:uppercase;letter-spacing:.5px;
-}
-
-/* FEATURES */
+.uc-tag{display:inline-block;margin-top:10px;background:var(--bg2);color:var(--muted);font-size:10px;font-weight:600;padding:3px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:.5px}
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:52px}
-.feat-card{
-  background:var(--bg);border:1px solid var(--border);
-  border-radius:14px;padding:24px;
-  transition:border-color .15s;
-}
+.feat-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px;transition:border-color .15s}
 .feat-card:hover{border-color:var(--accent)}
 .feat-ico{font-size:24px;margin-bottom:12px}
 .feat-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px}
 .feat-desc{font-size:13px;color:var(--muted);line-height:1.6}
-
-/* PRICING */
 .pricing-sec{padding:96px 24px;background:var(--ink)}
 .pricing-sec .sec-eyebrow{color:var(--accent2)}
 .pricing-sec h2.sec-h{color:#fff}
 .pricing-sec .sec-sub{color:rgba(255,255,255,.45)}
-.pricing-trial{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
-  border-radius:100px;padding:7px 16px;
-  font-size:13px;color:rgba(255,255,255,.6);
-  margin-top:14px;
-}
+.pricing-trial{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:7px 16px;font-size:13px;color:rgba(255,255,255,.6);margin-top:14px}
 .pricing-trial span{color:#1fcea8;font-weight:600}
-
-/* 2x2 PRICING GRID */
-.price-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-  margin-top:48px;
-  max-width:760px;
-  margin-left:auto;
-  margin-right:auto;
-}
-.price-card{
-  background:rgba(255,255,255,.05);
-  border:1.5px solid rgba(255,255,255,.1);
-  border-radius:18px;
-  padding:28px 24px;
-  transition:all .2s;
-  position:relative;
-  cursor:default;
-}
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px;max-width:760px;margin-left:auto;margin-right:auto}
+.price-card{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:18px;padding:28px 24px;transition:all .2s;position:relative;cursor:default}
 .price-card:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
 .price-card.hot{background:rgba(232,66,10,.12);border-color:rgba(232,66,10,.4)}
 .price-card.hot:hover{background:rgba(232,66,10,.18)}
-.hot-badge{
-  position:absolute;top:-10px;left:24px;
-  background:var(--accent);color:#fff;
-  font-size:10px;font-weight:700;
-  padding:3px 12px;border-radius:100px;
-  text-transform:uppercase;letter-spacing:.5px;
-}
+.hot-badge{position:absolute;top:-10px;left:24px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:3px 12px;border-radius:100px;text-transform:uppercase;letter-spacing:.5px}
 .price-credits{font-family:var(--f);font-size:42px;font-weight:400;color:#fff;line-height:1;margin-bottom:4px;font-style:italic}
 .price-credits small{font-family:var(--fb);font-size:14px;color:rgba(255,255,255,.4);font-style:normal}
 .price-amount{font-size:28px;font-weight:800;color:var(--accent2);margin:10px 0 4px;font-family:var(--fb)}
 .price-per{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:20px}
-.price-buy{
-  display:block;width:100%;padding:12px;
-  border-radius:10px;
-  font-size:14px;font-weight:600;
-  cursor:pointer;border:none;
-  transition:all .15s;text-align:center;
-  font-family:var(--fb);
-}
+.price-buy{display:block;width:100%;padding:12px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .15s;text-align:center;font-family:var(--fb)}
 .price-buy-main{background:var(--accent);color:#fff;box-shadow:0 4px 16px rgba(232,66,10,.35)}
 .price-buy-main:hover{background:#c73508}
 .price-buy-sec{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.12)}
 .price-buy-sec:hover{background:rgba(255,255,255,.14);color:#fff}
-
-/* DOWNLOAD */
-.download-sec{
-  padding:88px 24px;
-  background:var(--bg2);
-  text-align:center;
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-}
-.download-sec h2{
-  font-family:var(--f);
-  font-size:clamp(36px,5vw,60px);
-  font-weight:400;
-  letter-spacing:-1.5px;
-  color:var(--ink);
-  margin-bottom:10px;
-}
+.download-sec{padding:88px 24px;background:var(--bg2);text-align:center;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.download-sec h2{font-family:var(--f);font-size:clamp(36px,5vw,60px);font-weight:400;letter-spacing:-1.5px;color:var(--ink);margin-bottom:10px}
 .download-sec h2 em{font-style:italic;color:var(--accent)}
 .download-sec p{font-size:15px;color:var(--muted);margin-bottom:32px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.7}
-.download-btn{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--ink);color:#fff;
-  padding:16px 32px;border-radius:100px;
-  font-size:16px;font-weight:700;
-  text-decoration:none;transition:all .2s;
-  box-shadow:0 4px 20px rgba(0,0,0,.15);
-  font-family:var(--fb);
-}
+.download-btn{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff;padding:16px 32px;border-radius:100px;font-size:16px;font-weight:700;text-decoration:none;transition:all .2s;box-shadow:0 4px 20px rgba(0,0,0,.15);font-family:var(--fb)}
 .download-btn:hover{background:var(--accent);transform:translateY(-2px);box-shadow:0 8px 28px rgba(232,66,10,.3)}
 .download-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .os-badges{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;flex-wrap:wrap}
-.os-badge{
-  background:var(--bg3);
-  border:1px solid var(--border);
-  border-radius:100px;padding:6px 14px;
-  font-size:12px;color:var(--muted);font-weight:500;
-}
-
-/* PWA */
+.os-badge{background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:12px;color:var(--muted);font-weight:500}
 .pwa-sec{background:var(--ink2);padding:72px 24px;text-align:center}
 .pwa-sec h2{font-family:var(--f);font-size:clamp(28px,4vw,48px);font-weight:400;letter-spacing:-1.5px;color:#fff;margin-bottom:10px}
 .pwa-sec h2 em{font-style:italic;color:var(--accent2)}
@@ -389,35 +147,16 @@ h2.sec-h em{font-style:italic;color:var(--accent)}
 .pwa-badges{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:24px}
 .pwa-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:8px 16px;font-size:12px;color:rgba(255,255,255,.55)}
 .pwa-badge svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.6}
-.pwa-install-big{
-  display:none;align-items:center;gap:9px;
-  background:var(--accent);color:#fff;
-  padding:14px 28px;border-radius:100px;
-  font-size:15px;font-weight:600;
-  border:none;cursor:pointer;
-  box-shadow:0 4px 20px rgba(232,66,10,.35);
-  transition:all .15s;margin:0 auto;
-  font-family:var(--fb);
-}
+.pwa-install-big{display:none;align-items:center;gap:9px;background:var(--accent);color:#fff;padding:14px 28px;border-radius:100px;font-size:15px;font-weight:600;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(232,66,10,.35);transition:all .15s;margin:0 auto;font-family:var(--fb)}
 .pwa-install-big.show{display:inline-flex}
 .pwa-install-big:hover{background:#c73508;transform:translateY(-1px)}
 .pwa-install-big svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .pwa-hint{font-size:12px;color:rgba(255,255,255,.25);margin-top:12px}
-
-/* CTA */
 .cta-sec{padding:88px 24px;text-align:center;background:var(--bg)}
 .cta-sec h2{font-family:var(--f);font-size:clamp(36px,5vw,64px);font-weight:400;letter-spacing:-2px;color:var(--ink);margin-bottom:12px}
 .cta-sec h2 em{font-style:italic;color:var(--accent)}
 .cta-sec p{font-size:15px;color:var(--muted);margin-bottom:32px}
-
-/* FOOTER */
-footer{
-  background:var(--ink);
-  padding:32px 48px;
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:14px;
-  border-top:1px solid rgba(255,255,255,.07);
-}
+footer{background:var(--ink);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;border-top:1px solid rgba(255,255,255,.07)}
 .footer-logo{font-family:var(--fb);font-size:16px;font-weight:700;color:#fff;text-decoration:none}
 .footer-logo span{color:var(--accent)}
 footer p{font-size:12px;color:rgba(255,255,255,.3)}
@@ -439,13 +178,35 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
 .modal-step-desc strong{color:var(--ink2);font-weight:600}
 .modal-step-warn{font-size:11px;color:var(--accent);margin-top:4px}
 #autoInstallBtn{display:none;margin-top:16px}
-.btn-auto-install{
-  width:100%;background:var(--accent);color:#fff;
-  border:none;border-radius:10px;padding:13px;
-  font-size:14px;font-weight:700;cursor:pointer;
-  font-family:var(--fb);transition:background .15s;
-}
+.btn-auto-install{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fb);transition:background .15s}
 .btn-auto-install:hover{background:#c73508}
+
+/* CHECKOUT MODAL */
+#checkoutModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+#checkoutModal.open{display:flex}
+.co-box{background:#fff;border-radius:20px;max-width:420px;width:100%;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.2)}
+.co-head{background:var(--ink);padding:24px 28px;position:relative}
+.co-head-title{font-family:var(--f);font-size:22px;font-weight:400;color:#fff;margin-bottom:8px}
+.co-head-title em{font-style:italic;color:var(--accent2)}
+.co-plan-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:100px;padding:6px 16px}
+.co-plan-badge span{font-size:13px;color:rgba(255,255,255,.65)}
+.co-plan-badge strong{font-size:15px;color:#fff;font-weight:700}
+.co-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.1);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;line-height:1}
+.co-close:hover{background:rgba(255,255,255,.2)}
+.co-body{padding:28px}
+.co-fg{margin-bottom:16px}
+.co-fg label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
+.co-inp{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-family:var(--fb);outline:none;background:var(--bg);transition:border-color .15s;color:var(--ink)}
+.co-inp:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(232,66,10,.08)}
+.co-inp.err{border-color:#d93025}
+.co-hint{font-size:11px;color:var(--muted);margin-top:5px}
+.co-submit{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;font-family:var(--fb);cursor:pointer;transition:all .15s;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.co-submit:hover{background:#c73508}
+.co-submit:disabled{background:#ccc;cursor:not-allowed}
+.co-submit svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.co-note{font-size:11px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.7}
+.co-secure{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:10px;font-size:11px;color:var(--muted)}
+.co-secure svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
 
 @media(max-width:768px){
   nav{padding:0 20px}
@@ -457,7 +218,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a class="logo" href="index.html">
     <div class="logo-mark">✉</div>
@@ -478,7 +238,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-eyebrow">
@@ -488,7 +247,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
   <h1>Bulk emails,<br/><em>done right.</em></h1>
   <p class="hero-sub2">With any attachment.</p>
   <p class="hero-desc">Upload your list, attach <strong>any file</strong> — PDF, image, Word, ZIP — and send to hundreds or thousands. Straight from your Gmail.</p>
-
   <div class="hero-actions">
     <a href="app.html" class="btn-hero-primary">
       <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -503,7 +261,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
       Install App
     </button>
   </div>
-
   <div class="stats-strip">
     <div class="stat-item"><strong>50</strong> free emails to start</div>
     <div class="stat-sep"></div>
@@ -513,7 +270,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
     <div class="stat-sep"></div>
     <div class="stat-item"><strong>No</strong> subscription</div>
   </div>
-
   <div class="demo-outer">
     <div class="demo-chrome">
       <div class="dc" style="background:#ff5f57"></div>
@@ -529,107 +285,41 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
         </div>
         <div class="dbar"><div class="dbar-fill"></div></div>
       </div>
-      <div class="demo-row">
-        <div class="dtag dt-sent">✓ SENT</div>
-        <div class="dname">Sarah Johnson</div>
-        <div class="demail">sarah.j@acme.com</div>
-        <div class="dfile">Payslip_June.pdf</div>
-      </div>
-      <div class="demo-row">
-        <div class="dtag dt-sent">✓ SENT</div>
-        <div class="dname">Marcus Lee</div>
-        <div class="demail">m.lee@globalco.com</div>
-        <div class="dfile">Offer_Letter.pdf</div>
-      </div>
-      <div class="demo-row">
-        <div class="dtag dt-going">⟳ SENDING</div>
-        <div class="dname">Aisha Patel</div>
-        <div class="demail">aisha.p@design.io</div>
-        <div class="dfile">Contract_May.pdf</div>
-      </div>
-      <div class="demo-row">
-        <div class="dtag dt-skip">⚠ SKIP</div>
-        <div class="dname">Robert Chen</div>
-        <div class="demail" style="color:#fbbf24">Email missing</div>
-        <div class="dfile">—</div>
-      </div>
+      <div class="demo-row"><div class="dtag dt-sent">✓ SENT</div><div class="dname">Sarah Johnson</div><div class="demail">sarah.j@acme.com</div><div class="dfile">Payslip_June.pdf</div></div>
+      <div class="demo-row"><div class="dtag dt-sent">✓ SENT</div><div class="dname">Marcus Lee</div><div class="demail">m.lee@globalco.com</div><div class="dfile">Offer_Letter.pdf</div></div>
+      <div class="demo-row"><div class="dtag dt-going">⟳ SENDING</div><div class="dname">Aisha Patel</div><div class="demail">aisha.p@design.io</div><div class="dfile">Contract_May.pdf</div></div>
+      <div class="demo-row"><div class="dtag dt-skip">⚠ SKIP</div><div class="dname">Robert Chen</div><div class="demail" style="color:#fbbf24">Email missing</div><div class="dfile">—</div></div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section id="how" class="sec" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
 <div class="sec-inner">
   <div class="sec-eyebrow">How it works</div>
   <h2 class="sec-h">Three steps.<br/><em>That's it.</em></h2>
   <p class="sec-sub">No technical knowledge. Works in any browser, any device.</p>
   <div class="steps-grid">
-    <div class="step-card">
-      <div class="step-num">1</div>
-      <div class="step-ico">📊</div>
-      <div class="step-title">Upload your list</div>
-      <div class="step-desc">Excel or CSV with Name and Email columns. Nothing else required.</div>
-    </div>
-    <div class="step-card">
-      <div class="step-num">2</div>
-      <div class="step-ico">📎</div>
-      <div class="step-title">Attach any file</div>
-      <div class="step-desc">One file to everyone, or a unique file per person — matched automatically by ID.</div>
-    </div>
-    <div class="step-card">
-      <div class="step-num">3</div>
-      <div class="step-ico">🚀</div>
-      <div class="step-title">Send</div>
-      <div class="step-desc">Write your message, preview all recipients, and hit send. Watch it go live.</div>
-    </div>
+    <div class="step-card"><div class="step-num">1</div><div class="step-ico">📊</div><div class="step-title">Upload your list</div><div class="step-desc">Excel or CSV with Name and Email columns. Nothing else required.</div></div>
+    <div class="step-card"><div class="step-num">2</div><div class="step-ico">📎</div><div class="step-title">Attach any file</div><div class="step-desc">One file to everyone, or a unique file per person — matched automatically by ID.</div></div>
+    <div class="step-card"><div class="step-num">3</div><div class="step-ico">🚀</div><div class="step-title">Send</div><div class="step-desc">Write your message, preview all recipients, and hit send. Watch it go live.</div></div>
   </div>
 </div>
 </section>
 
-<!-- USE CASES -->
 <section id="usecases" class="sec">
 <div class="sec-inner">
   <div class="sec-eyebrow">Who uses SendEase</div>
   <h2 class="sec-h">Built for people who<br/><em>send documents.</em></h2>
   <p class="sec-sub">Not just marketers. Anyone who sends files to a list of people.</p>
   <div class="uc-grid">
-    <div class="uc-card">
-      <div class="uc-ico">🏢</div>
-      <div>
-        <div class="uc-name">HR & Payroll Teams</div>
-        <div class="uc-desc">Payslips, appointment letters, Form 16, tax documents — matched per employee or sent to all at once.</div>
-        <div class="uc-tag">Most popular</div>
-      </div>
-    </div>
-    <div class="uc-card">
-      <div class="uc-ico">🧾</div>
-      <div>
-        <div class="uc-name">Accountants & CA Firms</div>
-        <div class="uc-desc">Client statements, ITR acknowledgements, audit reports — bulk delivery in minutes.</div>
-        <div class="uc-tag">Finance</div>
-      </div>
-    </div>
-    <div class="uc-card">
-      <div class="uc-ico">📣</div>
-      <div>
-        <div class="uc-name">Marketing Teams</div>
-        <div class="uc-desc">Offers, brochures, product catalogs — personalized campaigns to thousands of customers.</div>
-        <div class="uc-tag">Marketing</div>
-      </div>
-    </div>
-    <div class="uc-card">
-      <div class="uc-ico">🎓</div>
-      <div>
-        <div class="uc-name">Schools & Institutes</div>
-        <div class="uc-desc">Report cards, admit cards, fee receipts, certificates — send to every parent in one click.</div>
-        <div class="uc-tag">Education</div>
-      </div>
-    </div>
+    <div class="uc-card"><div class="uc-ico">🏢</div><div><div class="uc-name">HR & Payroll Teams</div><div class="uc-desc">Payslips, appointment letters, Form 16, tax documents — matched per employee or sent to all at once.</div><div class="uc-tag">Most popular</div></div></div>
+    <div class="uc-card"><div class="uc-ico">🧾</div><div><div class="uc-name">Accountants & CA Firms</div><div class="uc-desc">Client statements, ITR acknowledgements, audit reports — bulk delivery in minutes.</div><div class="uc-tag">Finance</div></div></div>
+    <div class="uc-card"><div class="uc-ico">📣</div><div><div class="uc-name">Marketing Teams</div><div class="uc-desc">Offers, brochures, product catalogs — personalized campaigns to thousands of customers.</div><div class="uc-tag">Marketing</div></div></div>
+    <div class="uc-card"><div class="uc-ico">🎓</div><div><div class="uc-name">Schools & Institutes</div><div class="uc-desc">Report cards, admit cards, fee receipts, certificates — send to every parent in one click.</div><div class="uc-tag">Education</div></div></div>
   </div>
 </div>
 </section>
 
-<!-- FEATURES -->
 <section class="sec" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
 <div class="sec-inner">
   <div class="sec-eyebrow">Features</div>
@@ -645,45 +335,21 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
 </div>
 </section>
 
-<!-- PRICING -->
 <section id="pricing" class="pricing-sec">
 <div class="sec-inner" style="text-align:center">
   <div class="sec-eyebrow">Pricing</div>
   <h2 class="sec-h" style="color:#fff">Pay as you send.<br/><em>No surprises.</em></h2>
   <p class="sec-sub" style="color:rgba(255,255,255,.45);margin:0 auto">One credit, one email. Buy once, use whenever. Credits never expire.</p>
   <div class="pricing-trial">🎁 New users get <span>50 free emails</span> — no payment needed</div>
-
   <div class="price-grid">
-    <div class="price-card">
-      <div class="price-credits">500 <small>credits</small></div>
-      <div class="price-amount">₹299</div>
-      <div class="price-per">₹0.60 per email</div>
-      <button class="price-buy price-buy-sec" onclick="buyPlan(299,'standard','SendEase — 500 Credits')">Buy ₹299</button>
-    </div>
-    <div class="price-card">
-      <div class="price-credits">1,000 <small>credits</small></div>
-      <div class="price-amount">₹499</div>
-      <div class="price-per">₹0.50 per email</div>
-      <button class="price-buy price-buy-sec" onclick="buyPlan(499,'popular','SendEase — 1000 Credits')">Buy ₹499</button>
-    </div>
-    <div class="price-card hot">
-      <div class="hot-badge">⭐ Most Popular</div>
-      <div class="price-credits">2,000 <small>credits</small></div>
-      <div class="price-amount">₹999</div>
-      <div class="price-per">₹0.50 per email</div>
-      <button class="price-buy price-buy-main" onclick="buyPlan(999,'pro','SendEase — 2000 Credits')">Buy ₹999</button>
-    </div>
-    <div class="price-card">
-      <div class="price-credits">5,000 <small>credits</small></div>
-      <div class="price-amount">₹1,999</div>
-      <div class="price-per">₹0.40 per email</div>
-      <button class="price-buy price-buy-sec" onclick="buyPlan(1999,'business','SendEase — 5000 Credits')">Buy ₹1,999</button>
-    </div>
+    <div class="price-card"><div class="price-credits">500 <small>credits</small></div><div class="price-amount">₹299</div><div class="price-per">₹0.60 per email</div><button class="price-buy price-buy-sec" onclick="buyPlan(299,'standard','SendEase — 500 Credits')">Buy ₹299</button></div>
+    <div class="price-card"><div class="price-credits">1,000 <small>credits</small></div><div class="price-amount">₹499</div><div class="price-per">₹0.50 per email</div><button class="price-buy price-buy-sec" onclick="buyPlan(499,'popular','SendEase — 1000 Credits')">Buy ₹499</button></div>
+    <div class="price-card hot"><div class="hot-badge">⭐ Most Popular</div><div class="price-credits">2,000 <small>credits</small></div><div class="price-amount">₹999</div><div class="price-per">₹0.50 per email</div><button class="price-buy price-buy-main" onclick="buyPlan(999,'pro','SendEase — 2000 Credits')">Buy ₹999</button></div>
+    <div class="price-card"><div class="price-credits">5,000 <small>credits</small></div><div class="price-amount">₹1,999</div><div class="price-per">₹0.40 per email</div><button class="price-buy price-buy-sec" onclick="buyPlan(1999,'business','SendEase — 5000 Credits')">Buy ₹1,999</button></div>
   </div>
 </div>
 </section>
 
-<!-- DOWNLOAD -->
 <section id="download" class="download-sec">
   <div class="sec-eyebrow" style="color:var(--accent)">Desktop App</div>
   <h2>Download <em>SendEase</em></h2>
@@ -705,7 +371,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
   </p>
 </section>
 
-<!-- PWA -->
 <section id="install" class="pwa-sec">
   <h2>Use it <em>like an app</em></h2>
   <p>No App Store. No Play Store. Install from this page on any device.</p>
@@ -721,7 +386,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
   <p class="pwa-hint" id="pwaAlready" style="display:none">Already installed! 🎉</p>
 </section>
 
-<!-- CTA -->
 <section class="cta-sec">
   <h2>Start sending<br/><em>today.</em></h2>
   <p>No signup. No credit card. 50 free emails waiting.</p>
@@ -734,7 +398,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <a class="footer-logo" href="index.html">Send<span>Ease</span></a>
   <p>© 2026 SendEase · Built by <strong style="color:rgba(255,255,255,.7)">GuruPriya Parashar</strong></p>
@@ -752,21 +415,47 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-title">Install SendEase</div>
     <div class="modal-sub">Follow the steps for your device</div>
-    <div class="modal-step">
-      <div class="modal-step-title">🖥️ Chrome / Edge — Windows, Mac</div>
-      <div class="modal-step-desc">Look for the <strong>install icon ⊕</strong> in the address bar → click it → <strong>Install</strong><br/>Or: 3-dot menu → <strong>Install page as app</strong></div>
+    <div class="modal-step"><div class="modal-step-title">🖥️ Chrome / Edge — Windows, Mac</div><div class="modal-step-desc">Look for the <strong>install icon ⊕</strong> in the address bar → click it → <strong>Install</strong><br/>Or: 3-dot menu → <strong>Install page as app</strong></div></div>
+    <div class="modal-step"><div class="modal-step-title">🤖 Android — Chrome</div><div class="modal-step-desc">3-dot menu → <strong>Add to Home screen</strong> → Add</div></div>
+    <div class="modal-step"><div class="modal-step-title">🍎 iPhone / iPad — Safari</div><div class="modal-step-desc">Share button (□↑) → <strong>Add to Home Screen</strong> → Add</div><div class="modal-step-warn">⚠ Must use Safari, not Chrome</div></div>
+    <div id="autoInstallBtn"><button class="btn-auto-install" onclick="doAutoInstall()">⚡ Install Now — One Click</button></div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkoutModal" onclick="if(event.target===this)closeCheckout()">
+  <div class="co-box">
+    <div class="co-head">
+      <button class="co-close" onclick="closeCheckout()">✕</button>
+      <div class="co-head-title">Complete your <em>purchase</em></div>
+      <div class="co-plan-badge">
+        <span id="coPlanLabel">Pro Plan — 2,000 Credits</span>
+        <strong id="coAmountLabel">₹999</strong>
+      </div>
     </div>
-    <div class="modal-step">
-      <div class="modal-step-title">🤖 Android — Chrome</div>
-      <div class="modal-step-desc">3-dot menu → <strong>Add to Home screen</strong> → Add</div>
-    </div>
-    <div class="modal-step">
-      <div class="modal-step-title">🍎 iPhone / iPad — Safari</div>
-      <div class="modal-step-desc">Share button (□↑) → <strong>Add to Home Screen</strong> → Add</div>
-      <div class="modal-step-warn">⚠ Must use Safari, not Chrome</div>
-    </div>
-    <div id="autoInstallBtn">
-      <button class="btn-auto-install" onclick="doAutoInstall()">⚡ Install Now — One Click</button>
+    <div class="co-body">
+      <div class="co-fg">
+        <label>Full Name *</label>
+        <input class="co-inp" id="coName" type="text" placeholder="Your full name" oninput="validateCO()"/>
+      </div>
+      <div class="co-fg">
+        <label>Email Address *</label>
+        <input class="co-inp" id="coEmail" type="email" placeholder="you@example.com" oninput="validateCO()"/>
+        <div class="co-hint">License key & invoice will be sent to this email</div>
+      </div>
+      <div class="co-fg">
+        <label>Phone Number <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input class="co-inp" id="coPhone" type="tel" placeholder="+91 98765 43210"/>
+      </div>
+      <button class="co-submit" id="coSubmitBtn" onclick="submitCO()" disabled>
+        <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Proceed to Payment
+      </button>
+      <div class="co-note">Your license key & invoice will be emailed immediately after payment.<br/>Credits never expire.</div>
+      <div class="co-secure">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Secured by Razorpay
+      </div>
     </div>
   </div>
 </div>
@@ -780,7 +469,6 @@ const RAZORPAY_KEY = 'rzp_live_T1PUGj0qC2zy62';
 // PWA
 let deferredPrompt=null;
 const isInstalled=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();deferredPrompt=e;
   if(!isInstalled){
@@ -793,7 +481,6 @@ window.addEventListener('appinstalled',()=>{
   document.getElementById('pwaAlready').style.display='';
   closeModal();
 });
-
 function installPWA(){
   if(isInstalled){document.getElementById('pwaAlready').style.display='';return;}
   const m=document.getElementById('installModal');
@@ -810,33 +497,76 @@ async function doAutoInstall(){
 function closeModal(){document.getElementById('installModal').style.display='none';}
 if(isInstalled) document.getElementById('pwaAlready').style.display='';
 
-// Razorpay
+// CHECKOUT
+let _coAmt=0,_coPlan='',_coDesc='';
+const planLabels={
+  standard:'Standard Plan — 500 Credits',
+  popular:'Popular Plan — 1,000 Credits',
+  pro:'Pro Plan — 2,000 Credits',
+  business:'Business Plan — 5,000 Credits'
+};
+
 function buyPlan(amount,plan,description){
-  const email=prompt('Enter your email address to receive your license key:');
-  if(!email||!email.includes('@')){
-    alert('Valid email is required to complete purchase.');
-    return;
-  }
+  _coAmt=amount; _coPlan=plan; _coDesc=description;
+  document.getElementById('coPlanLabel').textContent=planLabels[plan]||description;
+  document.getElementById('coAmountLabel').textContent='₹'+amount.toLocaleString('en-IN');
+  document.getElementById('coName').value='';
+  document.getElementById('coEmail').value='';
+  document.getElementById('coPhone').value='';
+  document.getElementById('coName').classList.remove('err');
+  document.getElementById('coEmail').classList.remove('err');
+  document.getElementById('coSubmitBtn').disabled=true;
+  document.getElementById('checkoutModal').style.display='flex';
+}
+
+function validateCO(){
+  const n=document.getElementById('coName').value.trim();
+  const e=document.getElementById('coEmail').value.trim();
+  document.getElementById('coSubmitBtn').disabled=!(n.length>1&&e.includes('@')&&e.includes('.'));
+}
+
+function closeCheckout(){
+  document.getElementById('checkoutModal').style.display='none';
+}
+
+function submitCO(){
+  const name=document.getElementById('coName').value.trim();
+  const email=document.getElementById('coEmail').value.trim();
+  const phone=document.getElementById('coPhone').value.trim();
+  if(!name){document.getElementById('coName').classList.add('err');return;}
+  if(!email.includes('@')){document.getElementById('coEmail').classList.add('err');return;}
+  closeCheckout();
   const options={
     key:RAZORPAY_KEY,
-    amount:amount*100,
+    amount:_coAmt*100,
     currency:'INR',
     name:'SendEase',
-    description:description,
-    prefill:{email:email,name:'',contact:''},
-    handler:function(response){
-      alert('✅ Payment successful!\n\nPayment ID: '+response.razorpay_payment_id+'\n\nYour license key will be emailed to you within a few minutes.\nPlease check your inbox and spam folder.');
-    },
-    notes:{plan:plan},
+    description:_coDesc,
+    prefill:{name:name,email:email,contact:phone},
+    notes:{plan:_coPlan,customer_name:name},
     theme:{color:'#e8420a'},
+    handler:function(response){
+      const overlay=document.createElement('div');
+      overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)';
+      overlay.innerHTML=`
+        <div style="background:#fff;border-radius:20px;padding:40px 32px;max-width:380px;width:100%;text-align:center">
+          <div style="font-size:52px;margin-bottom:16px">🎉</div>
+          <div style="font-family:'Instrument Serif',serif;font-size:26px;color:#0d0d0d;margin-bottom:10px">Payment <em style="font-style:italic;color:#e8420a">successful!</em></div>
+          <p style="font-size:14px;color:#7a7a72;line-height:1.7;margin-bottom:16px">Your license key and invoice are being sent to<br/><strong style="color:#0d0d0d">${email}</strong></p>
+          <p style="font-size:12px;color:#7a7a72;margin-bottom:8px">Please check your inbox and spam folder.</p>
+          <p style="font-size:11px;color:#bbb;margin-bottom:24px">Payment ID: ${response.razorpay_payment_id}</p>
+          <button onclick="this.closest('div').parentNode.remove()" style="background:#e8420a;color:#fff;border:none;border-radius:10px;padding:12px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif">Done ✓</button>
+        </div>`;
+      document.body.appendChild(overlay);
+    },
     modal:{ondismiss:function(){}}
   };
   const rzp=new Razorpay(options);
   rzp.on('payment.failed',function(resp){
-    alert('Payment failed: '+resp.error.description);
+    alert('Payment failed: '+resp.error.description+'\nPlease try again.');
   });
   rzp.open();
-  }
-  </script>
+}
+</script>
 </body>
 </html>
