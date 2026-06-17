@@ -13,12 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#fafaf8;--bg2:#f2f0eb;--bg3:#e8e4dc;--ink:#0d0d0d;--ink2:#2a2a2a;
-  --muted:#7a7a72;--border:#dedad2;--accent:#e8420a;--accent2:#ff6535;
-  --acbg:#fff3ef;--green:#0a8f65;--greenbg:#edfaf4;--blue:#1a56db;
-  --f:'Instrument Serif',serif;--fb:'Inter',sans-serif;--fm:'JetBrains Mono',monospace;
-}
+:root{--bg:#fafaf8;--bg2:#f2f0eb;--bg3:#e8e4dc;--ink:#0d0d0d;--ink2:#2a2a2a;--muted:#7a7a72;--border:#dedad2;--accent:#e8420a;--accent2:#ff6535;--acbg:#fff3ef;--green:#0a8f65;--greenbg:#edfaf4;--blue:#1a56db;--f:'Instrument Serif',serif;--fb:'Inter',sans-serif;--fm:'JetBrains Mono',monospace;}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--fb);overflow-x:hidden}
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:60px;background:rgba(250,250,248,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
@@ -163,8 +158,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
 .footer-links{display:flex;gap:24px}
 .footer-links a{font-size:12px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .15s}
 .footer-links a:hover{color:#fff}
-
-/* INSTALL MODAL */
 #installModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:20px}
 .modal-box{background:#fff;border-radius:20px;padding:32px;max-width:400px;width:100%;position:relative;max-height:90vh;overflow-y:auto}
 .modal-close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;line-height:1}
@@ -180,8 +173,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
 #autoInstallBtn{display:none;margin-top:16px}
 .btn-auto-install{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fb);transition:background .15s}
 .btn-auto-install:hover{background:#c73508}
-
-/* CHECKOUT MODAL */
 #checkoutModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
 #checkoutModal.open{display:flex}
 .co-box{background:#fff;border-radius:20px;max-width:420px;width:100%;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.2)}
@@ -207,84 +198,39 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
 .co-note{font-size:11px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.7}
 .co-secure{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:10px;font-size:11px;color:var(--muted)}
 .co-secure svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
-
-@media(max-width:768px){
-  nav{padding:0 20px}
-  .nav-links{display:none}
-  .steps-grid,.feat-grid,.uc-grid,.price-grid{grid-template-columns:1fr}
-  footer{flex-direction:column;text-align:center}.footer-links{justify-content:center}
-}
+@media(max-width:768px){nav{padding:0 20px}.nav-links{display:none}.steps-grid,.feat-grid,.uc-grid,.price-grid{grid-template-columns:1fr}footer{flex-direction:column;text-align:center}.footer-links{justify-content:center}}
 </style>
 </head>
 <body>
-
 <nav>
-  <a class="logo" href="index.html">
-    <div class="logo-mark">✉</div>
-    <div class="logo-text">Send<span>Ease</span></div>
-  </a>
-  <div class="nav-links">
-    <a href="#how">How it works</a>
-    <a href="#usecases">Who uses it</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#download">Download</a>
-  </div>
+  <a class="logo" href="index.html"><div class="logo-mark">✉</div><div class="logo-text">Send<span>Ease</span></div></a>
+  <div class="nav-links"><a href="#how">How it works</a><a href="#usecases">Who uses it</a><a href="#pricing">Pricing</a><a href="#download">Download</a></div>
   <div class="nav-right">
-    <button class="nav-pill" id="navInstall" onclick="installPWA()">
-      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Install
-    </button>
+    <button class="nav-pill" id="navInstall" onclick="installPWA()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Install</button>
     <a href="app.html" class="nav-cta">Open Web App →</a>
   </div>
 </nav>
-
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-eyebrow">
-    <div class="hero-eyebrow-dot">✓</div>
-    Free to start — 50 emails on us
-  </div>
+  <div class="hero-eyebrow"><div class="hero-eyebrow-dot">✓</div>Free to start — 50 emails on us</div>
   <h1>Bulk emails,<br/><em>done right.</em></h1>
   <p class="hero-sub2">With any attachment.</p>
   <p class="hero-desc">Upload your list, attach <strong>any file</strong> — PDF, image, Word, ZIP — and send to hundreds or thousands. Straight from your Gmail.</p>
   <div class="hero-actions">
-    <a href="app.html" class="btn-hero-primary">
-      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      Try Web App — Free
-    </a>
-    <a href="#download" class="btn-hero-sec">
-      <svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Download for Windows
-    </a>
-    <button class="btn-hero-install" id="heroInstall" onclick="installPWA()">
-      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Install App
-    </button>
+    <a href="app.html" class="btn-hero-primary"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Try Web App — Free</a>
+    <a href="#download" class="btn-hero-sec"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download for Windows</a>
+    <button class="btn-hero-install" id="heroInstall" onclick="installPWA()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Install App</button>
   </div>
   <div class="stats-strip">
-    <div class="stat-item"><strong>50</strong> free emails to start</div>
-    <div class="stat-sep"></div>
-    <div class="stat-item"><strong>Any</strong> file attachment</div>
-    <div class="stat-sep"></div>
-    <div class="stat-item"><strong>Gmail</strong> — your account, your data</div>
-    <div class="stat-sep"></div>
+    <div class="stat-item"><strong>50</strong> free emails to start</div><div class="stat-sep"></div>
+    <div class="stat-item"><strong>Any</strong> file attachment</div><div class="stat-sep"></div>
+    <div class="stat-item"><strong>Gmail</strong> — your account, your data</div><div class="stat-sep"></div>
     <div class="stat-item"><strong>No</strong> subscription</div>
   </div>
   <div class="demo-outer">
-    <div class="demo-chrome">
-      <div class="dc" style="background:#ff5f57"></div>
-      <div class="dc" style="background:#ffbd2e"></div>
-      <div class="dc" style="background:#28c940"></div>
-      <div class="demo-url">sendease — sending in progress</div>
-    </div>
+    <div class="demo-chrome"><div class="dc" style="background:#ff5f57"></div><div class="dc" style="background:#ffbd2e"></div><div class="dc" style="background:#28c940"></div><div class="demo-url">sendease — sending in progress</div></div>
     <div class="demo-body">
-      <div class="demo-prog-wrap">
-        <div class="demo-prog-top">
-          <span class="demo-prog-lbl">Sending 634 / 900 emails...</span>
-          <span class="demo-prog-pct">70%</span>
-        </div>
-        <div class="dbar"><div class="dbar-fill"></div></div>
-      </div>
+      <div class="demo-prog-wrap"><div class="demo-prog-top"><span class="demo-prog-lbl">Sending 634 / 900 emails...</span><span class="demo-prog-pct">70%</span></div><div class="dbar"><div class="dbar-fill"></div></div></div>
       <div class="demo-row"><div class="dtag dt-sent">✓ SENT</div><div class="dname">Sarah Johnson</div><div class="demail">sarah.j@acme.com</div><div class="dfile">Payslip_June.pdf</div></div>
       <div class="demo-row"><div class="dtag dt-sent">✓ SENT</div><div class="dname">Marcus Lee</div><div class="demail">m.lee@globalco.com</div><div class="dfile">Offer_Letter.pdf</div></div>
       <div class="demo-row"><div class="dtag dt-going">⟳ SENDING</div><div class="dname">Aisha Patel</div><div class="demail">aisha.p@design.io</div><div class="dfile">Contract_May.pdf</div></div>
@@ -292,7 +238,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
     </div>
   </div>
 </section>
-
 <section id="how" class="sec" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
 <div class="sec-inner">
   <div class="sec-eyebrow">How it works</div>
@@ -305,7 +250,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
   </div>
 </div>
 </section>
-
 <section id="usecases" class="sec">
 <div class="sec-inner">
   <div class="sec-eyebrow">Who uses SendEase</div>
@@ -319,7 +263,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
   </div>
 </div>
 </section>
-
 <section class="sec" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
 <div class="sec-inner">
   <div class="sec-eyebrow">Features</div>
@@ -334,7 +277,6 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
   </div>
 </div>
 </section>
-
 <section id="pricing" class="pricing-sec">
 <div class="sec-inner" style="text-align:center">
   <div class="sec-eyebrow">Pricing</div>
@@ -346,58 +288,33 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
     <div class="price-card"><div class="price-credits">1,000 <small>credits</small></div><div class="price-amount">₹499</div><div class="price-per">₹0.50 per email</div><button class="price-buy price-buy-sec" onclick="buyPlan(499,'popular','SendEase — 1000 Credits')">Buy ₹499</button></div>
     <div class="price-card hot"><div class="hot-badge">⭐ Most Popular</div><div class="price-credits">2,000 <small>credits</small></div><div class="price-amount">₹999</div><div class="price-per">₹0.50 per email</div><button class="price-buy price-buy-main" onclick="buyPlan(999,'pro','SendEase — 2000 Credits')">Buy ₹999</button></div>
     <div class="price-card"><div class="price-credits">5,000 <small>credits</small></div><div class="price-amount">₹1,999</div><div class="price-per">₹0.40 per email</div><button class="price-buy price-buy-sec" onclick="buyPlan(1999,'business','SendEase — 5000 Credits')">Buy ₹1,999</button></div>
-    
-    <!-- Custom Credits -->
-    <!-- Custom Credits -->
-<div style="max-width:760px;margin:20px auto 0;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.15);border-radius:18px;padding:32px 28px">
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px">
-    <div>
-      <div style="font-family:'Instrument Serif',serif;font-size:28px;color:#fff;font-style:italic">Custom <span style="font-family:Inter,sans-serif;font-size:16px;color:rgba(255,255,255,.5);font-style:normal">credits</span></div>
-      <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px">Need more than 5,000? Set your own quantity · ₹0.40 per email</div>
-    </div>
-    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:4px 14px;font-size:11px;color:rgba(255,255,255,.4)">Bulk pricing</div>
   </div>
-  <div style="display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:end">
-    <div>
-      <label style="display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.4);margin-bottom:8px">Number of Credits (min 5,000)</label>
-      <input type="number" id="customCredits" min="5000" step="100" placeholder="e.g. 10,000" oninput="calcCustom()" style="width:100%;padding:12px 16px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;font-size:18px;color:#fff;outline:none;font-family:Inter,sans-serif"/>
-      <div id="customMsg" style="font-size:12px;margin-top:8px;min-height:18px"></div>
+  <!-- Custom Credits — single clean block -->
+  <div style="max-width:760px;margin:20px auto 0;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.15);border-radius:18px;padding:32px 28px">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+      <div>
+        <div style="font-family:'Instrument Serif',serif;font-size:28px;color:#fff;font-style:italic">Custom <span style="font-family:Inter,sans-serif;font-size:16px;color:rgba(255,255,255,.5);font-style:normal">credits</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px">Need more than 5,000? Set your own quantity · ₹0.40 per email</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:4px 14px;font-size:11px;color:rgba(255,255,255,.4)">Bulk pricing</div>
     </div>
-    <div style="text-align:center;padding-bottom:26px">
-      <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Total</div>
-      <div id="customPrice" style="font-size:36px;font-weight:800;color:#ff6535;font-family:Inter,sans-serif;white-space:nowrap">₹ —</div>
-    </div>
-    <div style="padding-bottom:26px">
-      <button id="customBuyBtn" onclick="buyCustom()" disabled style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.35);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:13px 28px;font-size:14px;font-weight:600;cursor:not-allowed;font-family:Inter,sans-serif;transition:all .2s;white-space:nowrap">Buy Custom →</button>
-    </div>
-  </div>
-      <div style="font-family:'Instrument Serif',serif;font-size:28px;font-weight:400;color:#fff;font-style:italic;margin-bottom:4px">Custom <small style="font-family:Inter,sans-serif;font-size:14px;color:rgba(255,255,255,.4);font-style:normal">credits</small></div>
-      <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:18px">Minimum 5,000 credits · ₹0.40 per email</div>
-      <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
-        <div style="flex:1;min-width:180px">
-          <label style="display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.4);margin-bottom:6px">Number of Credits</label>
-          <input type="number" id="customCredits" min="5000" step="100" placeholder="e.g. 8000"
-            oninput="calcCustom()"
-            style="width:100%;padding:11px 14px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:9px;font-size:16px;color:#fff;outline:none;font-family:Inter,sans-serif"/>
-          <div id="customMsg" style="font-size:12px;margin-top:6px;color:#fbbf24"></div>
-        </div>
-        <div style="min-width:140px;text-align:center">
-          <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Total Price</div>
-          <div id="customPrice" style="font-size:32px;font-weight:800;color:#ff6535;font-family:Inter,sans-serif">₹—</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:2px">₹0.40 per email</div>
-        </div>
-        <div style="display:flex;align-items:flex-end;padding-bottom:2px">
-          <button id="customBuyBtn" onclick="buyCustom()" disabled
-            style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 24px;font-size:14px;font-weight:600;cursor:not-allowed;font-family:Inter,sans-serif;transition:all .2s">
-            Buy Custom →
-          </button>
-        </div>
+    <div style="display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:end">
+      <div>
+        <label style="display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.4);margin-bottom:8px">Number of Credits (min 5,000)</label>
+        <input type="number" id="customCredits" min="5000" step="100" placeholder="e.g. 10,000" oninput="calcCustom()" style="width:100%;padding:12px 16px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;font-size:18px;color:#fff;outline:none;font-family:Inter,sans-serif"/>
+        <div id="customMsg" style="font-size:12px;margin-top:8px;min-height:18px"></div>
+      </div>
+      <div style="text-align:center;padding-bottom:26px">
+        <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Total</div>
+        <div id="customPrice" style="font-size:36px;font-weight:800;color:#ff6535;font-family:Inter,sans-serif;white-space:nowrap">₹ —</div>
+      </div>
+      <div style="padding-bottom:26px">
+        <button id="customBuyBtn" onclick="buyCustom()" disabled style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.35);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:13px 28px;font-size:14px;font-weight:600;cursor:not-allowed;font-family:Inter,sans-serif;transition:all .2s;white-space:nowrap">Buy Custom →</button>
       </div>
     </div>
   </div>
 </div>
 </section>
-
 <section id="download" class="download-sec">
   <div class="sec-eyebrow" style="color:var(--accent)">Desktop App</div>
   <h2>Download <em>SendEase</em></h2>
@@ -408,17 +325,14 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
   </a>
   <p style="font-size:12px;color:var(--muted);margin-top:10px">⚠️ Windows may show a security warning — click "More info" then "Run anyway" to install.</p>
   <div class="os-badges">
-    <div class="os-badge">🖥️ Windows 10 / 11</div>
-    <div class="os-badge">📦 Single .exe file</div>
-    <div class="os-badge">🔒 Runs on your machine</div>
-    <div class="os-badge">🎁 50 free emails included</div>
+    <div class="os-badge">🖥️ Windows 10 / 11</div><div class="os-badge">📦 Single .exe file</div>
+    <div class="os-badge">🔒 Runs on your machine</div><div class="os-badge">🎁 50 free emails included</div>
   </div>
   <p style="font-size:12px;color:var(--muted);margin-top:16px">
     🖥️ <strong>Windows users</strong> — Download the app above &nbsp;|&nbsp;
     🍎 <strong>Mac / Linux users</strong> — <a href="app.html" style="color:var(--accent);text-decoration:none">Use the Web App →</a>
   </p>
 </section>
-
 <section id="install" class="pwa-sec">
   <h2>Use it <em>like an app</em></h2>
   <p>No App Store. No Play Store. Install from this page on any device.</p>
@@ -433,30 +347,19 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
   </button>
   <p class="pwa-hint" id="pwaAlready" style="display:none">Already installed! 🎉</p>
 </section>
-
 <section class="cta-sec">
   <h2>Start sending<br/><em>today.</em></h2>
   <p>No signup. No credit card. 50 free emails waiting.</p>
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-    <a href="app.html" class="btn-hero-primary">
-      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      Open Web App — Mac & Linux
-    </a>
+    <a href="app.html" class="btn-hero-primary"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Open Web App — Mac & Linux</a>
     <a href="#download" class="btn-hero-sec">Download for Windows</a>
   </div>
 </section>
-
 <footer>
   <a class="footer-logo" href="index.html">Send<span>Ease</span></a>
   <p>© 2026 SendEase · Built by <strong style="color:rgba(255,255,255,.7)">GuruPriya Parashar</strong></p>
-  <div class="footer-links">
-    <a href="app.html">Web App</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#download">Download</a>
-    <a href="mailto:hello@sendease.in">Contact</a>
-  </div>
+  <div class="footer-links"><a href="app.html">Web App</a><a href="#pricing">Pricing</a><a href="#download">Download</a><a href="mailto:hello@sendease.in">Contact</a></div>
 </footer>
-
 <!-- INSTALL MODAL -->
 <div id="installModal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
@@ -469,70 +372,44 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
     <div id="autoInstallBtn"><button class="btn-auto-install" onclick="doAutoInstall()">⚡ Install Now — One Click</button></div>
   </div>
 </div>
-
 <!-- CHECKOUT MODAL -->
 <div id="checkoutModal" onclick="if(event.target===this)closeCheckout()">
   <div class="co-box">
     <div class="co-head">
       <button class="co-close" onclick="closeCheckout()">✕</button>
       <div class="co-head-title">Complete your <em>purchase</em></div>
-      <div class="co-plan-badge">
-        <span id="coPlanLabel">Pro Plan — 2,000 Credits</span>
-        <strong id="coAmountLabel">₹999</strong>
-      </div>
+      <div class="co-plan-badge"><span id="coPlanLabel">Pro Plan — 2,000 Credits</span><strong id="coAmountLabel">₹999</strong></div>
     </div>
     <div class="co-body">
-      <div class="co-fg">
-        <label>Full Name *</label>
-        <input class="co-inp" id="coName" type="text" placeholder="Your full name" oninput="validateCO()"/>
-      </div>
-      <div class="co-fg">
-        <label>Email Address *</label>
-        <input class="co-inp" id="coEmail" type="email" placeholder="you@example.com" oninput="validateCO()"/>
-        <div class="co-hint">License key & invoice will be sent to this email</div>
-      </div>
-      <div class="co-fg">
-        <label>Phone Number <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
-        <input class="co-inp" id="coPhone" type="tel" placeholder="+91 98765 43210"/>
-      </div>
+      <div class="co-fg"><label>Full Name *</label><input class="co-inp" id="coName" type="text" placeholder="Your full name" oninput="validateCO()"/></div>
+      <div class="co-fg"><label>Email Address *</label><input class="co-inp" id="coEmail" type="email" placeholder="you@example.com" oninput="validateCO()"/><div class="co-hint">License key & invoice will be sent to this email</div></div>
+      <div class="co-fg"><label>Phone Number <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label><input class="co-inp" id="coPhone" type="tel" placeholder="+91 98765 43210"/></div>
       <button class="co-submit" id="coSubmitBtn" onclick="submitCO()" disabled>
         <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
         Proceed to Payment
       </button>
       <div class="co-note">Your license key & invoice will be emailed immediately after payment.<br/>Credits never expire.</div>
-      <div class="co-secure">
-        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Secured by Razorpay
-      </div>
+      <div class="co-secure"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Secured by Razorpay</div>
     </div>
   </div>
 </div>
-
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
-
 const RAZORPAY_KEY = 'rzp_live_T1PUGj0qC2zy62';
-
-// PWA
 let deferredPrompt=null;
 const isInstalled=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();deferredPrompt=e;
-  if(!isInstalled){
-    document.getElementById('navInstall').classList.add('show');
-    document.getElementById('heroInstall').classList.add('show');
-  }
+  if(!isInstalled){document.getElementById('navInstall').classList.add('show');document.getElementById('heroInstall').classList.add('show');}
 });
 window.addEventListener('appinstalled',()=>{
   ['navInstall','heroInstall'].forEach(id=>document.getElementById(id).classList.remove('show'));
-  document.getElementById('pwaAlready').style.display='';
-  closeModal();
+  document.getElementById('pwaAlready').style.display='';closeModal();
 });
 function installPWA(){
   if(isInstalled){document.getElementById('pwaAlready').style.display='';return;}
-  const m=document.getElementById('installModal');
-  m.style.display='flex';
+  document.getElementById('installModal').style.display='flex';
   if(deferredPrompt) document.getElementById('autoInstallBtn').style.display='block';
 }
 async function doAutoInstall(){
@@ -544,33 +421,19 @@ async function doAutoInstall(){
 }
 function closeModal(){document.getElementById('installModal').style.display='none';}
 if(isInstalled) document.getElementById('pwaAlready').style.display='';
-
-  // CUSTOM CREDITS
+// CUSTOM CREDITS
 function calcCustom(){
   const inp=document.getElementById('customCredits');
   const msg=document.getElementById('customMsg');
   const priceEl=document.getElementById('customPrice');
   const btn=document.getElementById('customBuyBtn');
   const val=parseInt(inp.value)||0;
-  if(!val){
-    msg.textContent='';priceEl.textContent='₹—';
-    btn.disabled=true;btn.style.background='rgba(255,255,255,.1)';
-    btn.style.color='rgba(255,255,255,.4)';btn.style.cursor='not-allowed';
-    return;
-  }
-  if(val<5000){
-    msg.textContent='⚠ Minimum 5,000 credits. Please choose a plan above for smaller packs.';
-    msg.style.color='#fbbf24';priceEl.textContent='₹—';
-    btn.disabled=true;btn.style.background='rgba(255,255,255,.1)';
-    btn.style.color='rgba(255,255,255,.4)';btn.style.cursor='not-allowed';
-    return;
-  }
+  if(!val){msg.textContent='';priceEl.textContent='₹ —';btn.disabled=true;btn.style.background='rgba(255,255,255,.1)';btn.style.color='rgba(255,255,255,.35)';btn.style.cursor='not-allowed';return;}
+  if(val<5000){msg.textContent='⚠ Minimum 5,000 credits. Please choose a plan above for smaller packs.';msg.style.color='#fbbf24';priceEl.textContent='₹ —';btn.disabled=true;btn.style.background='rgba(255,255,255,.1)';btn.style.color='rgba(255,255,255,.35)';btn.style.cursor='not-allowed';return;}
   const price=Math.round(val*0.40);
-  msg.textContent='✓ '+val.toLocaleString('en-IN')+' credits at ₹0.40 each';
-  msg.style.color='#1fcea8';
+  msg.textContent='✓ '+val.toLocaleString('en-IN')+' credits at ₹0.40 each';msg.style.color='#1fcea8';
   priceEl.textContent='₹'+price.toLocaleString('en-IN');
-  btn.disabled=false;btn.style.background='#e8420a';
-  btn.style.color='#fff';btn.style.cursor='pointer';
+  btn.disabled=false;btn.style.background='#e8420a';btn.style.color='#fff';btn.style.cursor='pointer';
 }
 function buyCustom(){
   const val=parseInt(document.getElementById('customCredits').value)||0;
@@ -578,40 +441,24 @@ function buyCustom(){
   const price=Math.round(val*0.40);
   buyPlan(price,'custom','SendEase — '+val.toLocaleString('en-IN')+' Credits');
 }
-
 // CHECKOUT
 let _coAmt=0,_coPlan='',_coDesc='';
-const planLabels={
-  standard:'Standard Plan — 500 Credits',
-  popular:'Popular Plan — 1,000 Credits',
-  pro:'Pro Plan — 2,000 Credits',
-  business:'Business Plan — 5,000 Credits',
-  custom:'Custom Credits'
-};
-
+const planLabels={standard:'Standard Plan — 500 Credits',popular:'Popular Plan — 1,000 Credits',pro:'Pro Plan — 2,000 Credits',business:'Business Plan — 5,000 Credits',custom:'Custom Credits'};
 function buyPlan(amount,plan,description){
-  _coAmt=amount; _coPlan=plan; _coDesc=description;
+  _coAmt=amount;_coPlan=plan;_coDesc=description;
   document.getElementById('coPlanLabel').textContent=planLabels[plan]||description;
   document.getElementById('coAmountLabel').textContent='₹'+amount.toLocaleString('en-IN');
-  document.getElementById('coName').value='';
-  document.getElementById('coEmail').value='';
-  document.getElementById('coPhone').value='';
-  document.getElementById('coName').classList.remove('err');
-  document.getElementById('coEmail').classList.remove('err');
+  document.getElementById('coName').value='';document.getElementById('coEmail').value='';document.getElementById('coPhone').value='';
+  document.getElementById('coName').classList.remove('err');document.getElementById('coEmail').classList.remove('err');
   document.getElementById('coSubmitBtn').disabled=true;
   document.getElementById('checkoutModal').style.display='flex';
 }
-
 function validateCO(){
   const n=document.getElementById('coName').value.trim();
   const e=document.getElementById('coEmail').value.trim();
   document.getElementById('coSubmitBtn').disabled=!(n.length>1&&e.includes('@')&&e.includes('.'));
 }
-
-function closeCheckout(){
-  document.getElementById('checkoutModal').style.display='none';
-}
-
+function closeCheckout(){document.getElementById('checkoutModal').style.display='none';}
 function submitCO(){
   const name=document.getElementById('coName').value.trim();
   const email=document.getElementById('coEmail').value.trim();
@@ -620,34 +467,19 @@ function submitCO(){
   if(!email.includes('@')){document.getElementById('coEmail').classList.add('err');return;}
   closeCheckout();
   const options={
-    key:RAZORPAY_KEY,
-    amount:_coAmt*100,
-    currency:'INR',
-    name:'SendEase',
-    description:_coDesc,
-    prefill:{name:name,email:email,contact:phone},
-    notes:{plan:_coPlan,customer_name:name},
+    key:RAZORPAY_KEY,amount:_coAmt*100,currency:'INR',name:'SendEase',description:_coDesc,
+    prefill:{name:name,email:email,contact:phone},notes:{plan:_coPlan,customer_name:name},
     theme:{color:'#e8420a'},
     handler:function(response){
       const overlay=document.createElement('div');
       overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)';
-      overlay.innerHTML=`
-        <div style="background:#fff;border-radius:20px;padding:40px 32px;max-width:380px;width:100%;text-align:center">
-          <div style="font-size:52px;margin-bottom:16px">🎉</div>
-          <div style="font-family:'Instrument Serif',serif;font-size:26px;color:#0d0d0d;margin-bottom:10px">Payment <em style="font-style:italic;color:#e8420a">successful!</em></div>
-          <p style="font-size:14px;color:#7a7a72;line-height:1.7;margin-bottom:16px">Your license key and invoice are being sent to<br/><strong style="color:#0d0d0d">${email}</strong></p>
-          <p style="font-size:12px;color:#7a7a72;margin-bottom:8px">Please check your inbox and spam folder.</p>
-          <p style="font-size:11px;color:#bbb;margin-bottom:24px">Payment ID: ${response.razorpay_payment_id}</p>
-          <button onclick="this.closest('div').parentNode.remove()" style="background:#e8420a;color:#fff;border:none;border-radius:10px;padding:12px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif">Done ✓</button>
-        </div>`;
+      overlay.innerHTML=`<div style="background:#fff;border-radius:20px;padding:40px 32px;max-width:380px;width:100%;text-align:center"><div style="font-size:52px;margin-bottom:16px">🎉</div><div style="font-family:'Instrument Serif',serif;font-size:26px;color:#0d0d0d;margin-bottom:10px">Payment <em style="font-style:italic;color:#e8420a">successful!</em></div><p style="font-size:14px;color:#7a7a72;line-height:1.7;margin-bottom:16px">Your license key and invoice are being sent to<br/><strong style="color:#0d0d0d">${email}</strong></p><p style="font-size:12px;color:#7a7a72;margin-bottom:8px">Please check your inbox and spam folder.</p><p style="font-size:11px;color:#bbb;margin-bottom:24px">Payment ID: ${response.razorpay_payment_id}</p><button onclick="this.closest('div').parentNode.remove()" style="background:#e8420a;color:#fff;border:none;border-radius:10px;padding:12px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif">Done ✓</button></div>`;
       document.body.appendChild(overlay);
     },
     modal:{ondismiss:function(){}}
   };
   const rzp=new Razorpay(options);
-  rzp.on('payment.failed',function(resp){
-    alert('Payment failed: '+resp.error.description+'\nPlease try again.');
-  });
+  rzp.on('payment.failed',function(resp){alert('Payment failed: '+resp.error.description+'\nPlease try again.');});
   rzp.open();
 }
 </script>
