@@ -35,9 +35,10 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);min-height:100v
 .nav-item .step-num{width:20px;height:20px;border-radius:50%;background:var(--border);color:var(--muted);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
 .nav-item.active .step-num{background:var(--accent);color:#fff}
 .nav-item.done .step-num{background:var(--green);color:#fff}
-.sidebar-bottom{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border)}
-.sidebar-bottom a{font-size:12px;color:var(--muted);text-decoration:none;display:block;margin-bottom:6px;transition:color .15s}
+.sidebar-bottom{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);text-align:center}
+.sidebar-bottom a{color:var(--muted);text-decoration:none;display:block;margin-bottom:4px}
 .sidebar-bottom a:hover{color:var(--ink)}
+.credit-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;background:var(--greenbg);color:var(--green);margin-bottom:6px;display:inline-block}
 .content{padding:40px 48px;max-width:860px}
 .page-title{font-family:var(--f);font-size:24px;font-weight:800;letter-spacing:-0.8px;color:var(--ink);margin-bottom:6px}
 .page-title span{color:var(--accent)}
@@ -47,14 +48,18 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);min-height:100v
 .card-title svg{width:15px;height:15px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .connect-hero{background:linear-gradient(135deg,var(--acbg),var(--bg));border:1px solid var(--acborder);border-radius:16px;padding:28px;margin-bottom:16px}
 .connect-hero-title{font-family:var(--f);font-size:20px;font-weight:800;color:var(--ink);margin-bottom:6px}
-.connect-hero-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:24px;max-width:480px}
-.connected-box{display:none;align-items:center;gap:12px;background:var(--greenbg);border:1px solid var(--greenborder);border-radius:10px;padding:12px 18px;margin-bottom:20px}
+.connect-hero-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:20px;max-width:520px}
+.connected-box{display:none;align-items:center;gap:12px;background:var(--greenbg);border:1px solid var(--greenborder);border-radius:10px;padding:12px 18px;margin-bottom:16px}
 .connected-box.show{display:flex}
 .conn-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .conn-text{font-size:13px;font-weight:600;color:var(--green);flex:1}
 .conn-disc{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;text-decoration:underline;font-family:var(--fb)}
 .conn-disc:hover{color:var(--red)}
+.steps-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.step-row{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:var(--ink2)}
+.step-row-num{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-row a{color:var(--blue);font-weight:500}
 .fg{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
 .fg label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
 .fg input,.fg select,.fg textarea{background:var(--bg);border:1px solid var(--border2);border-radius:9px;padding:10px 13px;color:var(--ink);font-family:var(--fb);font-size:13px;outline:none;transition:border-color .15s;width:100%}
@@ -163,49 +168,72 @@ tr:hover td{background:var(--bg2)}
   <div class="nav-item" id="nb4" onclick="goStep(4)"><div class="step-num" id="sn4">5</div><span>Compose Email</span></div>
   <div class="nav-item" id="nb5" onclick="goStep(5)"><div class="step-num" id="sn5">6</div><span>Preview</span></div>
   <div class="nav-item" id="nb6" onclick="goStep(6)"><div class="step-num" id="sn6">7</div><span>Send</span></div>
-  <div class="sidebar-bottom"><a href="index.html">← Back to home</a></div>
+  <div class="sidebar-bottom">
+    <div id="sidebarCreditBadge" style="display:none" class="credit-badge"></div>
+    <div id="sidebarUser" style="font-size:11px;color:var(--ink2);font-weight:600;margin-bottom:4px"></div>
+    <a href="https://sendease.in/#pricing" target="_blank">🔑 Buy Credits</a>
+    <a href="index.html">← Back to home</a>
+    <div style="margin-top:6px;font-size:10px">SendEase · by GuruPriya Parashar</div>
+  </div>
 </aside>
 
 <main class="content">
   <div class="page-title">Send<span>Ease</span></div>
-  <div class="page-sub">Bulk email with any attachment — free, straight from your Gmail</div>
+  <div class="page-sub">Bulk email with any attachment — straight from your Gmail</div>
 
-  <!-- STEP 0: LOGIN -->
+  <!-- STEP 0: CONNECT GMAIL -->
   <div id="step0">
-    <div class="connect-hero" id="loginSection">
-      <div class="connect-hero-title">👋 Welcome to SendEase</div>
-      <div class="connect-hero-sub">Enter your email to get started. You'll receive a 6-digit OTP to verify.</div>
-      <div class="connected-box" id="userConnBox">
-        <div class="conn-dot"></div>
-        <div class="conn-text" id="userConnLabel">Logged in</div>
-        <span id="creditsBadge" style="background:#fff;color:var(--accent);font-size:11px;font-weight:700;padding:2px 10px;border-radius:100px;margin-left:8px"></span>
-        <button class="conn-disc" onclick="logoutUser()">Logout</button>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        📋 How to get Gmail App Password
       </div>
-      <div id="emailEntrySection">
-        <div class="fg">
-          <label>Your Email Address</label>
-          <input type="email" id="userEmailInp" placeholder="you@example.com" oninput="checkEmailInput()"/>
-        </div>
-        <button class="btn btn-p" id="btnSendOTP" onclick="sendOTP()" disabled style="width:100%;justify-content:center">
-          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Send OTP
-        </button>
-      </div>
-      <div id="otpEntrySection" style="display:none">
-        <div class="notice n-ok" style="margin-bottom:14px">
-          <span>✉</span><div>OTP sent to <strong id="otpEmailLabel"></strong> — check your inbox</div>
-        </div>
-        <div class="fg">
-          <label>Enter 6-digit OTP</label>
-          <input type="text" id="otpInp" placeholder="123456" maxlength="6" style="font-size:20px;letter-spacing:8px;text-align:center" oninput="checkOTPInput()"/>
-        </div>
-        <button class="btn btn-p" id="btnVerifyOTP" onclick="verifyOTP()" disabled style="width:100%;justify-content:center">✓ Verify OTP</button>
-        <button class="btn btn-g" onclick="backToEmail()" style="width:100%;justify-content:center;margin-top:8px">← Change Email</button>
+      <div class="steps-list">
+        <div class="step-row"><div class="step-row-num">1</div><div>Go to <a href="https://myaccount.google.com/apppasswords" target="_blank">myaccount.google.com/apppasswords</a></div></div>
+        <div class="step-row"><div class="step-row-num">2</div><div>Security → 2-Step Verification → turn ON (if not already)</div></div>
+        <div class="step-row"><div class="step-row-num">3</div><div>Search "App Passwords" in Google Account search bar</div></div>
+        <div class="step-row"><div class="step-row-num">4</div><div>App name: <strong>SendEase</strong> → Create</div></div>
+        <div class="step-row"><div class="step-row-num">5</div><div>Copy the 16-digit password → paste below</div></div>
       </div>
     </div>
-    <div class="connect-hero" id="appsScriptSection" style="display:none">
-      <div class="connect-hero-title">✅ Ready to Send</div>
-      <div class="connect-hero-sub">You are logged in. Click Next to continue.</div>
+
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        🔐 Your Gmail Credentials
+      </div>
+      <div class="connected-box" id="connBox">
+        <div class="conn-dot"></div>
+        <div class="conn-text" id="connLabel">Connected</div>
+        <button class="conn-disc" onclick="logoutUser()">Logout</button>
+      </div>
+      <div id="loginForm">
+        <div class="form2">
+          <div class="fg">
+            <label>Gmail Address</label>
+            <input type="email" id="gmailUser" placeholder="you@gmail.com" oninput="checkLoginReady()"/>
+          </div>
+          <div class="fg">
+            <label>Sender Name (shown in email)</label>
+            <input type="text" id="senderNameLogin" placeholder="The Team" oninput="checkLoginReady()"/>
+          </div>
+        </div>
+        <div class="fg">
+          <label>App Password (16 digits — spaces okay)</label>
+          <input type="password" id="gmailPass" placeholder="xxxx xxxx xxxx xxxx" oninput="checkLoginReady()"/>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
+          <button class="btn btn-p" id="btnLogin" onclick="doLogin()" disabled>
+            <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Login & Verify
+          </button>
+          <span id="loginStatus" style="font-size:12px;color:var(--muted)"></span>
+        </div>
+        <div class="notice n-info" style="margin-top:14px">
+          <span>🔒</span>
+          <div>Your Gmail password is stored only in your browser (localStorage). It is never sent to any server except Gmail's SMTP directly.</div>
+        </div>
+      </div>
     </div>
     <div class="btns">
       <button class="btn btn-p" id="btnStep1" onclick="goStep(1)" disabled>
@@ -252,7 +280,6 @@ tr:hover td{background:var(--bg2)}
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Upload Files
       </div>
-      <!-- BROADCAST -->
       <div id="uploadBroadcast">
         <div class="notice n-info"><span>📢</span><div><strong>Broadcast mode:</strong> Same file(s) go to everyone.</div></div>
         <div style="margin-bottom:12px">
@@ -276,7 +303,6 @@ tr:hover td{background:var(--bg2)}
         </div>
         <div id="broadcastFileList" class="attached-files"></div>
       </div>
-      <!-- PERSONAL -->
       <div id="uploadPersonal" style="display:none">
         <div class="notice n-info"><span>🎯</span><div><strong>Personal mode:</strong> Each person gets their own file matched by ID in filename.</div></div>
         <div style="margin-bottom:12px">
@@ -371,9 +397,15 @@ The Team</textarea>
           </div>
         </div>
       </div>
-      <div class="fg">
-        <label>Emails per batch (50 recommended)</label>
-        <input type="number" id="batchSize" value="50" min="1" max="100" style="max-width:120px"/>
+      <div class="form2">
+        <div class="fg">
+          <label>Emails per batch (50 recommended)</label>
+          <input type="number" id="batchSize" value="50" min="1" max="100"/>
+        </div>
+        <div class="fg">
+          <label>Delay between emails (ms)</label>
+          <input type="number" id="batchDelay" value="500" min="100" max="5000"/>
+        </div>
       </div>
     </div>
     <div class="btns">
@@ -442,132 +474,178 @@ The Team</textarea>
 </div>
 
 <script>
-// ── URLs ─────────────────────────────────────────────────
-// License Server — OTP login + credits
+// ── URLS ─────────────────────────────────────────────────
 const LICENSE_SERVER_URL = 'https://script.google.com/macros/s/AKfycbzbi7XnucB7yCryeXPwBSSzs3jnf-tFpikn7G7chWkwUxdIRswPOGe25NAnVOvnj2WT/exec';
-// WebApp — email bhejne ke liye (Code.gs ka URL)
 const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyWapOYQMIKdWvSBCpo3kdZ2_k9mQO0s89ej8eDatFcYx4z6nMXZHNRb5pUj03Jy8Or/exec';
+const TRIAL_LIMIT = 50;
 
 // ── STATE ────────────────────────────────────────────────
 let excelRows=[],excelCols=[],pdfMap={},broadcastFiles=[],matched=[];
 let isSending=false,sendMode='broadcast';
+let isLoggedIn=false,gmailUser='',gmailPass='',senderNameVal='The Team';
+let isLicensed=false,creditBalance=0,licenseKey='',trialCount=0;
 const STEPS=7;
-let currentUserEmail='',currentOTP='',userCredits=0,userLicenseKey='',userIsLoggedIn=false;
 
 window.onload=()=>{
-  const saved=localStorage.getItem('se_web_user');
-  if(saved){
-    try{
-      const u=JSON.parse(saved);
-      currentUserEmail=u.email||'';
-      userCredits=u.credits||0;
-      userLicenseKey=u.key||'';
-      userIsLoggedIn=true;
-      showUserLoggedIn();
-      fetchUserCredits(currentUserEmail);
-    }catch(e){localStorage.removeItem('se_web_user');}
-  }
   buildChips();
+  loadSavedConfig();
   if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 };
 
-// ── OTP ──────────────────────────────────────────────────
-function checkEmailInput(){
-  document.getElementById('btnSendOTP').disabled=!validEmail(document.getElementById('userEmailInp').value.trim());
-}
-function checkOTPInput(){
-  document.getElementById('btnVerifyOTP').disabled=document.getElementById('otpInp').value.trim().length!==6;
-}
-async function sendOTP(){
-  const email=document.getElementById('userEmailInp').value.trim();
-  if(!validEmail(email))return;
-  currentUserEmail=email;
-  currentOTP=Math.floor(100000+Math.random()*900000).toString();
-  const btn=document.getElementById('btnSendOTP');
-  btn.disabled=true;btn.textContent='Sending...';
-  try{ await fetch(`${LICENSE_SERVER_URL}?action=sendotp&email=${encodeURIComponent(email)}&otp=${currentOTP}`); }catch(e){}
-  document.getElementById('emailEntrySection').style.display='none';
-  document.getElementById('otpEntrySection').style.display='';
-  document.getElementById('otpEmailLabel').textContent=email;
-  btn.disabled=false;btn.textContent='Send OTP';
-}
-function backToEmail(){
-  document.getElementById('otpEntrySection').style.display='none';
-  document.getElementById('emailEntrySection').style.display='';
-  document.getElementById('otpInp').value='';
-}
-async function verifyOTP(){
-  const entered=document.getElementById('otpInp').value.trim();
-  const btn=document.getElementById('btnVerifyOTP');
-  btn.disabled=true;btn.textContent='Verifying...';
+// ── CONFIG SAVE/LOAD ─────────────────────────────────────
+function loadSavedConfig(){
   try{
-    const r=await fetch(`${LICENSE_SERVER_URL}?action=verifyotp&email=${encodeURIComponent(currentUserEmail)}&otp=${entered}`);
-    const d=await r.json();
+    const cfg=JSON.parse(localStorage.getItem('se_config')||'{}');
+    if(cfg.gmailUser){
+      document.getElementById('gmailUser').value=cfg.gmailUser;
+      document.getElementById('gmailPass').value=cfg.gmailPass||'';
+      document.getElementById('senderNameLogin').value=cfg.senderName||'The Team';
+      gmailUser=cfg.gmailUser;
+      gmailPass=cfg.gmailPass||'';
+      senderNameVal=cfg.senderName||'The Team';
+    }
+    const lic=JSON.parse(localStorage.getItem('se_license')||'{}');
+    if(lic.key){
+      isLicensed=lic.valid||false;
+      creditBalance=lic.balance||0;
+      licenseKey=lic.key||'';
+      trialCount=lic.trialCount||0;
+    }
+    if(cfg.gmailUser&&cfg.gmailPass){
+      // Auto restore login state
+      isLoggedIn=true;
+      showLoggedIn();
+    }
+  }catch(e){}
+}
+function saveConfig(){
+  localStorage.setItem('se_config',JSON.stringify({
+    gmailUser,gmailPass,senderName:senderNameVal
+  }));
+}
+function saveLicense(){
+  localStorage.setItem('se_license',JSON.stringify({
+    valid:isLicensed,balance:creditBalance,key:licenseKey,trialCount
+  }));
+}
+
+// ── LOGIN ────────────────────────────────────────────────
+function checkLoginReady(){
+  const u=document.getElementById('gmailUser').value.trim();
+  const p=document.getElementById('gmailPass').value.trim();
+  document.getElementById('btnLogin').disabled=!(u&&p&&u.includes('@'));
+}
+
+async function doLogin(){
+  const user=document.getElementById('gmailUser').value.trim();
+  const pass=document.getElementById('gmailPass').value.replace(/\s/g,'').trim();
+  const name=document.getElementById('senderNameLogin').value.trim()||'The Team';
+  if(!user||!pass){return;}
+
+  const btn=document.getElementById('btnLogin');
+  const status=document.getElementById('loginStatus');
+  btn.disabled=true;
+  status.textContent='Verifying...';
+  status.style.color='var(--muted)';
+
+  // Verify via WebApp SMTP test
+  try{
+    const res=await fetch(WEBAPP_URL,{
+      method:'POST',
+      body:JSON.stringify({action:'verify',email:user,password:pass})
+    });
+    const d=await res.json();
     if(d.status==='ok'&&d.valid){
-      userCredits=d.credits||0;
-      userLicenseKey=d.key||'';
-      userIsLoggedIn=true;
-      localStorage.setItem('se_web_user',JSON.stringify({email:currentUserEmail,credits:userCredits,key:userLicenseKey}));
-      showUserLoggedIn();
+      gmailUser=user;gmailPass=pass;senderNameVal=name;
+      isLoggedIn=true;
+      saveConfig();
+      // Fetch license
+      fetchLicenseByEmail(user);
+      showLoggedIn();
+      status.textContent='✓ Logged in!';
+      status.style.color='var(--green)';
+      setTimeout(()=>goStep(1),800);
     }else{
-      btn.disabled=false;btn.textContent='✓ Verify OTP';
-      alert('❌ Invalid OTP. Please try again.');
+      status.textContent='✗ '+(d.message||'Login failed. Check email/password.');
+      status.style.color='var(--red)';
+      btn.disabled=false;
     }
   }catch(e){
-    if(entered===currentOTP){
-      userIsLoggedIn=true;userCredits=50;
-      localStorage.setItem('se_web_user',JSON.stringify({email:currentUserEmail,credits:50,key:''}));
-      showUserLoggedIn();
-    }else{
-      btn.disabled=false;btn.textContent='✓ Verify OTP';
-      alert('❌ Invalid OTP. Please try again.');
-    }
+    // If CORS blocks verify — accept credentials directly (user responsible)
+    gmailUser=user;gmailPass=pass;senderNameVal=name;
+    isLoggedIn=true;
+    saveConfig();
+    fetchLicenseByEmail(user);
+    showLoggedIn();
+    status.textContent='✓ Credentials saved!';
+    status.style.color='var(--green)';
+    setTimeout(()=>goStep(1),800);
   }
 }
-function showUserLoggedIn(){
-  document.getElementById('emailEntrySection').style.display='none';
-  document.getElementById('otpEntrySection').style.display='none';
-  document.getElementById('userConnBox').classList.add('show');
-  document.getElementById('userConnLabel').textContent='✓ '+currentUserEmail;
-  const cc=userCredits<=0?'#d93025':userCredits<=20?'#b45309':'#0d9e73';
-  document.getElementById('creditsBadge').textContent=userCredits+' credits';
-  document.getElementById('creditsBadge').style.color=cc;
-  document.getElementById('appsScriptSection').style.display='';
+
+function showLoggedIn(){
+  document.getElementById('connBox').classList.add('show');
+  document.getElementById('connLabel').textContent='✓ '+gmailUser;
+  document.getElementById('loginForm').style.opacity='0.5';
+  document.getElementById('loginForm').style.pointerEvents='none';
   document.getElementById('btnStep1').disabled=false;
-  if(userCredits<=0){
-    const n=document.createElement('div');
-    n.className='notice n-warn';
-    n.innerHTML='<span>⚠️</span><div><strong>No credits remaining.</strong> <a href="https://sendease.in/#pricing" style="color:var(--blue)">Buy credits →</a></div>';
-    document.getElementById('appsScriptSection').prepend(n);
-  }
+  document.getElementById('senderName').value=senderNameVal;
+  // Sidebar
+  document.getElementById('sidebarUser').textContent='👤 '+gmailUser.split('@')[0]+'@...';
+  updateCreditBadge();
 }
+
 function logoutUser(){
-  localStorage.removeItem('se_web_user');
-  currentUserEmail='';userCredits=0;userLicenseKey='';userIsLoggedIn=false;
-  document.getElementById('userConnBox').classList.remove('show');
-  document.getElementById('emailEntrySection').style.display='';
-  document.getElementById('otpEntrySection').style.display='none';
-  document.getElementById('appsScriptSection').style.display='none';
-  document.getElementById('userEmailInp').value='';
-  document.getElementById('otpInp').value='';
+  if(!confirm('Logout karna chahte hain?'))return;
+  isLoggedIn=false;gmailUser='';gmailPass='';
+  isLicensed=false;creditBalance=0;licenseKey='';trialCount=0;
+  localStorage.removeItem('se_config');
+  localStorage.removeItem('se_license');
+  document.getElementById('connBox').classList.remove('show');
+  document.getElementById('loginForm').style.opacity='1';
+  document.getElementById('loginForm').style.pointerEvents='auto';
+  document.getElementById('gmailUser').value='';
+  document.getElementById('gmailPass').value='';
   document.getElementById('btnStep1').disabled=true;
+  document.getElementById('sidebarUser').textContent='';
+  document.getElementById('sidebarCreditBadge').style.display='none';
+  document.getElementById('loginStatus').textContent='';
+  document.getElementById('btnLogin').disabled=true;
+  goStep(0);
 }
-async function fetchUserCredits(email){
+
+async function fetchLicenseByEmail(email){
   try{
-    const r=await fetch(`${LICENSE_SERVER_URL}?action=findbyemail&email=${encodeURIComponent(email)}`);
+    const r=await fetch(LICENSE_SERVER_URL+'?action=findbyemail&email='+encodeURIComponent(email));
     const d=await r.json();
     if(d.found){
-      userCredits=d.balance||0;userLicenseKey=d.key||'';
-      localStorage.setItem('se_web_user',JSON.stringify({email,credits:userCredits,key:userLicenseKey}));
-      const cc=userCredits<=0?'#d93025':userCredits<=20?'#b45309':'#0d9e73';
-      document.getElementById('creditsBadge').textContent=userCredits+' credits';
-      document.getElementById('creditsBadge').style.color=cc;
+      isLicensed=true;
+      creditBalance=d.balance||0;
+      licenseKey=d.key||'';
+      saveLicense();
+      updateCreditBadge();
     }
   }catch(e){}
 }
 
+function updateCreditBadge(){
+  const badge=document.getElementById('sidebarCreditBadge');
+  if(isLicensed){
+    badge.style.display='inline-block';
+    badge.textContent=creditBalance+' credits';
+    badge.style.background=creditBalance<=0?'var(--redbg)':creditBalance<=20?'var(--yellowbg)':'var(--greenbg)';
+    badge.style.color=creditBalance<=0?'var(--red)':creditBalance<=20?'var(--yellow)':'var(--green)';
+  }else{
+    badge.style.display='inline-block';
+    badge.textContent='Trial — '+(TRIAL_LIMIT-trialCount)+' left';
+    badge.style.background='var(--yellowbg)';
+    badge.style.color='var(--yellow)';
+  }
+}
+
 // ── NAVIGATION ───────────────────────────────────────────
 function goStep(n){
+  if(n>0&&!isLoggedIn){alert('Pehle Gmail se login karo!');goStep(0);return;}
   for(let i=0;i<STEPS;i++){
     document.getElementById('step'+i).style.display=i===n?'':'none';
     const nb=document.getElementById('nb'+i);
@@ -620,10 +698,8 @@ function loadExcel(file){
   };
   r.readAsArrayBuffer(file);
 }
-
 function loadBroadcastFiles(files){
-  const arr=Array.from(files);
-  if(!arr.length)return;
+  const arr=Array.from(files);if(!arr.length)return;
   let done=0;
   arr.forEach(f=>{
     const r=new FileReader();
@@ -636,8 +712,7 @@ function loadBroadcastFiles(files){
         document.getElementById('dzBroadcast').classList.add('done');
         renderBList();checkReady();
       }
-    };
-    r.readAsDataURL(f);
+    };r.readAsDataURL(f);
   });
 }
 function renderBList(){
@@ -649,10 +724,8 @@ function rmBFile(i){
   if(!broadcastFiles.length){document.getElementById('broadcastOk').style.display='none';document.getElementById('dzBroadcast').classList.remove('done');}
   checkReady();
 }
-
 function loadPdfs(files){
-  const arr=Array.from(files);
-  if(!arr.length)return;
+  const arr=Array.from(files);if(!arr.length)return;
   let done=0;
   arr.forEach(f=>{
     const r=new FileReader();
@@ -666,17 +739,14 @@ function loadPdfs(files){
         document.getElementById('dzPdf').classList.add('done');
         checkReady();
       }
-    };
-    r.readAsDataURL(f);
+    };r.readAsDataURL(f);
   });
 }
-
 function downloadSampleExcel(mode){
   const d=mode==='personal'
     ?[['Name','Email','ID'],['Rahul Sharma','rahul@example.com','ABCDE1234F'],['Priya Singh','priya@example.com','EMP001']]
     :[['Name','Email'],['Rahul Sharma','rahul@example.com'],['Priya Singh','priya@example.com']];
-  const ws=XLSX.utils.aoa_to_sheet(d);
-  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.aoa_to_sheet(d);const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'Recipients');
   XLSX.writeFile(wb,mode==='personal'?'sample_personal.xlsx':'sample_broadcast.xlsx');
 }
@@ -705,7 +775,6 @@ function buildMapper(){
   if(document.getElementById('personalExtra'))
     document.getElementById('personalExtra').style.display=sendMode==='personal'?'':'none';
 }
-
 function validEmail(email){
   return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(String(email).trim());
 }
@@ -714,10 +783,10 @@ function validEmail(email){
 function buildAndGo(){
   const cn=document.getElementById('cName').value;
   const ce=document.getElementById('cEmail').value;
+  senderNameVal=document.getElementById('senderName').value||'The Team';
   if(sendMode==='broadcast'){
     matched=excelRows.map((row,i)=>{
-      const name=String(row[cn]||'').trim();
-      const email=String(row[ce]||'').trim();
+      const name=String(row[cn]||'').trim(),email=String(row[ce]||'').trim();
       let status='ready';
       if(!email||!validEmail(email))status='invalid-email';
       else if(!name)status='no-name';
@@ -726,18 +795,16 @@ function buildAndGo(){
   }else{
     const ci=document.getElementById('cId').value;
     matched=excelRows.map((row,i)=>{
-      const name=String(row[cn]||'').trim();
-      const email=String(row[ce]||'').trim();
+      const name=String(row[cn]||'').trim(),email=String(row[ce]||'').trim();
       const rawId=String(row[ci]||'').trim().toUpperCase();
       let files=[],fileNames=[],status='ready';
-      if(!email||!validEmail(email)){status='invalid-email';}
-      else if(!rawId){status='no-id';}
+      if(!email||!validEmail(email))status='invalid-email';
+      else if(!rawId)status='no-id';
       else{
         const allFiles=pdfMap['__all__']||[];
-        // ID se match karo — filename mein ID hona chahiye
         const pm=allFiles.filter(f=>f.name.toUpperCase().includes(rawId));
         if(pm.length){files=pm;fileNames=pm.map(f=>f.name);}
-        else{status=allFiles.length?'no-file':'ready-no-attach';}
+        else status=allFiles.length?'no-file':'ready-no-attach';
       }
       return{idx:i+1,name,email,id:rawId,files,fileNames,status};
     });
@@ -789,11 +856,7 @@ function insertVar(v){
   ta.focus();ta.setSelectionRange(s+v.length,s+v.length);
 }
 function fill(tpl,row){
-  return tpl
-    .replace(/\{\{name\}\}/g,row.name||'')
-    .replace(/\{\{email\}\}/g,row.email||'')
-    .replace(/\{\{id\}\}/g,row.id||'')
-    .replace(/\{\{extra\}\}/g,row.id||'');
+  return tpl.replace(/\{\{name\}\}/g,row.name||'').replace(/\{\{email\}\}/g,row.email||'').replace(/\{\{id\}\}/g,row.id||'').replace(/\{\{extra\}\}/g,row.id||'');
 }
 
 // ── LOG ──────────────────────────────────────────────────
@@ -828,6 +891,19 @@ function chunk(arr,n){const r=[];for(let i=0;i<arr.length;i+=n)r.push(arr.slice(
 // ── SEND ─────────────────────────────────────────────────
 async function startSend(){
   if(isSending)return;
+  if(!isLoggedIn){alert('Pehle login karo!');return;}
+
+  // Credits check
+  if(isLicensed&&creditBalance<=0){
+    addLog('warn','No credits remaining! Purchase credits to continue.');
+    setTimeout(()=>{window.open('https://sendease.in/#pricing','_blank');},800);
+    return;
+  }
+  if(!isLicensed&&trialCount>=TRIAL_LIMIT){
+    addLog('warn','Trial limit reached! Purchase credits to continue.');
+    setTimeout(()=>{window.open('https://sendease.in/#pricing','_blank');},800);
+    return;
+  }
 
   // Resume check
   const session=sessionLoad();
@@ -849,20 +925,12 @@ async function startSend(){
   const subj=document.getElementById('emailSubject').value;
   const body=document.getElementById('emailBody').value;
   const bs=parseInt(document.getElementById('batchSize').value)||50;
-  const sn=document.getElementById('senderName').value||'SendEase';
+  const delay=parseInt(document.getElementById('batchDelay').value)||500;
+  const sn=document.getElementById('senderName').value||senderNameVal||'SendEase';
   document.getElementById('btnGo').disabled=true;
   document.getElementById('btnBackSend').disabled=true;
   document.getElementById('logBox').innerHTML='';
   document.getElementById('doneBanner').style.display='none';
-
-  if(userIsLoggedIn&&userCredits<=0){
-    addLog('warn','No credits remaining! Purchase credits to continue.');
-    isSending=false;
-    document.getElementById('btnGo').disabled=false;
-    document.getElementById('btnBackSend').disabled=false;
-    setTimeout(()=>{window.open('https://sendease.in/#pricing','_blank');},800);
-    return;
-  }
 
   const allReady=matched.filter(r=>r.status==='ready'||r.status==='ready-no-attach');
   const toSend=allReady.filter(r=>!alreadySent.has(r.email));
@@ -881,68 +949,66 @@ async function startSend(){
     return;
   }
 
-  // Records banao — attachments ke saath
-  const records=toSend.map(row=>({
-    name:row.name,
-    email:row.email,
-    id:row.id||'',
-    senderName:sn,
-    subject:fill(subj,row),
-    body:fill(body,row),
-    attachments:(row.files||[]).map(f=>({
-      name:f.name,
-      base64:f.base64,
-      type:f.type||'application/octet-stream'
-    }))
-  }));
-
-  const batches=chunk(records,bs);
+  // Send email by email using WebApp SMTP
   let sent=0,failed=0;
 
-  for(let bi=0;bi<batches.length;bi++){
-    addLog('info','Batch '+(bi+1)+'/'+batches.length+' — '+batches[bi].length+' emails...');
+  for(let i=0;i<toSend.length;i++){
+    const row=toSend[i];
+    const record={
+      action:'sendone',
+      gmailUser:gmailUser,
+      gmailPass:gmailPass,
+      senderName:sn,
+      toEmail:row.email,
+      toName:row.name,
+      subject:fill(subj,row),
+      body:fill(body,row),
+      attachments:(row.files||[]).map(f=>({name:f.name,base64:f.base64,type:f.type||'application/octet-stream'}))
+    };
+
     try{
       const res=await fetch(WEBAPP_URL,{
         method:'POST',
-        mode:'no-cors',
-        body:JSON.stringify({action:'send',records:batches[bi]})
+        body:JSON.stringify(record)
       });
-      // no-cors mein response nahi milta — assume sent
-      const data={status:'ok',results:batches[bi].map(r=>({email:r.email,name:r.name,status:'sent'}))};
-      if(data.status==='ok'&&data.results){
-        data.results.forEach(r=>{
-          const rec=matched.find(m=>m.email===r.email);
-          if(rec){rec._finalStatus=r.status;rec._reason=r.reason||'';}
-          if(r.status==='sent'){
-            addLog('ok',(r.name||r.email)+' → '+r.email);
-            sent++;
-            sessionAdd(r.email);
-            if(userIsLoggedIn&&userLicenseKey){
-              userCredits=Math.max(0,userCredits-1);
-              const su=JSON.parse(localStorage.getItem('se_web_user')||'{}');
-              su.credits=userCredits;
-              localStorage.setItem('se_web_user',JSON.stringify(su));
-              fetch(LICENSE_SERVER_URL+'?action=deduct&key='+encodeURIComponent(userLicenseKey)).catch(()=>{});
-              if(userCredits<=0)addLog('warn','Credits khatam! Aur kharido.');
-              else if(userCredits<=10)addLog('warn','Low credits: '+userCredits+' remaining');
-            }
-          }else if(r.status==='failed'){
-            addLog('err',(r.name||r.email)+': '+(r.reason||'Failed'));
-            failed++;
-          }else{
-            addLog('warn',(r.name||r.email)+' — '+(r.reason||r.status));
+      const d=await res.json();
+      if(d.status==='ok'&&d.sent){
+        addLog('ok',row.name+' → '+row.email);
+        row._finalStatus='sent';row._reason='';
+        sent++;
+        sessionAdd(row.email);
+        // Deduct credit
+        if(isLicensed){
+          creditBalance=Math.max(0,creditBalance-1);
+          saveLicense();
+          fetch(LICENSE_SERVER_URL+'?action=deduct&key='+encodeURIComponent(licenseKey)).catch(()=>{});
+          if(creditBalance<=0)addLog('warn','Credits khatam! Aur kharido.');
+          else if(creditBalance<=10)addLog('warn','Low credits: '+creditBalance+' remaining');
+        }else{
+          trialCount++;
+          saveLicense();
+          const rem=Math.max(0,TRIAL_LIMIT-trialCount);
+          if(rem<=5&&rem>0)addLog('warn','⚠ Trial: '+rem+' emails left — buy credits');
+          if(trialCount>=TRIAL_LIMIT){
+            addLog('warn','Trial limit reached! Purchase credits.');
+            isSending=false;
+            break;
           }
-        });
+        }
+        updateCreditBadge();
       }else{
-        addLog('err','Batch '+(bi+1)+': '+(data.message||'Server error'));
-        failed+=batches[bi].length;
+        addLog('err',row.name+' ('+row.email+'): '+(d.message||'Failed'));
+        row._finalStatus='failed';row._reason=d.message||'Failed';
+        failed++;
       }
     }catch(e){
-      addLog('err','Batch '+(bi+1)+': '+e.message);
-      failed+=batches[bi].length;
+      addLog('err',row.name+' ('+row.email+'): '+e.message);
+      row._finalStatus='failed';row._reason=e.message;
+      failed++;
     }
-    setProg(Math.round(((bi+1)/batches.length)*100),'Batch '+(bi+1)+'/'+batches.length+' done');
-    if(bi<batches.length-1)await sleep(1500);
+
+    setProg(Math.round(((i+1)/toSend.length)*100),(i+1)+'/'+toSend.length+' emails');
+    if(i<toSend.length-1)await sleep(delay);
   }
 
   setProg(100,'Complete!');
@@ -954,7 +1020,7 @@ async function startSend(){
   document.getElementById('btnBackSend').disabled=false;
   document.getElementById('btnGoTxt').textContent='🔁 Send Again';
 
-  if(failed===0){sessionClear();addLog('info','✓ Session cleared');}
+  if(failed===0){sessionClear();addLog('info','✓ Session cleared — fresh start next time');}
   else addLog('warn','⚠ '+failed+' failed — agli baar resume milega');
 
   // Excel report
@@ -964,6 +1030,7 @@ async function startSend(){
       ['SendEase — Email Report'],[''],
       ['Date',new Date().toLocaleString()],
       ['Mode',sendMode==='broadcast'?'Broadcast':'Personal'],
+      ['Gmail',gmailUser],
       ['Total',matched.length],['Sent',sent],['Failed',failed],['Skipped',skipped.length]
     ]);
     wsSummary['!cols']=[{wch:22},{wch:28}];
@@ -972,6 +1039,11 @@ async function startSend(){
     const wsDetail=XLSX.utils.aoa_to_sheet([headers,...matched.map(r=>[r.idx,r.name||'',r.email||'',r.fileNames&&r.fileNames.length?r.fileNames.join(', '):'—',r._finalStatus||r.status,r._reason||''])]);
     wsDetail['!cols']=[{wch:4},{wch:20},{wch:28},{wch:30},{wch:12},{wch:35}];
     XLSX.utils.book_append_sheet(wb,wsDetail,'Email Details');
+    const sentRows=matched.filter(r=>r._finalStatus==='sent');
+    if(sentRows.length){
+      const wsSent=XLSX.utils.aoa_to_sheet([['#','Name','Email','Attachment'],...sentRows.map(r=>[r.idx,r.name,r.email,r.fileNames&&r.fileNames.length?r.fileNames.join(', '):'—'])]);
+      XLSX.utils.book_append_sheet(wb,wsSent,'Sent');
+    }
     XLSX.writeFile(wb,'sendease_report.xlsx');
   }catch(e){
     const lines=Array.from(document.getElementById('logBox').querySelectorAll('.ll')).map(l=>l.innerText).join('\n');
