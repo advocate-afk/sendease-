@@ -476,7 +476,7 @@ The Team</textarea>
 <script>
 // ── URLS ─────────────────────────────────────────────────
 const LICENSE_SERVER_URL = 'https://script.google.com/macros/s/AKfycbzbi7XnucB7yCryeXPwBSSzs3jnf-tFpikn7G7chWkwUxdIRswPOGe25NAnVOvnj2WT/exec';
-const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyWapOYQMIKdWvSBCpo3kdZ2_k9mQO0s89ej8eDatFcYx4z6nMXZHNRb5pUj03Jy8Or/exec';
+const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzbi7XnucB7yCryeXPwBSSzs3jnf-tFpikn7G7chWkwUxdIRswPOGe25NAnVOvnj2WT/exec';
 const TRIAL_LIMIT = 50;
 
 // ── STATE ────────────────────────────────────────────────
@@ -955,7 +955,13 @@ async function startSend(){
   for(let i=0;i<toSend.length;i++){
     const row=toSend[i];
     const record={
-      action:'sendone',
+      action:'send',
+      records:[{
+        email:row.email, name:row.name,
+        subject:fill(subj,row), body:fill(body,row),
+        senderName:sn,
+        attachments:(row.files||[]).map(f=>({name:f.name,base64:f.base64,type:f.type||'application/octet-stream'}))
+      }],
       gmailUser:gmailUser,
       gmailPass:gmailPass,
       senderName:sn,
