@@ -348,7 +348,29 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
     <div class="price-card"><div class="price-credits">5,000 <small>credits</small></div><div class="price-amount">₹1,999</div><div class="price-per">₹0.40 per email</div><button class="price-buy price-buy-sec" onclick="buyPlan(1999,'business','SendEase — 5000 Credits')">Buy ₹1,999</button></div>
     
     <!-- Custom Credits -->
-    <div style="max-width:760px;margin:20px auto 0;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.15);border-radius:18px;padding:28px 24px">
+    <!-- Custom Credits -->
+<div style="max-width:760px;margin:20px auto 0;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.15);border-radius:18px;padding:32px 28px">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+    <div>
+      <div style="font-family:'Instrument Serif',serif;font-size:28px;color:#fff;font-style:italic">Custom <span style="font-family:Inter,sans-serif;font-size:16px;color:rgba(255,255,255,.5);font-style:normal">credits</span></div>
+      <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px">Need more than 5,000? Set your own quantity · ₹0.40 per email</div>
+    </div>
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:4px 14px;font-size:11px;color:rgba(255,255,255,.4)">Bulk pricing</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:end">
+    <div>
+      <label style="display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.4);margin-bottom:8px">Number of Credits (min 5,000)</label>
+      <input type="number" id="customCredits" min="5000" step="100" placeholder="e.g. 10,000" oninput="calcCustom()" style="width:100%;padding:12px 16px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;font-size:18px;color:#fff;outline:none;font-family:Inter,sans-serif"/>
+      <div id="customMsg" style="font-size:12px;margin-top:8px;min-height:18px"></div>
+    </div>
+    <div style="text-align:center;padding-bottom:26px">
+      <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Total</div>
+      <div id="customPrice" style="font-size:36px;font-weight:800;color:#ff6535;font-family:Inter,sans-serif;white-space:nowrap">₹ —</div>
+    </div>
+    <div style="padding-bottom:26px">
+      <button id="customBuyBtn" onclick="buyCustom()" disabled style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.35);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:13px 28px;font-size:14px;font-weight:600;cursor:not-allowed;font-family:Inter,sans-serif;transition:all .2s;white-space:nowrap">Buy Custom →</button>
+    </div>
+  </div>
       <div style="font-family:'Instrument Serif',serif;font-size:28px;font-weight:400;color:#fff;font-style:italic;margin-bottom:4px">Custom <small style="font-family:Inter,sans-serif;font-size:14px;color:rgba(255,255,255,.4);font-style:normal">credits</small></div>
       <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:18px">Minimum 5,000 credits · ₹0.40 per email</div>
       <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
