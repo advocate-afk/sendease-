@@ -446,7 +446,7 @@ The Team</textarea>
 // License Server — OTP login + credits
 const LICENSE_SERVER_URL = 'https://script.google.com/macros/s/AKfycbzbi7XnucB7yCryeXPwBSSzs3jnf-tFpikn7G7chWkwUxdIRswPOGe25NAnVOvnj2WT/exec';
 // WebApp — email bhejne ke liye (Code.gs ka URL)
-const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzbi7XnucB7yCryeXPwBSSzs3jnf-tFpikn7G7chWkwUxdIRswPOGe25NAnVOvnj2WT/exec';
+const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyWapOYQMIKdWvSBCpo3kdZ2_k9mQO0s89ej8eDatFcYx4z6nMXZHNRb5pUj03Jy8Or/exec';
 
 // ── STATE ────────────────────────────────────────────────
 let excelRows=[],excelCols=[],pdfMap={},broadcastFiles=[],matched=[];
@@ -902,8 +902,10 @@ async function startSend(){
   for(let bi=0;bi<batches.length;bi++){
     addLog('info','Batch '+(bi+1)+'/'+batches.length+' — '+batches[bi].length+' emails...');
     try{
-      const encoded=encodeURIComponent(JSON.stringify({action:'send',records:batches[bi]}));
-      const res=await fetch(WEBAPP_URL+'?data='+encoded);
+      const res=await fetch(WEBAPP_URL,{
+        method:'POST',
+        body:JSON.stringify({action:'send',records:batches[bi]})
+      });
       const data=await res.json();
       if(data.status==='ok'&&data.results){
         data.results.forEach(r=>{
