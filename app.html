@@ -23,12 +23,12 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--fb);min-height:100vh;overflow-x:hidden}
 .shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
-.sidebar{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
-.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 24px;border-bottom:1px solid var(--border);margin-bottom:8px;}
-.logo-icon{width:36px;height:36px;border-radius:9px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 2px 8px rgba(232,66,10,.3);}
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 24px;border-bottom:1px solid var(--border);margin-bottom:8px}
+.logo-icon{width:36px;height:36px;border-radius:9px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 2px 8px rgba(232,66,10,.3)}
 .logo-text{font-family:var(--f);font-size:17px;font-weight:800;color:var(--ink);letter-spacing:-0.5px}
 .logo-text span{color:var(--accent)}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;border-left:3px solid transparent;user-select:none;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;border-left:3px solid transparent;user-select:none}
 .nav-item:hover{background:var(--bg3);color:var(--ink)}
 .nav-item.active{background:var(--acbg);color:var(--accent);border-left-color:var(--accent);font-weight:600}
 .nav-item.done{color:var(--green)}
@@ -42,13 +42,13 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);min-height:100v
 .page-title{font-family:var(--f);font-size:24px;font-weight:800;letter-spacing:-0.8px;color:var(--ink);margin-bottom:6px}
 .page-title span{color:var(--accent)}
 .page-sub{font-size:13px;color:var(--muted);margin-bottom:32px}
-.card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:16px;}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:16px}
 .card-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px;font-family:var(--f)}
 .card-title svg{width:15px;height:15px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.connect-hero{background:linear-gradient(135deg,var(--acbg),var(--bg));border:1px solid var(--acborder);border-radius:16px;padding:28px;margin-bottom:16px;}
+.connect-hero{background:linear-gradient(135deg,var(--acbg),var(--bg));border:1px solid var(--acborder);border-radius:16px;padding:28px;margin-bottom:16px}
 .connect-hero-title{font-family:var(--f);font-size:20px;font-weight:800;color:var(--ink);margin-bottom:6px}
 .connect-hero-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:24px;max-width:480px}
-.connected-box{display:none;align-items:center;gap:12px;background:var(--greenbg);border:1px solid var(--greenborder);border-radius:10px;padding:12px 18px;margin-bottom:20px;}
+.connected-box{display:none;align-items:center;gap:12px;background:var(--greenbg);border:1px solid var(--greenborder);border-radius:10px;padding:12px 18px;margin-bottom:20px}
 .connected-box.show{display:flex}
 .conn-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -57,14 +57,14 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);min-height:100v
 .conn-disc:hover{color:var(--red)}
 .fg{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
 .fg label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
-.fg input,.fg select,.fg textarea{background:var(--bg);border:1px solid var(--border2);border-radius:9px;padding:10px 13px;color:var(--ink);font-family:var(--fb);font-size:13px;outline:none;transition:border-color .15s;width:100%;}
+.fg input,.fg select,.fg textarea{background:var(--bg);border:1px solid var(--border2);border-radius:9px;padding:10px 13px;color:var(--ink);font-family:var(--fb);font-size:13px;outline:none;transition:border-color .15s;width:100%}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,66,10,.08)}
 .fg input::placeholder,.fg textarea::placeholder{color:#bbb}
 .fg textarea{resize:vertical;min-height:90px;line-height:1.6}
 .fg select option{background:var(--bg)}
 .form2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-.mode-card{border:2px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;background:var(--bg);transition:all .2s;position:relative;}
+.mode-card{border:2px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;background:var(--bg);transition:all .2s;position:relative}
 .mode-card:hover{border-color:var(--accent);background:var(--acbg)}
 .mode-card.selected{border-color:var(--accent);background:var(--acbg)}
 .mode-card.selected::after{content:'✓';position:absolute;top:12px;right:14px;color:var(--accent);font-weight:800;font-size:15px}
@@ -75,7 +75,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);min-height:100v
 .tag-ac{background:var(--acbg);color:var(--accent)}
 .tag-bl{background:var(--bluebg);color:var(--blue)}
 .drop-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.drop-zone{border:2px dashed var(--border2);border-radius:12px;padding:28px 18px;text-align:center;cursor:pointer;background:var(--bg2);transition:all .2s;position:relative;}
+.drop-zone{border:2px dashed var(--border2);border-radius:12px;padding:28px 18px;text-align:center;cursor:pointer;background:var(--bg2);transition:all .2s;position:relative}
 .drop-zone:hover,.drop-zone.drag{border-color:var(--accent);background:var(--acbg)}
 .drop-zone.done{border-color:var(--green);border-style:solid;background:var(--greenbg)}
 .dz-ico{font-size:26px;margin-bottom:7px;display:block}
@@ -91,7 +91,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);min-height:100v
 .draft-bar{background:var(--bg3);padding:8px 14px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)}
 .draft-inner{padding:14px;display:flex;flex-direction:column;gap:10px}
 .var-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:2px}
-.chip{background:var(--acbg);border:1px solid var(--acborder);color:var(--accent);border-radius:5px;padding:3px 9px;font-size:10px;font-family:var(--fm);cursor:pointer;transition:all .15s;font-weight:500;}
+.chip{background:var(--acbg);border:1px solid var(--acborder);color:var(--accent);border-radius:5px;padding:3px 9px;font-size:10px;font-family:var(--fm);cursor:pointer;transition:all .15s;font-weight:500}
 .chip:hover{background:#ffe0d4}
 .chip-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-right:4px}
 .tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
@@ -115,7 +115,7 @@ tr:hover td{background:var(--bg2)}
 .prog-bar{height:6px;background:var(--border);border-radius:100px;overflow:hidden}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px;transition:width .4s cubic-bezier(.4,0,.2,1)}
 .prog-info{display:flex;justify-content:space-between;margin-top:5px;font-size:11px;color:var(--muted)}
-.log{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;height:200px;overflow-y:auto;font-family:var(--fm);font-size:11px;display:flex;flex-direction:column;gap:2px;}
+.log{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;height:200px;overflow-y:auto;font-family:var(--fm);font-size:11px;display:flex;flex-direction:column;gap:2px}
 .log::-webkit-scrollbar{width:3px}
 .log::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 .ll{display:flex;gap:8px;line-height:1.6}
@@ -123,7 +123,7 @@ tr:hover td{background:var(--bg2)}
 .lk{flex-shrink:0;font-weight:700;font-size:10px;min-width:38px}
 .lok{color:var(--green)}.lwarn{color:var(--yellow)}.lerr{color:var(--red)}.linfo{color:var(--blue)}
 .btns{display:flex;gap:9px;justify-content:flex-end;margin-top:20px}
-.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:9px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .15s;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:9px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .15s}
 .btn-p{background:var(--accent);color:#fff;box-shadow:0 2px 10px rgba(232,66,10,.25)}
 .btn-p:hover{background:#c73508;transform:translateY(-1px)}
 .btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none}
@@ -151,7 +151,6 @@ tr:hover td{background:var(--bg2)}
 <body>
 <div class="shell">
 
-<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-icon">✉</div>
@@ -167,12 +166,11 @@ tr:hover td{background:var(--bg2)}
   <div class="sidebar-bottom"><a href="index.html">← Back to home</a></div>
 </aside>
 
-<!-- MAIN CONTENT -->
 <main class="content">
   <div class="page-title">Send<span>Ease</span></div>
-  <div class="page-sub" id="pageSub">Bulk email with any attachment — free, straight from your Gmail</div>
+  <div class="page-sub">Bulk email with any attachment — free, straight from your Gmail</div>
 
-  <!-- STEP 0: CONNECT -->
+  <!-- STEP 0: LOGIN -->
   <div id="step0">
     <div class="connect-hero" id="loginSection">
       <div class="connect-hero-title">👋 Welcome to SendEase</div>
@@ -207,7 +205,7 @@ tr:hover td{background:var(--bg2)}
     </div>
     <div class="connect-hero" id="appsScriptSection" style="display:none">
       <div class="connect-hero-title">✅ Ready to Send</div>
-      <div class="connect-hero-sub">You are logged in and ready. Click Next to continue.</div>
+      <div class="connect-hero-sub">You are logged in. Click Next to continue.</div>
     </div>
     <div class="btns">
       <button class="btn btn-p" id="btnStep1" onclick="goStep(1)" disabled>
@@ -254,11 +252,11 @@ tr:hover td{background:var(--bg2)}
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Upload Files
       </div>
+      <!-- BROADCAST -->
       <div id="uploadBroadcast">
         <div class="notice n-info"><span>📢</span><div><strong>Broadcast mode:</strong> Same file(s) go to everyone.</div></div>
         <div style="margin-bottom:12px">
           <button onclick="downloadSampleExcel('broadcast')" style="display:inline-flex;align-items:center;gap:6px;background:var(--acbg);color:var(--accent);border:1px solid var(--acborder);border-radius:7px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--fb)" onmouseover="this.style.background='#ffe0d4'" onmouseout="this.style.background='var(--acbg)'">📥 Download Sample Excel</button>
-          <span style="font-size:11px;color:var(--muted);margin-left:8px">Fill this format and upload</span>
         </div>
         <div class="drop-grid">
           <div class="drop-zone" id="dzExcel" ondragover="dov(event,'dzExcel')" ondragleave="dlv('dzExcel')" ondrop="dropExcel(event)">
@@ -278,11 +276,11 @@ tr:hover td{background:var(--bg2)}
         </div>
         <div id="broadcastFileList" class="attached-files"></div>
       </div>
+      <!-- PERSONAL -->
       <div id="uploadPersonal" style="display:none">
         <div class="notice n-info"><span>🎯</span><div><strong>Personal mode:</strong> Each person gets their own file matched by ID in filename.</div></div>
         <div style="margin-bottom:12px">
           <button onclick="downloadSampleExcel('personal')" style="display:inline-flex;align-items:center;gap:6px;background:var(--acbg);color:var(--accent);border:1px solid var(--acborder);border-radius:7px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--fb)" onmouseover="this.style.background='#ffe0d4'" onmouseout="this.style.background='var(--acbg)'">📥 Download Sample Excel</button>
-          <span style="font-size:11px;color:var(--muted);margin-left:8px">Fill this format and upload (ID column = PAN/Employee ID)</span>
         </div>
         <div class="drop-grid">
           <div class="drop-zone" id="dzExcel2" ondragover="dov(event,'dzExcel2')" ondragleave="dlv('dzExcel2')" ondrop="dropExcel2(event)">
@@ -314,7 +312,7 @@ tr:hover td{background:var(--bg2)}
     </div>
   </div>
 
-  <!-- STEP 3: COLUMNS -->
+  <!-- STEP 3: MAP COLUMNS -->
   <div id="step3" style="display:none">
     <div class="card">
       <div class="card-title">
@@ -444,25 +442,24 @@ The Team</textarea>
 </div>
 
 <script>
-// ── URLS ──────────────────────────────────────────────────
-// License Server — credits, OTP, login
+// ── URLs ─────────────────────────────────────────────────
+// License Server — OTP login + credits
 const LICENSE_SERVER_URL = 'https://script.google.com/macros/s/AKfycbzbi7XnucB7yCryeXPwBSSzs3jnf-tFpikn7G7chWkwUxdIRswPOGe25NAnVOvnj2WT/exec';
-// WebApp — actual email sending with attachments
+// WebApp — email bhejne ke liye (Code.gs ka URL)
 const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzbi7XnucB7yCryeXPwBSSzs3jnf-tFpikn7G7chWkwUxdIRswPOGe25NAnVOvnj2WT/exec';
-// NOTE: Replace WEBAPP_URL with your Code.gs (WebApp) deployment URL
 
-// ── STATE ─────────────────────────────────────────────────
+// ── STATE ────────────────────────────────────────────────
 let excelRows=[],excelCols=[],pdfMap={},broadcastFiles=[],matched=[];
 let isSending=false,sendMode='broadcast';
 const STEPS=7;
 let currentUserEmail='',currentOTP='',userCredits=0,userLicenseKey='',userIsLoggedIn=false;
 
 window.onload=()=>{
-  const savedUser=localStorage.getItem('se_web_user');
-  if(savedUser){
+  const saved=localStorage.getItem('se_web_user');
+  if(saved){
     try{
-      const u=JSON.parse(savedUser);
-      currentUserEmail=u.email;
+      const u=JSON.parse(saved);
+      currentUserEmail=u.email||'';
       userCredits=u.credits||0;
       userLicenseKey=u.key||'';
       userIsLoggedIn=true;
@@ -474,14 +471,12 @@ window.onload=()=>{
   if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 };
 
-// ── OTP LOGIN ─────────────────────────────────────────────
+// ── OTP ──────────────────────────────────────────────────
 function checkEmailInput(){
-  const v=document.getElementById('userEmailInp').value.trim();
-  document.getElementById('btnSendOTP').disabled=!validEmail(v);
+  document.getElementById('btnSendOTP').disabled=!validEmail(document.getElementById('userEmailInp').value.trim());
 }
 function checkOTPInput(){
-  const v=document.getElementById('otpInp').value.trim();
-  document.getElementById('btnVerifyOTP').disabled=v.length!==6;
+  document.getElementById('btnVerifyOTP').disabled=document.getElementById('otpInp').value.trim().length!==6;
 }
 async function sendOTP(){
   const email=document.getElementById('userEmailInp').value.trim();
@@ -490,9 +485,7 @@ async function sendOTP(){
   currentOTP=Math.floor(100000+Math.random()*900000).toString();
   const btn=document.getElementById('btnSendOTP');
   btn.disabled=true;btn.textContent='Sending...';
-  try{
-    await fetch(`${LICENSE_SERVER_URL}?action=sendotp&email=${encodeURIComponent(email)}&otp=${currentOTP}`);
-  }catch(e){}
+  try{ await fetch(`${LICENSE_SERVER_URL}?action=sendotp&email=${encodeURIComponent(email)}&otp=${currentOTP}`); }catch(e){}
   document.getElementById('emailEntrySection').style.display='none';
   document.getElementById('otpEntrySection').style.display='';
   document.getElementById('otpEmailLabel').textContent=email;
@@ -521,10 +514,8 @@ async function verifyOTP(){
       alert('❌ Invalid OTP. Please try again.');
     }
   }catch(e){
-    // Fallback: accept OTP locally if server unreachable
     if(entered===currentOTP){
-      userIsLoggedIn=true;
-      userCredits=50;
+      userIsLoggedIn=true;userCredits=50;
       localStorage.setItem('se_web_user',JSON.stringify({email:currentUserEmail,credits:50,key:''}));
       showUserLoggedIn();
     }else{
@@ -537,17 +528,17 @@ function showUserLoggedIn(){
   document.getElementById('emailEntrySection').style.display='none';
   document.getElementById('otpEntrySection').style.display='none';
   document.getElementById('userConnBox').classList.add('show');
-  document.getElementById('userConnLabel').textContent=`✓ ${currentUserEmail}`;
-  const creditColor=userCredits<=0?'#d93025':userCredits<=20?'#b45309':'#0d9e73';
-  document.getElementById('creditsBadge').textContent=`${userCredits} credits`;
-  document.getElementById('creditsBadge').style.color=creditColor;
+  document.getElementById('userConnLabel').textContent='✓ '+currentUserEmail;
+  const cc=userCredits<=0?'#d93025':userCredits<=20?'#b45309':'#0d9e73';
+  document.getElementById('creditsBadge').textContent=userCredits+' credits';
+  document.getElementById('creditsBadge').style.color=cc;
   document.getElementById('appsScriptSection').style.display='';
   document.getElementById('btnStep1').disabled=false;
   if(userCredits<=0){
-    const notice=document.createElement('div');
-    notice.className='notice n-warn';
-    notice.innerHTML='<span>⚠️</span><div><strong>No credits remaining.</strong> <a href="https://sendease.in/#pricing" style="color:var(--blue)">Buy credits →</a></div>';
-    document.getElementById('appsScriptSection').prepend(notice);
+    const n=document.createElement('div');
+    n.className='notice n-warn';
+    n.innerHTML='<span>⚠️</span><div><strong>No credits remaining.</strong> <a href="https://sendease.in/#pricing" style="color:var(--blue)">Buy credits →</a></div>';
+    document.getElementById('appsScriptSection').prepend(n);
   }
 }
 function logoutUser(){
@@ -566,17 +557,16 @@ async function fetchUserCredits(email){
     const r=await fetch(`${LICENSE_SERVER_URL}?action=findbyemail&email=${encodeURIComponent(email)}`);
     const d=await r.json();
     if(d.found){
-      userCredits=d.balance||0;
-      userLicenseKey=d.key||'';
+      userCredits=d.balance||0;userLicenseKey=d.key||'';
       localStorage.setItem('se_web_user',JSON.stringify({email,credits:userCredits,key:userLicenseKey}));
-      const creditColor=userCredits<=0?'#d93025':userCredits<=20?'#b45309':'#0d9e73';
-      document.getElementById('creditsBadge').textContent=`${userCredits} credits`;
-      document.getElementById('creditsBadge').style.color=creditColor;
+      const cc=userCredits<=0?'#d93025':userCredits<=20?'#b45309':'#0d9e73';
+      document.getElementById('creditsBadge').textContent=userCredits+' credits';
+      document.getElementById('creditsBadge').style.color=cc;
     }
   }catch(e){}
 }
 
-// ── NAVIGATION ────────────────────────────────────────────
+// ── NAVIGATION ───────────────────────────────────────────
 function goStep(n){
   for(let i=0;i<STEPS;i++){
     document.getElementById('step'+i).style.display=i===n?'':'none';
@@ -584,13 +574,12 @@ function goStep(n){
     nb.classList.remove('active','done');
     if(i===n)nb.classList.add('active');
     else if(i<n)nb.classList.add('done');
-    const sn=document.getElementById('sn'+i);
-    sn.textContent=i<n?'✓':i+1;
+    document.getElementById('sn'+i).textContent=i<n?'✓':i+1;
   }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ── MODE ──────────────────────────────────────────────────
+// ── MODE ─────────────────────────────────────────────────
 function selectMode(m){
   sendMode=m;
   document.getElementById('modeBroadcast').classList.toggle('selected',m==='broadcast');
@@ -602,7 +591,7 @@ function selectMode(m){
   checkReady();
 }
 
-// ── DROP ZONES ────────────────────────────────────────────
+// ── DROP ZONES ───────────────────────────────────────────
 function dov(e,id){e.preventDefault();document.getElementById(id).classList.add('drag')}
 function dlv(id){document.getElementById(id).classList.remove('drag')}
 function dropExcel(e){e.preventDefault();dlv('dzExcel');loadExcel(e.dataTransfer.files[0])}
@@ -615,7 +604,7 @@ function fIco(n){
   return e==='pdf'?'📄':['jpg','jpeg','png','gif','webp'].includes(e)?'🖼️':['xlsx','xls','csv'].includes(e)?'📊':['doc','docx'].includes(e)?'📝':['zip','rar'].includes(e)?'🗜️':'📎';
 }
 
-// ── FILE LOADING ──────────────────────────────────────────
+// ── FILE LOADING ─────────────────────────────────────────
 function loadExcel(file){
   if(!file)return;
   const r=new FileReader();
@@ -624,7 +613,7 @@ function loadExcel(file){
     const ws=wb.Sheets[wb.SheetNames[0]];
     const data=XLSX.utils.sheet_to_json(ws,{defval:''});
     excelRows=data;excelCols=data.length?Object.keys(data[0]):[];
-    const txt=`✓ ${data.length} rows`;
+    const txt='✓ '+data.length+' rows';
     ['excelOk','excelOk2'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent=txt;el.style.display='';}});
     ['dzExcel','dzExcel2'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('done');});
     buildMapper();checkReady();
@@ -639,14 +628,10 @@ function loadBroadcastFiles(files){
   arr.forEach(f=>{
     const r=new FileReader();
     r.onload=e=>{
-      broadcastFiles.push({
-        name:f.name,
-        base64:e.target.result.split(',')[1],
-        type:f.type||'application/octet-stream'
-      });
+      broadcastFiles.push({name:f.name,base64:e.target.result.split(',')[1],type:f.type||'application/octet-stream'});
       done++;
       if(done===arr.length){
-        document.getElementById('broadcastOk').textContent=`✓ ${broadcastFiles.length} file(s)`;
+        document.getElementById('broadcastOk').textContent='✓ '+broadcastFiles.length+' file(s)';
         document.getElementById('broadcastOk').style.display='';
         document.getElementById('dzBroadcast').classList.add('done');
         renderBList();checkReady();
@@ -655,17 +640,13 @@ function loadBroadcastFiles(files){
     r.readAsDataURL(f);
   });
 }
-
 function renderBList(){
-  document.getElementById('broadcastFileList').innerHTML=broadcastFiles.map((f,i)=>`
-    <div class="attached-file">${fIco(f.name)} ${f.name} <span class="afrm" onclick="rmBFile(${i})">✕</span></div>`).join('');
+  document.getElementById('broadcastFileList').innerHTML=broadcastFiles.map((f,i)=>
+    '<div class="attached-file">'+fIco(f.name)+' '+f.name+' <span class="afrm" onclick="rmBFile('+i+')">✕</span></div>').join('');
 }
 function rmBFile(i){
   broadcastFiles.splice(i,1);renderBList();
-  if(!broadcastFiles.length){
-    document.getElementById('broadcastOk').style.display='none';
-    document.getElementById('dzBroadcast').classList.remove('done');
-  }
+  if(!broadcastFiles.length){document.getElementById('broadcastOk').style.display='none';document.getElementById('dzBroadcast').classList.remove('done');}
   checkReady();
 }
 
@@ -677,14 +658,10 @@ function loadPdfs(files){
     const r=new FileReader();
     r.onload=e=>{
       if(!pdfMap['__all__'])pdfMap['__all__']=[];
-      pdfMap['__all__'].push({
-        name:f.name,
-        base64:e.target.result.split(',')[1],
-        type:f.type||'application/octet-stream'
-      });
+      pdfMap['__all__'].push({name:f.name,base64:e.target.result.split(',')[1],type:f.type||'application/octet-stream'});
       done++;
       if(done===arr.length){
-        document.getElementById('pdfOk').textContent=`✓ ${arr.length} files loaded`;
+        document.getElementById('pdfOk').textContent='✓ '+arr.length+' files loaded';
         document.getElementById('pdfOk').style.display='';
         document.getElementById('dzPdf').classList.add('done');
         checkReady();
@@ -695,18 +672,17 @@ function loadPdfs(files){
 }
 
 function downloadSampleExcel(mode){
-  const broadcastData=[['Name','Email'],['John Smith','john.smith@example.com'],['Sara Lee','sara.lee@example.com'],['Amit Kumar','amit.kumar@example.com']];
-  const personalData=[['Name','Email','ID'],['John Smith','john.smith@example.com','EMP001'],['Sara Lee','sara.lee@example.com','EMP002'],['Amit Kumar','amit.kumar@example.com','ABCDE1234F']];
-  const data=mode==='personal'?personalData:broadcastData;
-  const ws=XLSX.utils.aoa_to_sheet(data);
+  const d=mode==='personal'
+    ?[['Name','Email','ID'],['Rahul Sharma','rahul@example.com','ABCDE1234F'],['Priya Singh','priya@example.com','EMP001']]
+    :[['Name','Email'],['Rahul Sharma','rahul@example.com'],['Priya Singh','priya@example.com']];
+  const ws=XLSX.utils.aoa_to_sheet(d);
   const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'Recipients');
   XLSX.writeFile(wb,mode==='personal'?'sample_personal.xlsx':'sample_broadcast.xlsx');
 }
-
 function checkReady(){document.getElementById('btnStep3').disabled=excelRows.length===0;}
 
-// ── COLUMN MAPPER ─────────────────────────────────────────
+// ── MAPPER ───────────────────────────────────────────────
 const rCols=[
   {id:'cName',label:'Name Column',hints:['name','employee name','emp name','fullname','recipient']},
   {id:'cEmail',label:'Email Column',hints:['email','mail','email id','emailid','e-mail']},
@@ -721,27 +697,27 @@ function buildMapper(){
   rCols.forEach(col=>{
     const d=autoD(col.hints);
     const el=document.createElement('div');el.className='fg';
-    el.innerHTML=`<label>${col.label}</label><select id="${col.id}">${excelCols.map(c=>`<option${c===d?' selected':''}>${c}</option>`).join('')}</select>`;
+    el.innerHTML='<label>'+col.label+'</label><select id="'+col.id+'">'+excelCols.map(c=>'<option'+(c===d?' selected':'')+'>'+c+'</option>').join('')+'</select>';
     w.appendChild(el);
   });
   const idSel=document.getElementById('cId');
-  if(idSel){const d=autoD(['pan','emp id','employee id','empid','id','staff id']);idSel.innerHTML=excelCols.map(c=>`<option${c===d?' selected':''}>${c}</option>`).join('');}
+  if(idSel){const d=autoD(['pan','emp id','employee id','empid','id','staff id']);idSel.innerHTML=excelCols.map(c=>'<option'+(c===d?' selected':'')+'>'+c+'</option>').join('');}
   if(document.getElementById('personalExtra'))
     document.getElementById('personalExtra').style.display=sendMode==='personal'?'':'none';
 }
 
-// ── VALIDATION ────────────────────────────────────────────
 function validEmail(email){
   return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(String(email).trim());
 }
 
-// ── BUILD MATCHED ─────────────────────────────────────────
+// ── BUILD MATCHED ────────────────────────────────────────
 function buildAndGo(){
   const cn=document.getElementById('cName').value;
   const ce=document.getElementById('cEmail').value;
   if(sendMode==='broadcast'){
     matched=excelRows.map((row,i)=>{
-      const name=String(row[cn]||'').trim(),email=String(row[ce]||'').trim();
+      const name=String(row[cn]||'').trim();
+      const email=String(row[ce]||'').trim();
       let status='ready';
       if(!email||!validEmail(email))status='invalid-email';
       else if(!name)status='no-name';
@@ -750,17 +726,18 @@ function buildAndGo(){
   }else{
     const ci=document.getElementById('cId').value;
     matched=excelRows.map((row,i)=>{
-      const name=String(row[cn]||'').trim(),email=String(row[ce]||'').trim();
+      const name=String(row[cn]||'').trim();
+      const email=String(row[ce]||'').trim();
       const rawId=String(row[ci]||'').trim().toUpperCase();
       let files=[],fileNames=[],status='ready';
-      if(!email||!validEmail(email))status='invalid-email';
-      else if(!rawId)status='no-id';
+      if(!email||!validEmail(email)){status='invalid-email';}
+      else if(!rawId){status='no-id';}
       else{
         const allFiles=pdfMap['__all__']||[];
-        const rawIdClean=rawId.trim().toUpperCase();
-        const pm=allFiles.filter(f=>rawIdClean&&f.name.toUpperCase().includes(rawIdClean));
+        // ID se match karo — filename mein ID hona chahiye
+        const pm=allFiles.filter(f=>f.name.toUpperCase().includes(rawId));
         if(pm.length){files=pm;fileNames=pm.map(f=>f.name);}
-        else status=allFiles.length?'no-file':'ready-no-attach';
+        else{status=allFiles.length?'no-file':'ready-no-attach';}
       }
       return{idx:i+1,name,email,id:rawId,files,fileNames,status};
     });
@@ -768,43 +745,42 @@ function buildAndGo(){
   goStep(4);
 }
 
-// ── PREVIEW ───────────────────────────────────────────────
+// ── PREVIEW ──────────────────────────────────────────────
 function previewAndGo(){renderStats();renderPreview();goStep(5);}
-
 function renderStats(){
   const total=matched.length;
   const ready=matched.filter(r=>r.status==='ready'||r.status==='ready-no-attach').length;
   const skip=matched.filter(r=>r.status!=='ready'&&r.status!=='ready-no-attach').length;
   const attach=matched.filter(r=>r.files&&r.files.length>0).length;
-  document.getElementById('statsBar').innerHTML=`
-    <div class="stat"><div class="stat-n" style="color:var(--ink)">${total}</div><div class="stat-l">Total</div></div>
-    <div class="stat"><div class="stat-n" style="color:var(--green)">${ready}</div><div class="stat-l">Ready</div></div>
-    <div class="stat"><div class="stat-n" style="color:var(--yellow)">${skip}</div><div class="stat-l">Skipped</div></div>
-    <div class="stat"><div class="stat-n" style="color:var(--blue)">${attach}</div><div class="stat-l">With File</div></div>`;
+  document.getElementById('statsBar').innerHTML=
+    '<div class="stat"><div class="stat-n" style="color:var(--ink)">'+total+'</div><div class="stat-l">Total</div></div>'+
+    '<div class="stat"><div class="stat-n" style="color:var(--green)">'+ready+'</div><div class="stat-l">Ready</div></div>'+
+    '<div class="stat"><div class="stat-n" style="color:var(--yellow)">'+skip+'</div><div class="stat-l">Skipped</div></div>'+
+    '<div class="stat"><div class="stat-n" style="color:var(--blue)">'+attach+'</div><div class="stat-l">With File</div></div>';
 }
-
 function renderPreview(){
+  const sb={
+    ready:'<span class="badge b-ok">✓ Ready</span>',
+    'ready-no-attach':'<span class="badge b-emp">✓ No File</span>',
+    'no-file':'<span class="badge b-warn">⚠ No Match</span>',
+    'invalid-email':'<span class="badge b-err">✗ Bad Email</span>',
+    'no-id':'<span class="badge b-err">✗ No ID</span>',
+    'no-name':'<span class="badge b-warn">⚠ No Name</span>',
+  };
   document.getElementById('previewTbody').innerHTML=matched.map(r=>{
-    const sb={
-      ready:`<span class="badge b-ok">✓ Ready</span>`,
-      'ready-no-attach':`<span class="badge b-emp">✓ No File</span>`,
-      'no-file':`<span class="badge b-warn">⚠ No Match</span>`,
-      'invalid-email':`<span class="badge b-err">✗ Bad Email</span>`,
-      'no-id':`<span class="badge b-err">✗ No ID</span>`,
-      'no-name':`<span class="badge b-warn">⚠ No Name</span>`,
-    }[r.status]||`<span class="badge b-warn">${r.status}</span>`;
+    const badge=sb[r.status]||'<span class="badge b-warn">'+r.status+'</span>';
     const at=r.fileNames&&r.fileNames.length
-      ?`<span style="font-size:11px;color:var(--muted)">${r.fileNames.map(n=>fIco(n)).join(' ')} ${r.fileNames.length} file(s)</span>`
-      :`<span style="font-size:11px;color:#ccc">—</span>`;
-    return`<tr><td class="td-mono">${r.idx}</td><td style="font-weight:500">${r.name||'—'}</td><td class="td-email">${r.email||'—'}</td><td>${at}</td><td>${sb}</td></tr>`;
+      ?'<span style="font-size:11px;color:var(--muted)">'+r.fileNames.map(n=>fIco(n)).join(' ')+' '+r.fileNames.length+' file(s)</span>'
+      :'<span style="font-size:11px;color:#ccc">—</span>';
+    return'<tr><td class="td-mono">'+r.idx+'</td><td style="font-weight:500">'+(r.name||'—')+'</td><td class="td-email">'+(r.email||'—')+'</td><td>'+at+'</td><td>'+badge+'</td></tr>';
   }).join('');
 }
 
-// ── COMPOSE HELPERS ───────────────────────────────────────
+// ── COMPOSE ──────────────────────────────────────────────
 const VARS=[{v:'{{name}}',d:'Name'},{v:'{{email}}',d:'Email'},{v:'{{id}}',d:'ID/PAN'},{v:'{{extra}}',d:'Extra'}];
 function buildChips(){
   const w=document.getElementById('varChips');if(!w)return;
-  w.innerHTML=VARS.map(v=>`<span class="chip" title="${v.d}" onclick="insertVar('${v.v}')">${v.v}</span>`).join('');
+  w.innerHTML=VARS.map(v=>'<span class="chip" title="'+v.d+'" onclick="insertVar(\''+v.v+'\')">'+v.v+'</span>').join('');
 }
 function insertVar(v){
   const ta=document.getElementById('emailBody');
@@ -820,14 +796,14 @@ function fill(tpl,row){
     .replace(/\{\{extra\}\}/g,row.id||'');
 }
 
-// ── LOG & PROGRESS ────────────────────────────────────────
+// ── LOG ──────────────────────────────────────────────────
 function addLog(type,msg){
   const box=document.getElementById('logBox');
   const now=new Date().toLocaleTimeString();
   const clr={ok:'lok',warn:'lwarn',err:'lerr',info:'linfo'};
   const lbl={ok:'SENT',warn:'SKIP',err:'FAIL',info:'INFO'};
   const d=document.createElement('div');d.className='ll';
-  d.innerHTML=`<span class="lt">${now}</span><span class="lk ${clr[type]||'linfo'}">${lbl[type]||type}</span><span>${msg}</span>`;
+  d.innerHTML='<span class="lt">'+now+'</span><span class="lk '+(clr[type]||'linfo')+'">'+(lbl[type]||type)+'</span><span>'+msg+'</span>';
   box.appendChild(d);box.scrollTop=box.scrollHeight;
 }
 function setProg(pct,lbl){
@@ -836,7 +812,7 @@ function setProg(pct,lbl){
   document.getElementById('progLabel').textContent=lbl;
 }
 
-// ── SESSION (resume support) ──────────────────────────────
+// ── SESSION ──────────────────────────────────────────────
 const SESSION_KEY='se_session';
 function sessionLoad(){try{const s=localStorage.getItem(SESSION_KEY);return s?JSON.parse(s):null;}catch{return null;}}
 function sessionAdd(email){try{const s=sessionLoad()||{emails:[]};if(!s.emails.includes(email))s.emails.push(email);localStorage.setItem(SESSION_KEY,JSON.stringify(s));}catch{}}
@@ -844,20 +820,16 @@ function sessionClear(){localStorage.removeItem(SESSION_KEY);}
 function confirmClearSession(){
   const s=sessionLoad();
   if(!s||!s.emails||!s.emails.length){alert('Koi session save nahi hai.');return;}
-  if(confirm(`${s.emails.length} emails ka session hai.\nClear karne ke baad sab se shuru hoga.\nClear karein?`)){
-    sessionClear();
-    addLog('info',`✓ Session clear — ${s.emails.length} sent emails ka record hata diya`);
-  }
+  if(confirm(s.emails.length+' emails ka session hai.\nClear karein?')){sessionClear();addLog('info','✓ Session clear ho gaya');}
 }
-
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function chunk(arr,n){const r=[];for(let i=0;i<arr.length;i+=n)r.push(arr.slice(i,i+n));return r;}
 
-// ── SEND ──────────────────────────────────────────────────
+// ── SEND ─────────────────────────────────────────────────
 async function startSend(){
   if(isSending)return;
 
-  // Resume logic
+  // Resume check
   const session=sessionLoad();
   let alreadySent=new Set();
   if(session&&session.emails&&session.emails.length>0){
@@ -865,15 +837,10 @@ async function startSend(){
     const allReady=matched.filter(r=>r.status==='ready'||r.status==='ready-no-attach');
     const pending=allReady.filter(r=>!alreadySent.has(r.email));
     if(alreadySent.size>0&&pending.length>0){
-      const ans=confirm(
-        `Pichli baar ${alreadySent.size} emails bheje gaye the.\n`+
-        `Abhi ${pending.length} baaki hain.\n\n`+
-        `OK  → Resume (sirf baaki wale bhejna)\n`+
-        `Cancel → Fresh start (sab dobara bhejna)`
-      );
+      const ans=confirm('Pichli baar '+alreadySent.size+' emails bheje gaye the.\nAbhi '+pending.length+' baaki hain.\n\nOK → Resume\nCancel → Fresh start');
       if(!ans){alreadySent=new Set();sessionClear();}
     }else if(pending.length===0&&alreadySent.size>0){
-      alert(`Sab ${alreadySent.size} emails pehle se bheje ja chuke hain!\nFresh start ke liye "Clear Session" karo.`);
+      alert('Sab emails pehle se bheje ja chuke hain! Fresh start ke liye "Clear Session" karo.');
       return;
     }
   }
@@ -888,9 +855,8 @@ async function startSend(){
   document.getElementById('logBox').innerHTML='';
   document.getElementById('doneBanner').style.display='none';
 
-  // Credits check
   if(userIsLoggedIn&&userCredits<=0){
-    addLog('warn','No credits remaining! Please purchase credits to continue.');
+    addLog('warn','No credits remaining! Purchase credits to continue.');
     isSending=false;
     document.getElementById('btnGo').disabled=false;
     document.getElementById('btnBackSend').disabled=false;
@@ -903,19 +869,19 @@ async function startSend(){
   const resumed=allReady.filter(r=>alreadySent.has(r.email));
   const skipped=matched.filter(r=>r.status!=='ready'&&r.status!=='ready-no-attach');
 
-  addLog('info',`Mode: ${sendMode==='broadcast'?'Broadcast':'Personal'} | Ready: ${toSend.length} | Already sent: ${resumed.length} | Skip: ${skipped.length}`);
-  if(resumed.length>0)addLog('info',`⏭ Resuming — ${resumed.length} already sent emails skip ho rahe hain`);
-  skipped.forEach(r=>{r._finalStatus=r.status;r._reason='Skipped';addLog('warn',`${r.name||r.email} — ${r.status}`);});
+  addLog('info','Mode: '+(sendMode==='broadcast'?'Broadcast':'Personal')+' | Ready: '+toSend.length+' | Skip: '+skipped.length);
+  if(resumed.length>0)addLog('info','⏭ Resuming — '+resumed.length+' already sent skip ho rahe hain');
+  skipped.forEach(r=>{r._finalStatus=r.status;r._reason='Skipped';addLog('warn',(r.name||r.email)+' — '+r.status);});
 
   if(!toSend.length){
-    addLog('warn','Koi naya email nahi bhejne ko — sab already sent hain!');
+    addLog('warn','Koi naya email nahi bhejne ko!');
     isSending=false;
     document.getElementById('btnGo').disabled=false;
     document.getElementById('btnBackSend').disabled=false;
     return;
   }
 
-  // Build records with proper attachment base64
+  // Records banao — attachments ke saath
   const records=toSend.map(row=>({
     name:row.name,
     email:row.email,
@@ -934,115 +900,79 @@ async function startSend(){
   let sent=0,failed=0;
 
   for(let bi=0;bi<batches.length;bi++){
-    addLog('info',`Batch ${bi+1}/${batches.length} — ${batches[bi].length} emails...`);
+    addLog('info','Batch '+(bi+1)+'/'+batches.length+' — '+batches[bi].length+' emails...');
     try{
-      // Use WEBAPP_URL for actual email sending (Code.gs)
       const res=await fetch(WEBAPP_URL,{
         method:'POST',
+        headers:{'Content-Type':'application/json'},
         body:JSON.stringify({action:'send',records:batches[bi]})
       });
       const data=await res.json();
-      if(data.status==='ok'){
+      if(data.status==='ok'&&data.results){
         data.results.forEach(r=>{
           const rec=matched.find(m=>m.email===r.email);
           if(rec){rec._finalStatus=r.status;rec._reason=r.reason||'';}
           if(r.status==='sent'){
-            addLog('ok',`${r.name} → ${r.email}`);
+            addLog('ok',(r.name||r.email)+' → '+r.email);
             sent++;
             sessionAdd(r.email);
-            // Deduct credit from license server
             if(userIsLoggedIn&&userLicenseKey){
               userCredits=Math.max(0,userCredits-1);
-              const savedUser=JSON.parse(localStorage.getItem('se_web_user')||'{}');
-              savedUser.credits=userCredits;
-              localStorage.setItem('se_web_user',JSON.stringify(savedUser));
-              fetch(`${LICENSE_SERVER_URL}?action=deduct&key=${encodeURIComponent(userLicenseKey)}`).catch(()=>{});
-              if(userCredits<=0){
-                addLog('warn','Credits finished! Purchase more to continue sending.');
-              }else if(userCredits<=10){
-                addLog('warn',`Low credits: ${userCredits} remaining — recharge soon`);
-              }
+              const su=JSON.parse(localStorage.getItem('se_web_user')||'{}');
+              su.credits=userCredits;
+              localStorage.setItem('se_web_user',JSON.stringify(su));
+              fetch(LICENSE_SERVER_URL+'?action=deduct&key='+encodeURIComponent(userLicenseKey)).catch(()=>{});
+              if(userCredits<=0)addLog('warn','Credits khatam! Aur kharido.');
+              else if(userCredits<=10)addLog('warn','Low credits: '+userCredits+' remaining');
             }
           }else if(r.status==='failed'){
-            addLog('err',`${r.name||r.email}: ${r.reason||'Failed'}`);
+            addLog('err',(r.name||r.email)+': '+(r.reason||'Failed'));
             failed++;
           }else{
-            addLog('warn',`${r.name||r.email} — ${r.reason||r.status}`);
+            addLog('warn',(r.name||r.email)+' — '+(r.reason||r.status));
           }
         });
       }else{
-        addLog('err',`Batch ${bi+1}: ${data.message||'Server error'}`);
+        addLog('err','Batch '+(bi+1)+': '+(data.message||'Server error'));
         failed+=batches[bi].length;
       }
     }catch(e){
-      addLog('err',`Batch ${bi+1}: ${e.message}`);
+      addLog('err','Batch '+(bi+1)+': '+e.message);
       failed+=batches[bi].length;
     }
-    setProg(Math.round(((bi+1)/batches.length)*100),`Batch ${bi+1}/${batches.length} done`);
+    setProg(Math.round(((bi+1)/batches.length)*100),'Batch '+(bi+1)+'/'+batches.length+' done');
     if(bi<batches.length-1)await sleep(1500);
   }
 
   setProg(100,'Complete!');
   isSending=false;
-  document.getElementById('doneTitle').textContent=`✓ ${sent} emails sent!`;
-  document.getElementById('doneSub').textContent=`${failed} failed · ${skipped.length} skipped`;
+  document.getElementById('doneTitle').textContent='✓ '+sent+' emails sent!';
+  document.getElementById('doneSub').textContent=failed+' failed · '+skipped.length+' skipped';
   document.getElementById('doneBanner').style.display='';
   document.getElementById('btnGo').disabled=false;
   document.getElementById('btnBackSend').disabled=false;
   document.getElementById('btnGoTxt').textContent='🔁 Send Again';
 
-  if(failed===0){
-    sessionClear();
-    addLog('info','✓ Session cleared — fresh start next time');
-  }else{
-    addLog('warn',`⚠ ${failed} failed — agli baar resume option milega`);
-  }
+  if(failed===0){sessionClear();addLog('info','✓ Session cleared');}
+  else addLog('warn','⚠ '+failed+' failed — agli baar resume milega');
 
   // Excel report
   try{
     const wb=XLSX.utils.book_new();
-    const summaryData=[
+    const wsSummary=XLSX.utils.aoa_to_sheet([
       ['SendEase — Email Report'],[''],
       ['Date',new Date().toLocaleString()],
       ['Mode',sendMode==='broadcast'?'Broadcast':'Personal'],
-      ['Total Recipients',matched.length],
-      ['Emails Sent',sent],['Failed',failed],['Skipped',skipped.length],
-    ];
-    const wsSummary=XLSX.utils.aoa_to_sheet(summaryData);
+      ['Total',matched.length],['Sent',sent],['Failed',failed],['Skipped',skipped.length]
+    ]);
     wsSummary['!cols']=[{wch:22},{wch:28}];
     XLSX.utils.book_append_sheet(wb,wsSummary,'Summary');
     const headers=['#','Name','Email','Attachment','Status','Reason'];
-    const detailRows=matched.map(r=>[r.idx,r.name||'',r.email||'',r.fileNames&&r.fileNames.length?r.fileNames.join(', '):'—',r._finalStatus||r.status,r._reason||'']);
-    const wsDetail=XLSX.utils.aoa_to_sheet([headers,...detailRows]);
+    const wsDetail=XLSX.utils.aoa_to_sheet([headers,...matched.map(r=>[r.idx,r.name||'',r.email||'',r.fileNames&&r.fileNames.length?r.fileNames.join(', '):'—',r._finalStatus||r.status,r._reason||''])]);
     wsDetail['!cols']=[{wch:4},{wch:20},{wch:28},{wch:30},{wch:12},{wch:35}];
-    const statusColors={sent:'FF90EE90',failed:'FFFF9999',skip:'FFFFFF99','invalid-email':'FFFFCC99','no-file':'FFFFCC99','no-id':'FFFFCC99'};
-    matched.forEach((r,i)=>{
-      const cellRef='E'+(i+2);
-      const st=(r._finalStatus||r.status||'').toLowerCase();
-      const fgColor=statusColors[st]||'FFEEEEEE';
-      if(!wsDetail[cellRef])wsDetail[cellRef]={v:st,t:'s'};
-      wsDetail[cellRef].s={fill:{fgColor:{rgb:fgColor}},font:{bold:true}};
-    });
-    headers.forEach((h,i)=>{
-      const ref=String.fromCharCode(65+i)+'1';
-      if(!wsDetail[ref])wsDetail[ref]={v:h,t:'s'};
-      wsDetail[ref].s={fill:{fgColor:{rgb:'FF333333'}},font:{bold:true,color:{rgb:'FFFFFFFF'}}};
-    });
     XLSX.utils.book_append_sheet(wb,wsDetail,'Email Details');
-    const sentRows=matched.filter(r=>r._finalStatus==='sent');
-    if(sentRows.length){
-      const wsSent=XLSX.utils.aoa_to_sheet([['#','Name','Email','Attachment'],...sentRows.map(r=>[r.idx,r.name,r.email,r.fileNames&&r.fileNames.length?r.fileNames.join(', '):'—'])]);
-      wsSent['!cols']=[{wch:4},{wch:20},{wch:28},{wch:30}];
-      XLSX.utils.book_append_sheet(wb,wsSent,'Sent');
-    }
-    const failedRows=matched.filter(r=>r._finalStatus==='failed'||(r.status!=='ready'&&r.status!=='ready-no-attach'&&r._finalStatus!=='sent'));
-    if(failedRows.length){
-      const wsFail=XLSX.utils.aoa_to_sheet([['#','Name','Email','Status','Reason'],...failedRows.map(r=>[r.idx,r.name,r.email,r._finalStatus||r.status,r._reason||''])]);
-      wsFail['!cols']=[{wch:4},{wch:20},{wch:28},{wch:14},{wch:35}];
-      XLSX.utils.book_append_sheet(wb,wsFail,'Failed & Skipped');
-    }
     XLSX.writeFile(wb,'sendease_report.xlsx');
-  }catch(xlsxErr){
+  }catch(e){
     const lines=Array.from(document.getElementById('logBox').querySelectorAll('.ll')).map(l=>l.innerText).join('\n');
     const blob=new Blob([lines],{type:'text/plain'});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sendease_log.txt';a.style.display='none';
