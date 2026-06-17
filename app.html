@@ -845,6 +845,7 @@ async function startSend(){
         subject:fill(subj,row),
         body:fill(body,row),
         senderName:sn,
+        gmailUser:gmailUser,
         attachments:(row.files||[]).map(f=>({name:f.name,base64:f.base64,type:f.type||'application/octet-stream'}))
       }]
     };
