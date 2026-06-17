@@ -350,6 +350,32 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
 </div>
 </section>
 
+  <!-- Custom Credits -->
+    <div style="max-width:760px;margin:20px auto 0;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.15);border-radius:18px;padding:28px 24px">
+      <div style="font-family:'Instrument Serif',serif;font-size:28px;font-weight:400;color:#fff;font-style:italic;margin-bottom:4px">Custom <small style="font-family:Inter,sans-serif;font-size:14px;color:rgba(255,255,255,.4);font-style:normal">credits</small></div>
+      <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:18px">Minimum 5,000 credits · ₹0.40 per email</div>
+      <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1;min-width:180px">
+          <label style="display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.4);margin-bottom:6px">Number of Credits</label>
+          <input type="number" id="customCredits" min="5000" step="100" placeholder="e.g. 8000"
+            oninput="calcCustom()"
+            style="width:100%;padding:11px 14px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:9px;font-size:16px;color:#fff;outline:none;font-family:Inter,sans-serif"/>
+          <div id="customMsg" style="font-size:12px;margin-top:6px;color:#fbbf24"></div>
+        </div>
+        <div style="min-width:140px;text-align:center">
+          <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Total Price</div>
+          <div id="customPrice" style="font-size:32px;font-weight:800;color:#ff6535;font-family:Inter,sans-serif">₹—</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:2px">₹0.40 per email</div>
+        </div>
+        <div style="display:flex;align-items:flex-end;padding-bottom:2px">
+          <button id="customBuyBtn" onclick="buyCustom()" disabled
+            style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 24px;font-size:14px;font-weight:600;cursor:not-allowed;font-family:Inter,sans-serif;transition:all .2s">
+            Buy Custom →
+          </button>
+        </div>
+      </div>
+    </div>
+
 <section id="download" class="download-sec">
   <div class="sec-eyebrow" style="color:var(--accent)">Desktop App</div>
   <h2>Download <em>SendEase</em></h2>
@@ -497,13 +523,48 @@ async function doAutoInstall(){
 function closeModal(){document.getElementById('installModal').style.display='none';}
 if(isInstalled) document.getElementById('pwaAlready').style.display='';
 
+  // CUSTOM CREDITS
+function calcCustom(){
+  const inp=document.getElementById('customCredits');
+  const msg=document.getElementById('customMsg');
+  const priceEl=document.getElementById('customPrice');
+  const btn=document.getElementById('customBuyBtn');
+  const val=parseInt(inp.value)||0;
+  if(!val){
+    msg.textContent='';priceEl.textContent='₹—';
+    btn.disabled=true;btn.style.background='rgba(255,255,255,.1)';
+    btn.style.color='rgba(255,255,255,.4)';btn.style.cursor='not-allowed';
+    return;
+  }
+  if(val<5000){
+    msg.textContent='⚠ Minimum 5,000 credits. Please choose a plan above for smaller packs.';
+    msg.style.color='#fbbf24';priceEl.textContent='₹—';
+    btn.disabled=true;btn.style.background='rgba(255,255,255,.1)';
+    btn.style.color='rgba(255,255,255,.4)';btn.style.cursor='not-allowed';
+    return;
+  }
+  const price=Math.round(val*0.40);
+  msg.textContent='✓ '+val.toLocaleString('en-IN')+' credits at ₹0.40 each';
+  msg.style.color='#1fcea8';
+  priceEl.textContent='₹'+price.toLocaleString('en-IN');
+  btn.disabled=false;btn.style.background='#e8420a';
+  btn.style.color='#fff';btn.style.cursor='pointer';
+}
+function buyCustom(){
+  const val=parseInt(document.getElementById('customCredits').value)||0;
+  if(val<5000)return;
+  const price=Math.round(val*0.40);
+  buyPlan(price,'custom','SendEase — '+val.toLocaleString('en-IN')+' Credits');
+}
+
 // CHECKOUT
 let _coAmt=0,_coPlan='',_coDesc='';
 const planLabels={
   standard:'Standard Plan — 500 Credits',
   popular:'Popular Plan — 1,000 Credits',
   pro:'Pro Plan — 2,000 Credits',
-  business:'Business Plan — 5,000 Credits'
+  business:'Business Plan — 5,000 Credits',
+  custom:'Custom Credits'
 };
 
 function buyPlan(amount,plan,description){
