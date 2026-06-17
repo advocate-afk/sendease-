@@ -757,7 +757,8 @@ function buildAndGo(){
       else if(!rawId)status='no-id';
       else{
         const allFiles=pdfMap['__all__']||[];
-        const pm=allFiles.filter(f=>f.name.toUpperCase().includes(rawId));
+        const rawIdClean=rawId.trim().toUpperCase();
+        const pm=allFiles.filter(f=>rawIdClean&&f.name.toUpperCase().includes(rawIdClean));
         if(pm.length){files=pm;fileNames=pm.map(f=>f.name);}
         else status=allFiles.length?'no-file':'ready-no-attach';
       }
