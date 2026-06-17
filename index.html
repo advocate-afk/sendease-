@@ -111,7 +111,7 @@ h2.sec-h em{font-style:italic;color:var(--accent)}
 .pricing-sec .sec-sub{color:rgba(255,255,255,.45)}
 .pricing-trial{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:7px 16px;font-size:13px;color:rgba(255,255,255,.6);margin-top:14px}
 .pricing-trial span{color:#1fcea8;font-weight:600}
-.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px;max-width:760px;margin-left:auto;margin-right:auto}
+.price-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:48px;max-width:1080px;margin-left:auto;margin-right:auto}
 .price-card{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:18px;padding:28px 24px;transition:all .2s;position:relative;cursor:default}
 .price-card:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
 .price-card.hot{background:rgba(232,66,10,.12);border-color:rgba(232,66,10,.4)}
@@ -288,6 +288,14 @@ footer p{font-size:12px;color:rgba(255,255,255,.3)}
     <div class="price-card"><div class="price-credits">1,000 <small>credits</small></div><div class="price-amount">₹499</div><div class="price-per">₹0.50 per email</div><button class="price-buy price-buy-sec" onclick="buyPlan(499,'popular','SendEase — 1000 Credits')">Buy ₹499</button></div>
     <div class="price-card hot"><div class="hot-badge">⭐ Most Popular</div><div class="price-credits">2,000 <small>credits</small></div><div class="price-amount">₹999</div><div class="price-per">₹0.50 per email</div><button class="price-buy price-buy-main" onclick="buyPlan(999,'pro','SendEase — 2000 Credits')">Buy ₹999</button></div>
     <div class="price-card"><div class="price-credits">5,000 <small>credits</small></div><div class="price-amount">₹1,999</div><div class="price-per">₹0.40 per email</div><button class="price-buy price-buy-sec" onclick="buyPlan(1999,'business','SendEase — 5000 Credits')">Buy ₹1,999</button></div>
+    <div class="price-card" style="border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.06)">
+      <div class="hot-badge" style="background:linear-gradient(135deg,#f59e0b,#d97706)">⚡ Best Value</div>
+      <div class="price-credits" style="font-size:32px">Unlimited <small>emails</small></div>
+      <div style="font-size:12px;color:rgba(255,255,255,.4);margin:6px 0 10px">Valid for 30 days · No credit limit</div>
+      <div class="price-amount" style="color:#fbbf24">₹19,999</div>
+      <div class="price-per">₹666/day — send as much as you want</div>
+      <button class="price-buy" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;box-shadow:0 4px 16px rgba(245,158,11,.4)" onclick="buyPlan(19999,'unlimited','SendEase — Unlimited Plan 30 Days')">Buy ₹19,999</button>
+    </div>
   </div>
   <!-- Custom Credits — single clean block -->
   <div style="max-width:760px;margin:20px auto 0;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.15);border-radius:18px;padding:32px 28px">
@@ -443,7 +451,7 @@ function buyCustom(){
 }
 // CHECKOUT
 let _coAmt=0,_coPlan='',_coDesc='';
-const planLabels={standard:'Standard Plan — 500 Credits',popular:'Popular Plan — 1,000 Credits',pro:'Pro Plan — 2,000 Credits',business:'Business Plan — 5,000 Credits',custom:'Custom Credits'};
+const planLabels={standard:'Standard Plan — 500 Credits',popular:'Popular Plan — 1,000 Credits',pro:'Pro Plan — 2,000 Credits',business:'Business Plan — 5,000 Credits',custom:'Custom Credits',unlimited:'Unlimited Plan — 30 Days'};
 function buyPlan(amount,plan,description){
   _coAmt=amount;_coPlan=plan;_coDesc=description;
   document.getElementById('coPlanLabel').textContent=planLabels[plan]||description;
