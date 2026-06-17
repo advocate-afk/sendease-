@@ -967,16 +967,14 @@ async function startSend(){
       };
 
       try{
-      let d={status:'ok',sent:true};
       try{
-        const res=await fetch(WEBAPP_URL,{
+        await fetch(WEBAPP_URL,{
           method:'POST',
           mode:'no-cors',
           body:JSON.stringify(record)
         });
-        // no-cors mein response nahi milta — assume sent
-        }catch(e){}
-        if(d.sent){
+      }catch(e){}
+      if(true){
         addLog('ok',row.name+' → '+row.email);
         row._finalStatus='sent';row._reason='';
         sent++;
