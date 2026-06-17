@@ -737,6 +737,7 @@ function showUserLoggedIn(){
     notice.innerHTML='<span>⚠️</span><div><strong>No credits remaining.</strong> <a href="https://sendease.in/#pricing" style="color:var(--blue)">Buy credits →</a></div>';
     document.getElementById('appsScriptSection').prepend(notice);
   }
+}
 
 function logoutUser(){
   localStorage.removeItem('se_web_user');
