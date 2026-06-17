@@ -965,13 +965,7 @@ async function startSend(){
       gmailUser:gmailUser,
       gmailPass:gmailPass,
       senderName:sn,
-      toEmail:row.email,
-      toName:row.name,
-      subject:fill(subj,row),
-      body:fill(body,row),
-      attachments:(row.files||[]).map(f=>({name:f.name,base64:f.base64,type:f.type||'application/octet-stream'}))
-      };
-
+      
       try{
       try{
         await fetch(WEBAPP_URL,{
