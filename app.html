@@ -902,11 +902,8 @@ async function startSend(){
   for(let bi=0;bi<batches.length;bi++){
     addLog('info','Batch '+(bi+1)+'/'+batches.length+' — '+batches[bi].length+' emails...');
     try{
-      const res=await fetch(WEBAPP_URL,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({action:'send',records:batches[bi]})
-      });
+      const encoded=encodeURIComponent(JSON.stringify({action:'send',records:batches[bi]}));
+      const res=await fetch(WEBAPP_URL+'?data='+encoded);
       const data=await res.json();
       if(data.status==='ok'&&data.results){
         data.results.forEach(r=>{
