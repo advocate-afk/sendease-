@@ -89,3 +89,37 @@ function sendEmails(payload) {
     results: results
   };
 }
+ function sendEmails(payload) {
+  var records = payload.records || [];
+  if (!records.length) return { status:'error', message:'No records' };
+  var results = [];
+  var sent = 0, failed = 0;
+  for (var i = 0; i < records.length; i++) {
+    var rec = records[i];
+    if (!rec.email || rec.email.indexOf('@') < 0) {
+      results.push({ email:rec.email, name:rec.name, status:'skip', reason:'Invalid email' });
+      continue;
+    }
+    try {
+      var options = { name: rec.senderName || 'SendEase' };
+      if (rec.attachments && rec.attachments.length > 0) {
+        var blobs = [];
+        for (var j = 0; j < rec.attachments.length; j++) {
+          var att = rec.attachments[j];
+          var decoded = Utilities.base64Decode(att.base64);
+          var blob = Utilities.newBlob(decoded, att.type || 'application/octet-stream', att.name);
+          blobs.push(blob);
+        }
+        options.attachments = blobs;
+      }
+      GmailApp.sendEmail(rec.email, rec.subject, rec.body, options);
+      results.push({ email:rec.email, name:rec.name, status:'sent' });
+      sent++;
+      if (i < records.length - 1) Utilities.sleep(400);
+    } catch(err) {
+      results.push({ email:rec.email, name:rec.name, status:'failed', reason:err.toString() });
+      failed++;
+    }
+  }
+  return { status:'ok', results:results, summary:{ sent:sent, failed:failed, total:records.length } };
+}
