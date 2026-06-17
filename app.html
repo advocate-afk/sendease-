@@ -313,7 +313,6 @@ tr:hover td{background:var(--bg2)}
 
   <div class="sidebar-bottom">
     <a href="index.html">← Back to home</a>
-    <a href="Code.gs" target="_blank">📄 Download Code.gs</a>
   </div>
 </aside>
 
@@ -368,63 +367,11 @@ tr:hover td{background:var(--bg2)}
       </div>
     </div>
 
-    <!-- PART B: Apps Script Setup (shown after login) -->
+    <!-- PART B: Ready to send (shown after login) -->
     <div class="connect-hero" id="appsScriptSection" style="display:none">
-      <div class="connect-hero-title">🔗 Connect Your Gmail for Sending</div>
-      <div class="connect-hero-sub">One-time setup — 3 minutes. Your emails go directly from your own Gmail.</div>
-
-      <div class="connected-box" id="connBox">
-        <div class="conn-dot"></div>
-        <div class="conn-text" id="connLabel">Gmail connected</div>
-        <button class="conn-disc" onclick="disconnect()">Disconnect</button>
-      </div>
-
-      <div id="setupSteps">
-        <div class="setup-steps">
-          <div class="ss-row">
-            <div class="ss-num">1</div>
-            <div>
-              <div class="ss-title">Open Google Apps Script</div>
-              <div class="ss-desc">Go to <a href="https://script.google.com" target="_blank">script.google.com</a> → Sign in with your Gmail → Click <strong>New Project</strong></div>
-            </div>
-          </div>
-          <div class="ss-row">
-            <div class="ss-num">2</div>
-            <div>
-              <div class="ss-title">Paste the code</div>
-              <div class="ss-desc">Delete everything → Download <a href="Code.gs" target="_blank">Code.gs</a> → Copy all → Paste → Press <strong>Ctrl+S</strong></div>
-              <div class="ss-code"><span class="hl">Code.gs</span> → Select All → Delete → Paste → <span class="btn">Ctrl+S</span></div>
-            </div>
-          </div>
-          <div class="ss-row">
-            <div class="ss-num">3</div>
-            <div>
-              <div class="ss-title">Deploy as Web App</div>
-              <div class="ss-desc">Click <strong>Deploy</strong> → <strong>New Deployment</strong> → Web App → Execute as: <strong>Me</strong> → Access: <strong>Anyone</strong> → Deploy</div>
-              <div class="ss-code"><span class="btn">Deploy</span> → New Deployment → Web App → Execute as: <span class="ok">Me</span> → Access: <span class="ok">Anyone</span> → <span class="btn">Deploy</span></div>
-            </div>
-          </div>
-          <div class="ss-row">
-            <div class="ss-num">4</div>
-            <div>
-              <div class="ss-title">Allow permissions & paste URL</div>
-              <div class="ss-desc">Authorize → copy the Web App URL → paste below</div>
-              <div class="ss-code">Web app URL: <span class="hl">https://script.google.com/macros/s/XXXXX.../exec</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="fg">
-          <label>Your Web App URL</label>
-          <input type="url" id="scriptUrl" placeholder="https://script.google.com/macros/s/XXXXX/exec" oninput="checkUrl()"/>
-        </div>
-        <button class="btn btn-p" id="btnConnect" onclick="testConnect()" disabled style="width:100%;justify-content:center">
-          <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/></svg>
-          Test & Connect
-        </button>
-      </div>
+      <div class="connect-hero-title">✅ Ready to Send</div>
+      <div class="connect-hero-sub">You are logged in and ready. Click Next to continue.</div>
     </div>
-
     <div class="btns">
       <button class="btn btn-p" id="btnStep1" onclick="goStep(1)" disabled>
         Next: Choose Mode
@@ -667,6 +614,7 @@ The Team</textarea>
 <script>
 let excelRows=[],excelCols=[],pdfMap={},broadcastFiles=[],matched=[];
 let isSending=false,scriptUrl='',connEmail='',sendMode='broadcast';
+const SCRIPT_PROXY = LICENSE_SERVER_URL;
 const STEPS=7;
 
 const LICENSE_SERVER_URL = 'https://script.google.com/macros/s/AKfycbzbi7XnucB7yCryeXPwBSSzs3jnf-tFpikn7G7chWkwUxdIRswPOGe25NAnVOvnj2WT/exec';
@@ -688,15 +636,7 @@ window.onload=()=>{
     }catch(e){ localStorage.removeItem('se_web_user'); }
   }
 
-  const s=localStorage.getItem('se_url');
-  if(s){
-    scriptUrl=s;
-    document.getElementById('scriptUrl').value=s;
-    checkUrl();
-    fetch(s+'?action=ping').then(r=>r.json()).then(d=>{
-      if(d.status==='ok'){connEmail=d.email||'Gmail connected';showConn();}
-    }).catch(()=>{connEmail='Gmail connected';showConn();});
-  }
+  scriptUrl = LICENSE_SERVER_URL;
   buildChips();
   if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 };
@@ -790,19 +730,14 @@ function showUserLoggedIn(){
   document.getElementById('creditsBadge').textContent=`${userCredits} credits`;
   document.getElementById('creditsBadge').style.color=creditColor;
 
-  // Show Apps Script section
   document.getElementById('appsScriptSection').style.display='';
-
-  // If no credits — show buy message
+  scriptUrl = LICENSE_SERVER_URL;
+  document.getElementById('btnStep1').disabled=false;
   if(userCredits<=0){
     const notice = document.createElement('div');
     notice.className='notice n-warn';
-    notice.innerHTML='<span>⚠️</span><div><strong>No credits remaining.</strong> <a href="/#pricing" style="color:var(--blue)">Buy credits →</a></div>';
+    notice.innerHTML='<span>⚠️</span><div><strong>No credits remaining.</strong> <a href="https://sendease.in/#pricing" style="color:var(--blue)">Buy credits →</a></div>';
     document.getElementById('appsScriptSection').prepend(notice);
-  }
-
-  // Enable next if Apps Script already connected
-  if(scriptUrl) document.getElementById('btnStep1').disabled=false;
 }
 
 function logoutUser(){
@@ -1215,9 +1150,9 @@ async function startSend(){
   for(let bi=0;bi<batches.length;bi++){
     addLog('info',`Batch ${bi+1}/${batches.length} — ${batches[bi].length} emails...`);
     try{
-      const res=await fetch(scriptUrl,{
+      const res=await fetch(LICENSE_SERVER_URL,{
         method:'POST',
-        body:JSON.stringify({action:'send',records:batches[bi]})
+        body:JSON.stringify({action:'sendemail',records:batches[bi],key:userLicenseKey})
       });
       const data=await res.json();
       if(data.status==='ok'){
