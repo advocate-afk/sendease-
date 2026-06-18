@@ -423,7 +423,6 @@ tr:hover td{background:var(--bg2)}
         <button class="conn-disc" onclick="logoutUser()">Logout</button>
       </div>
 
-      <!-- Activate License & Buy Credits (shown when logged in) -->
       <div id="licenseActionsRow" style="display:none;gap:10px;margin-top:10px">
         <div class="activate-card" style="flex:1">
           <div class="activate-card-title">🔑 Have a License Key?</div>
@@ -439,6 +438,14 @@ tr:hover td{background:var(--bg2)}
           <button class="btn-activate" style="background:var(--accent)" onclick="openCreditsModal()">
             <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
             Buy Credits
+          </button>
+        </div>
+        <div class="activate-card" style="flex:0 0 auto;border-color:var(--greenborder);background:var(--greenbg)">
+          <div class="activate-card-title" style="color:var(--green)">🔄 Credits Updated?</div>
+          <div class="activate-card-desc">If admin added credits to your account, click to refresh balance.</div>
+          <button class="btn-activate" style="background:var(--green)" onclick="refreshCreditsNow()">
+            <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Refresh Credits
           </button>
         </div>
       </div>
@@ -777,7 +784,7 @@ let excelRows=[],excelCols=[],pdfMap={},broadcastFiles=[],matched=[];
 let isSending=false,scriptUrl='',connEmail='',sendMode='broadcast';
 const STEPS=7;
 
-const LICENSE_SERVER_URL = 'https://script.google.com/macros/s/AKfycbw_UhMgS6mYTWOYB6NXy0yXbjU18ywxkYqlZz_1z_9uS-ytvjX-1sHY3bD0cU8pAmPxPQ/exec';
+const LICENSE_SERVER_URL = 'https://script.google.com/macros/s/AKfycbzbi7XnucB7yCryeXPwBSSzs3jnf-tFpikn7G7chWkwUxdIRswPOGe25NAnVOvnj2WT/exec';
 let currentUserEmail='', currentOTP='', userCredits=0, userLicenseKey='', userIsLoggedIn=false;
 
 window.onload=()=>{
@@ -970,6 +977,11 @@ async function fetchUserCredits(email){
       document.getElementById('creditsBadge').textContent=`${userCredits} credits`;
       document.getElementById('creditsBadge').style.color=creditColor;
       updateSidebarCredits();
+      // Remove no-credit notice if credits now available
+      if(userCredits>0){
+        const notice=document.getElementById('noCreditNotice');
+        if(notice) notice.remove();
+      }
     }
   }catch(e){}
 }
@@ -1408,6 +1420,16 @@ async function startSend(){
   }
 } // end startSend
 
+async function refreshCreditsNow(){
+  if(!currentUserEmail){ alert('Please login first.'); return; }
+  const btn = event.target;
+  const orig = btn.textContent;
+  btn.textContent = '⏳ Refreshing...'; btn.disabled=true;
+  await fetchUserCredits(currentUserEmail);
+  btn.textContent = '✓ Updated!'; btn.style.background='var(--green)';
+  setTimeout(()=>{ btn.textContent=orig; btn.disabled=false; }, 2000);
+}
+
 // ── BUY CREDITS MODAL ─────────────────────────────
 const RAZORPAY_KEY_APP = 'rzp_live_T1PUGj0qC2zy62';
 let _cmPlan='pro', _cmAmt=999, _cmCredits=2000;
@@ -1488,7 +1510,7 @@ function validateAM(){
 }
 
 async function submitActivation(){
-  const email=document.getElementById('amEmail').value.trim();
+  const email=document.getElementById('amEmail').value.trim().toLowerCase();
   const key=document.getElementById('amKey').value.trim().toUpperCase();
   const btn=document.getElementById('amSubmitBtn');
   const errEl=document.getElementById('amErr');
@@ -1500,34 +1522,38 @@ async function submitActivation(){
     const r=await fetch(url);
     const d=await r.json();
 
-    if(d.valid && d.email && d.email.toLowerCase()===email.toLowerCase()){
+    if(d.valid && d.email && d.email.toLowerCase()===email){
       // Match! Update user session with key's balance
       userCredits=d.balance||0;
       userLicenseKey=key;
-      localStorage.setItem('se_web_user', JSON.stringify({email:currentUserEmail||email, credits:userCredits, key}));
+      const saveEmail=currentUserEmail||email;
+      localStorage.setItem('se_web_user', JSON.stringify({email:saveEmail, credits:userCredits, key}));
       const creditColor=userCredits<=0?'#d93025':userCredits<=20?'#b45309':'#0d9e73';
       document.getElementById('creditsBadge').textContent=`${userCredits} credits`;
       document.getElementById('creditsBadge').style.color=creditColor;
       updateSidebarCredits();
       closeActivateModal();
-      // Show success notice
       const notice=document.createElement('div');
       notice.className='notice n-ok';
       notice.style.cssText='margin-top:12px';
       notice.innerHTML=`<span>✅</span><div><strong>License activated!</strong> ${userCredits} credits added. Plan: ${d.plan||'Pro'}</div>`;
       document.getElementById('loginSection').appendChild(notice);
       setTimeout(()=>notice.remove(), 5000);
-    } else if(d.valid && d.email !== email){
-      errEl.textContent='❌ This key belongs to a different email address.';
+    } else if(d.valid && d.email && d.email.toLowerCase()!==email){
+      errEl.textContent='❌ This key belongs to a different email. Enter the email you used to purchase.';
+      errEl.style.display='';
+    } else if(!d.valid){
+      errEl.textContent='❌ Key not found or revoked. Please check and try again.';
       errEl.style.display='';
     } else {
-      errEl.textContent='❌ Key not found or revoked. Please check and try again.';
+      errEl.textContent='❌ Activation failed. Please contact support.';
       errEl.style.display='';
     }
   }catch(e){
-    errEl.textContent='⚠ Server unreachable. Please try again.';
+    errEl.textContent='⚠ Server unreachable. Please try again in a few seconds.';
     errEl.style.display='';
   }
+  btn.disabled=false; btn.textContent='✓ Activate Now';
 } // end submitActivation
 
 function downloadReport() {
