@@ -340,8 +340,47 @@ tr:hover td{background:var(--bg2)}
 
 .mapper{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 
-@media(max-width:700px){
-  .shell{grid-template-columns:1fr}.sidebar{display:none}.content{padding:24px 16px}
+/* MY ACCOUNT MODAL */
+#accountModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+#accountModal.open{display:flex}
+.acm-box{background:#fff;border-radius:20px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.2)}
+.acm-head{background:var(--ink);padding:22px 26px 20px;border-radius:20px 20px 0 0;position:relative}
+.acm-head-title{font-family:var(--f);font-size:22px;font-weight:800;color:#fff;margin-bottom:2px}
+.acm-head-sub{font-size:12px;color:rgba(255,255,255,.4)}
+.acm-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.1);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.acm-close:hover{background:rgba(255,255,255,.2)}
+.acm-body{padding:22px 24px}
+.acm-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.acm-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.acm-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:12px}
+.acm-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.acm-label{font-size:12px;color:var(--muted)}
+.acm-value{font-size:13px;font-weight:600;color:var(--ink)}
+.acm-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700}
+.acm-badge.active{background:var(--greenbg);color:var(--green)}
+.acm-badge.trial{background:var(--yellowbg);color:var(--yellow)}
+.acm-key{font-family:var(--fm);font-size:11px;color:var(--ink2);background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px 12px;letter-spacing:1px;word-break:break-all;margin-top:6px}
+.acm-credits-big{font-size:36px;font-weight:800;font-family:var(--f);color:var(--green);line-height:1}
+.acm-credits-big.warn{color:var(--yellow)}
+.acm-credits-big.danger{color:var(--red)}
+.acm-bar{height:6px;background:var(--border);border-radius:100px;overflow:hidden;margin:8px 0 12px}
+.acm-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px;transition:width .5s}
+.acm-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;border:none;border-radius:9px;padding:11px;font-size:13px;font-weight:700;font-family:var(--f);cursor:pointer;transition:all .15s;margin-bottom:8px}
+.acm-btn-primary{background:var(--accent);color:#fff}
+.acm-btn-primary:hover{background:#c73508}
+.acm-btn-secondary{background:var(--bg2);color:var(--ink2);border:1px solid var(--border2)}
+.acm-btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.acm-btn-green{background:var(--green);color:#fff}
+.acm-btn-green:hover{background:#0a7d5c}
+.acm-invoice-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:10px 14px;margin-bottom:8px}
+.acm-invoice-info{flex:1}
+.acm-invoice-plan{font-size:13px;font-weight:600;color:var(--ink)}
+.acm-invoice-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.acm-invoice-btn{background:var(--ink);color:#fff;border:none;border-radius:7px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);transition:all .15s;white-space:nowrap}
+.acm-invoice-btn:hover{background:var(--accent)}
+.acm-no-login{text-align:center;padding:20px;color:var(--muted);font-size:13px}
+
+@media(max-width:700px){.shell{grid-template-columns:1fr}.sidebar{display:none}.content{padding:24px 16px}
   .form2,.drop-grid,.stats,.mapper,.mode-grid{grid-template-columns:1fr}
 }
 </style>
@@ -385,7 +424,11 @@ tr:hover td{background:var(--bg2)}
     <span>Send</span>
   </div>
 
-  <div class="sidebar-bottom">
+  <!-- MY ACCOUNT BUTTON -->
+  <div class="nav-item" id="nbAccount" onclick="openAccountModal()" style="margin-top:8px;border-top:1px solid var(--border);padding-top:14px">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    <span>My Account</span>
+  </div>
     <!-- Credits Widget -->
     <div class="credits-widget" id="sidebarCredits">
       <div class="cw-top">
@@ -1465,6 +1508,117 @@ function startFresh(step){
   goStep(step||1);
 }
 
+// ── MY ACCOUNT MODAL ──────────────────────────────
+function openAccountModal(){
+  document.getElementById('accountModal').classList.add('open');
+  renderAccountModal();
+}
+function closeAccountModal(){
+  document.getElementById('accountModal').classList.remove('open');
+}
+function renderAccountModal(){
+  const body=document.getElementById('acmBody');
+  const sub=document.getElementById('acmHeadSub');
+  if(!userIsLoggedIn){
+    sub.textContent='SendEase Account';
+    body.innerHTML='<div class="acm-no-login">🔒 Please login first to view your account.</div>';
+    return;
+  }
+  sub.textContent=currentUserEmail;
+  const isActive=userLicenseKey&&userLicenseKey.length>5;
+  const statusClass=isActive?'active':'trial';
+  const statusLabel=isActive?'✓ Active License':'⚡ Trial';
+  const credClass=userCredits<=0?'danger':userCredits<=50?'warn':'';
+  const barPct=Math.min(100,Math.max(0,Math.round((userCredits/2000)*100)));
+  const invoices=getStoredInvoices();
+  body.innerHTML=`
+    <div class="acm-section">
+      <div class="acm-section-title">Account</div>
+      <div class="acm-row"><span class="acm-label">Email</span><span class="acm-value">${currentUserEmail}</span></div>
+      <div class="acm-row"><span class="acm-label">Status</span><span class="acm-badge ${statusClass}">${statusLabel}</span></div>
+      ${isActive?`<div class="acm-row"><span class="acm-label">License Key</span></div><div class="acm-key">${userLicenseKey}</div>`:''}
+    </div>
+    <div class="acm-section">
+      <div class="acm-section-title">Credits</div>
+      <div class="acm-credits-big ${credClass}">${userCredits}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">credits remaining</div>
+      <div class="acm-bar"><div class="acm-bar-fill" style="width:${barPct}%"></div></div>
+      <button class="acm-btn acm-btn-primary" onclick="closeAccountModal();openCreditsModal()">⚡ Buy More Credits</button>
+      <button class="acm-btn acm-btn-secondary" onclick="refreshCreditsNow();setTimeout(renderAccountModal,1500)">🔄 Refresh Balance</button>
+      ${!isActive?`<button class="acm-btn acm-btn-secondary" onclick="closeAccountModal();openActivateModal()">🔑 Activate License Key</button>`:''}
+    </div>
+    <div class="acm-section">
+      <div class="acm-section-title">Invoice History</div>
+      ${invoices.length===0
+        ?`<div style="font-size:12px;color:var(--muted);text-align:center;padding:12px 0">No purchases yet.<br/>Invoices will appear here after buying credits.</div>`
+        :invoices.map((inv,i)=>`
+          <div class="acm-invoice-row">
+            <div class="acm-invoice-info">
+              <div class="acm-invoice-plan">${inv.planLabel} — ${inv.credits} Credits</div>
+              <div class="acm-invoice-meta">₹${inv.amount} · ${inv.date} · ${inv.paymentId}</div>
+            </div>
+            <button class="acm-invoice-btn" onclick="downloadInvoicePDF(${i})">📄 PDF</button>
+          </div>`).join('')
+      }
+    </div>`;
+}
+
+function getStoredInvoices(){
+  try{return JSON.parse(localStorage.getItem('se_invoices')||'[]');}catch{return[];}
+}
+function saveInvoice(inv){
+  try{
+    const list=getStoredInvoices();
+    list.unshift(inv);
+    localStorage.setItem('se_invoices',JSON.stringify(list.slice(0,20)));
+  }catch{}
+}
+function downloadInvoicePDF(index){
+  const inv=getStoredInvoices()[index];
+  if(!inv)return;
+  const invoiceNum=inv.invoiceNum||('SE-INV-'+inv.paymentId);
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>Invoice ${invoiceNum}</title>
+  <style>body{font-family:Arial,sans-serif;max-width:600px;margin:40px auto;color:#111;font-size:14px}
+  .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid #e8420a}
+  .brand{font-size:24px;font-weight:800}.brand span{color:#e8420a}
+  .inv-title{font-size:28px;font-weight:800;color:#e8420a;text-align:right}
+  .section{margin-bottom:22px}.section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:4px}
+  .row{display:flex;justify-content:space-between;margin-bottom:6px}.label{color:#888}.value{font-weight:600}
+  .total-row{display:flex;justify-content:space-between;font-size:18px;font-weight:800;padding:12px 0;border-top:2px solid #111;margin-top:8px}
+  .total-row span:last-child{color:#e8420a}
+  .key-box{background:#f8f7f5;border:1px solid #e5e5e5;border-radius:8px;padding:12px;font-family:monospace;font-size:13px;letter-spacing:1px;word-break:break-all;margin-top:6px}
+  .badge{display:inline-block;background:#e8f8f3;color:#0d9e73;padding:3px 12px;border-radius:100px;font-size:11px;font-weight:700}
+  .footer{margin-top:40px;padding-top:16px;border-top:1px solid #eee;font-size:11px;color:#aaa;text-align:center}
+  @media print{body{margin:20px}}</style></head><body>
+  <div class="header">
+    <div><div class="brand">Send<span>Ease</span></div><div style="font-size:12px;color:#888;margin-top:4px">sendease.in</div></div>
+    <div><div class="inv-title">INVOICE</div><div style="font-size:12px;color:#888;text-align:right">${invoiceNum}</div></div>
+  </div>
+  <div class="section"><div class="section-title">Invoice Details</div>
+    <div class="row"><span class="label">Invoice No</span><span class="value">${invoiceNum}</span></div>
+    <div class="row"><span class="label">Date</span><span class="value">${inv.date}</span></div>
+    <div class="row"><span class="label">Status</span><span class="value"><span class="badge">✓ Paid</span></span></div>
+    <div class="row"><span class="label">Payment ID</span><span class="value">${inv.paymentId}</span></div>
+  </div>
+  <div class="section"><div class="section-title">Bill To</div>
+    <div class="row"><span class="label">Email</span><span class="value">${inv.email}</span></div>
+  </div>
+  <div class="section"><div class="section-title">Order Details</div>
+    <div class="row"><span class="label">Product</span><span class="value">SendEase Email Credits</span></div>
+    <div class="row"><span class="label">Plan</span><span class="value">${inv.planLabel}</span></div>
+    <div class="row"><span class="label">Credits</span><span class="value">${inv.credits} emails</span></div>
+    <div class="total-row"><span>Total Amount</span><span>₹${inv.amount}</span></div>
+  </div>
+  <div class="section"><div class="section-title">License Key</div>
+    <div class="key-box">${inv.key||'—'}</div>
+  </div>
+  <div class="footer">Credits never expire · Support: hello@sendease.in · sendease.in</div>
+  </body></html>`;
+  const w=window.open('','_blank','width=700,height=900');
+  w.document.write(html);w.document.close();w.focus();
+  setTimeout(()=>{w.print();},600);
+}
+
 // ── BUY CREDITS MODAL ─────────────────────────────
 const RAZORPAY_KEY_APP = 'rzp_live_T1PUGj0qC2zy62';
 let _cmPlan='pro', _cmAmt=999, _cmCredits=2000;
@@ -1529,6 +1683,19 @@ function submitCM(){
     notes: {plan: _cmPlan, customer_name: name},
     theme: {color: '#e8420a'},
     handler: function(response){
+      // Save invoice to localStorage
+      const planLabelMap={standard:'Standard Plan — 500 Credits',popular:'Popular Plan — 1,000 Credits',pro:'Pro Plan — 2,000 Credits',business:'Business Plan — 5,000 Credits',unlimited:'Unlimited Plan — 30 Days',custom:'Custom Credits'};
+      const invNum='SE-INV-'+new Date().getFullYear()+'-'+String(Date.now()).slice(-6);
+      saveInvoice({
+        invoiceNum: invNum,
+        planLabel: planLabelMap[_cmPlan]||(_cmCredits+' Credits'),
+        credits: _cmCredits,
+        amount: _cmAmt,
+        email: email,
+        paymentId: response.razorpay_payment_id,
+        date: new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}),
+        key: userLicenseKey||''
+      });
       // Show success overlay
       const overlay = document.createElement('div');
       overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)';
@@ -1791,6 +1958,20 @@ function downloadReport() {
       <button class="am-submit" id="amSubmitBtn" onclick="submitActivation()" disabled>✓ Activate Now</button>
       <div class="am-err" id="amErr" style="display:none"></div>
       <div class="am-hint">Don't have a key? <button onclick="closeActivateModal();openCreditsModal()" style="background:none;border:none;color:var(--accent);font-weight:600;cursor:pointer;font-family:var(--fb);font-size:11px">Buy Credits →</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MY ACCOUNT MODAL ─────────────────────────── -->
+<div id="accountModal" onclick="if(event.target===this)closeAccountModal()">
+  <div class="acm-box">
+    <div class="acm-head">
+      <button class="acm-close" onclick="closeAccountModal()">✕</button>
+      <div class="acm-head-title">👤 My Account</div>
+      <div class="acm-head-sub" id="acmHeadSub">SendEase Account Details</div>
+    </div>
+    <div class="acm-body" id="acmBody">
+      <div class="acm-no-login">Please login first to view your account.</div>
     </div>
   </div>
 </div>
