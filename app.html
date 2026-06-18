@@ -396,6 +396,9 @@ tr:hover td{background:var(--bg2)}
       <button class="btn-buy-credits" onclick="openCreditsModal()">
         ⚡ Buy More Credits
       </button>
+      <button id="btnRefreshSidebar" onclick="refreshCreditsNow()" style="display:flex;align-items:center;justify-content:center;gap:5px;width:100%;margin-top:6px;background:none;border:1px solid var(--border);border-radius:7px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:var(--fb);transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='var(--green)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">
+        🔄 Refresh Credits
+      </button>
     </div>
     <a href="index.html" style="margin-top:12px">← Back to home</a>
     <a href="Code.gs" target="_blank">📄 Download Code.gs</a>
@@ -438,14 +441,6 @@ tr:hover td{background:var(--bg2)}
           <button class="btn-activate" style="background:var(--accent)" onclick="openCreditsModal()">
             <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
             Buy Credits
-          </button>
-        </div>
-        <div class="activate-card" style="flex:0 0 auto;border-color:var(--greenborder);background:var(--greenbg)">
-          <div class="activate-card-title" style="color:var(--green)">🔄 Credits Updated?</div>
-          <div class="activate-card-desc">If admin added credits to your account, click to refresh balance.</div>
-          <button class="btn-activate" style="background:var(--green)" onclick="refreshCreditsNow()">
-            <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-            Refresh Credits
           </button>
         </div>
       </div>
@@ -1422,12 +1417,13 @@ async function startSend(){
 
 async function refreshCreditsNow(){
   if(!currentUserEmail){ alert('Please login first.'); return; }
-  const btn = event.target;
-  const orig = btn.textContent;
-  btn.textContent = '⏳ Refreshing...'; btn.disabled=true;
+  const btn = document.getElementById('btnRefreshSidebar');
+  if(btn){ btn.textContent='⏳ Refreshing...'; btn.disabled=true; }
   await fetchUserCredits(currentUserEmail);
-  btn.textContent = '✓ Updated!'; btn.style.background='var(--green)';
-  setTimeout(()=>{ btn.textContent=orig; btn.disabled=false; }, 2000);
+  if(btn){ btn.textContent='✓ Updated!'; btn.style.color='var(--green)'; btn.style.borderColor='var(--green)'; }
+  setTimeout(()=>{
+    if(btn){ btn.textContent='🔄 Refresh Credits'; btn.disabled=false; btn.style.color='var(--muted)'; btn.style.borderColor='var(--border)'; }
+  }, 2000);
 }
 
 // ── BUY CREDITS MODAL ─────────────────────────────
@@ -1444,10 +1440,29 @@ function closeCreditsModal(){ document.getElementById('creditsModal').classList.
 
 function selectCMPlan(plan, amt, credits){
   _cmPlan=plan; _cmAmt=amt; _cmCredits=credits;
-  ['standard','popular','pro','business'].forEach(p=>{
-    document.getElementById('cmp-'+p).classList.toggle('selected', p===plan);
+  ['standard','popular','pro','business','unlimited'].forEach(p=>{
+    const el=document.getElementById('cmp-'+p);
+    if(el) el.classList.toggle('selected', p===plan);
   });
+  document.getElementById('cmp-custom').classList.remove('selected');
   document.getElementById('cmSubmitTxt').textContent=`Proceed to Pay ₹${amt.toLocaleString('en-IN')}`;
+  validateCM();
+}
+
+function calcCMCustom(){
+  const val=parseInt(document.getElementById('cmCustomQty').value)||0;
+  const priceEl=document.getElementById('cmCustomPrice');
+  if(val<5000){ priceEl.textContent=val>0?'Min 5,000':''; return; }
+  const price=Math.round(val*0.40);
+  priceEl.textContent='₹'+price.toLocaleString('en-IN');
+  _cmPlan='custom'; _cmAmt=price; _cmCredits=val;
+  ['standard','popular','pro','business','unlimited'].forEach(p=>{
+    const el=document.getElementById('cmp-'+p);
+    if(el) el.classList.remove('selected');
+  });
+  document.getElementById('cmp-custom').classList.add('selected');
+  document.getElementById('cmSubmitTxt').textContent=`Proceed to Pay ₹${price.toLocaleString('en-IN')}`;
+  validateCM();
 }
 
 function validateCM(){
@@ -1651,7 +1666,7 @@ function downloadReport() {
     </div>
     <div class="cm-body">
       <!-- Plan Grid -->
-      <div class="cm-grid">
+      <div class="cm-grid" style="grid-template-columns:1fr 1fr 1fr">
         <div class="cm-plan" id="cmp-standard" onclick="selectCMPlan('standard',299,500)">
           <div class="cm-plan-credits">500</div>
           <div style="font-size:10px;color:var(--muted);margin-bottom:2px">credits</div>
@@ -1676,6 +1691,21 @@ function downloadReport() {
           <div style="font-size:10px;color:var(--muted);margin-bottom:2px">credits</div>
           <div class="cm-plan-price">₹1,999</div>
           <div class="cm-plan-per">₹0.40 per email</div>
+        </div>
+        <div class="cm-plan" id="cmp-unlimited" onclick="selectCMPlan('unlimited',19999,999999)" style="border-color:#f59e0b;background:rgba(245,158,11,.06)">
+          <div class="cm-plan-credits" style="font-size:18px">Unlimited</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">emails · 30 days</div>
+          <div class="cm-plan-price" style="color:#d97706">₹19,999</div>
+          <div class="cm-plan-per">₹666/day · no limit</div>
+          <div class="cm-plan-badge" style="background:#d97706">⚡ Best Value</div>
+        </div>
+        <div class="cm-plan" id="cmp-custom" style="cursor:default">
+          <div class="cm-plan-credits" style="font-size:18px">Custom</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:4px">min 5,000 · ₹0.40/email</div>
+          <input type="number" id="cmCustomQty" min="5000" step="100" placeholder="e.g. 10,000"
+            oninput="calcCMCustom()"
+            style="width:100%;padding:5px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-family:var(--fb);outline:none;color:var(--ink);background:var(--bg);margin-bottom:4px"/>
+          <div id="cmCustomPrice" style="font-size:13px;font-weight:700;color:var(--accent);min-height:18px"></div>
         </div>
       </div>
 
