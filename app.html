@@ -749,9 +749,14 @@ The Team</textarea>
         <div class="done-ico">🎉</div>
         <div class="done-title" id="doneTitle"></div>
         <div class="done-sub" id="doneSub"></div>
-        <button onclick="downloadReport()" style="margin-top:14px;display:inline-flex;align-items:center;gap:7px;background:var(--green);color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f)">
-          📥 Download Report (.xlsx)
-        </button>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">
+          <button onclick="downloadReport()" style="display:inline-flex;align-items:center;gap:7px;background:var(--green);color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f)">
+            📥 Download Report (.xlsx)
+          </button>
+          <button onclick="startFresh(1)" style="display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f)">
+            📤 Send New Batch
+          </button>
+        </div>
       </div>
       <div id="sendingSection">
         <div class="prog-wrap">
@@ -1424,6 +1429,40 @@ async function refreshCreditsNow(){
   setTimeout(()=>{
     if(btn){ btn.textContent='🔄 Refresh Credits'; btn.disabled=false; btn.style.color='var(--muted)'; btn.style.borderColor='var(--border)'; }
   }, 2000);
+}
+
+function startFresh(step){
+  // Reset all data
+  excelRows=[]; excelCols=[]; pdfMap={}; broadcastFiles=[]; matched=[];
+  sendMode='broadcast'; isSending=false;
+  // Reset file upload UI
+  ['dzExcel','dzExcel2','dzBroadcast','dzPdf'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.remove('done','drag');
+  });
+  ['excelOk','excelOk2','broadcastOk','pdfOk'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display='none';
+  });
+  const bfl=document.getElementById('broadcastFileList');
+  if(bfl) bfl.innerHTML='';
+  // Reset mode selection
+  ['modeBroadcast','modePersonal'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.remove('selected');
+  });
+  document.getElementById('modeHint').textContent='Select a mode to continue';
+  document.getElementById('btnStep2').disabled=true;
+  // Reset log and progress
+  document.getElementById('logBox').innerHTML='';
+  document.getElementById('progFill').style.width='0%';
+  document.getElementById('progPct').textContent='0%';
+  document.getElementById('progLabel').textContent='Ready to send';
+  document.getElementById('doneBanner').style.display='none';
+  document.getElementById('btnGo').disabled=false;
+  document.getElementById('btnGoTxt').textContent='🚀 Start Sending';
+  sessionClear();
+  goStep(step||1);
 }
 
 // ── BUY CREDITS MODAL ─────────────────────────────
