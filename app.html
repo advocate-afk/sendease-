@@ -71,6 +71,80 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fb);min-height:100v
 .sidebar-bottom a{font-size:12px;color:var(--muted);text-decoration:none;display:block;margin-bottom:6px;transition:color .15s}
 .sidebar-bottom a:hover{color:var(--ink)}
 
+/* CREDITS WIDGET IN SIDEBAR */
+.credits-widget{margin:12px 16px 0;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;display:none}
+.credits-widget.show{display:block}
+.cw-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cw-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.cw-count{font-size:18px;font-weight:800;font-family:var(--f);color:var(--green)}
+.cw-count.warn{color:var(--yellow)}
+.cw-count.danger{color:var(--red)}
+.cw-bar{height:4px;background:var(--border);border-radius:100px;overflow:hidden;margin-bottom:10px}
+.cw-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px;transition:width .5s}
+.cw-fill.warn{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.cw-fill.danger{background:linear-gradient(90deg,var(--red),#f87171)}
+.btn-buy-credits{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:700;font-family:var(--f);cursor:pointer;transition:all .15s}
+.btn-buy-credits:hover{background:#c73508;transform:translateY(-1px)}
+
+/* ACTIVATE LICENSE CARD */
+.activate-card{background:var(--bg);border:1.5px dashed var(--border2);border-radius:12px;padding:18px;margin-top:14px}
+.activate-card-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.activate-card-desc{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6}
+.btn-activate{display:flex;align-items:center;gap:7px;width:100%;justify-content:center;background:var(--ink);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;font-family:var(--f);cursor:pointer;transition:all .15s}
+.btn-activate:hover{background:var(--accent)}
+
+/* BUY CREDITS MODAL */
+#creditsModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+#creditsModal.open{display:flex}
+.cm-box{background:#fff;border-radius:20px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.2)}
+.cm-head{background:var(--ink);padding:22px 26px 20px;border-radius:20px 20px 0 0;position:relative}
+.cm-head-title{font-family:var(--f);font-size:22px;font-weight:800;color:#fff;margin-bottom:4px}
+.cm-head-title em{font-style:italic;color:var(--accent2)}
+.cm-head-sub{font-size:12px;color:rgba(255,255,255,.45)}
+.cm-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.1);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.cm-close:hover{background:rgba(255,255,255,.2)}
+.cm-body{padding:20px 24px 24px}
+.cm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.cm-plan{background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;text-align:center}
+.cm-plan:hover{border-color:var(--accent);background:var(--acbg)}
+.cm-plan.selected{border-color:var(--accent);background:var(--acbg)}
+.cm-plan-credits{font-family:var(--f);font-size:22px;font-weight:800;color:var(--ink);line-height:1}
+.cm-plan-price{font-size:16px;font-weight:700;color:var(--accent);margin:4px 0 2px}
+.cm-plan-per{font-size:10px;color:var(--muted)}
+.cm-plan-badge{display:inline-block;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;margin-top:6px}
+.cm-divider{height:1px;background:var(--border);margin:14px 0;position:relative}
+.cm-divider span{position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#fff;padding:0 10px;font-size:11px;color:var(--muted)}
+.cm-fg{margin-bottom:12px}
+.cm-fg label{display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
+.cm-inp{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-family:var(--fb);outline:none;background:var(--bg);transition:border-color .15s;color:var(--ink)}
+.cm-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,66,10,.08)}
+.cm-inp.err{border-color:var(--red)}
+.cm-submit{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;font-family:var(--f);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+.cm-submit:hover{background:#c73508}
+.cm-submit:disabled{background:#ccc;cursor:not-allowed}
+.cm-note{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6}
+
+/* ACTIVATE LICENSE MODAL */
+#activateModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9998;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+#activateModal.open{display:flex}
+.am-box{background:#fff;border-radius:18px;max-width:400px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,.2);overflow:hidden}
+.am-head{background:var(--ink2);padding:20px 24px;position:relative}
+.am-head-title{font-family:var(--f);font-size:18px;font-weight:800;color:#fff;margin-bottom:3px}
+.am-head-sub{font-size:12px;color:rgba(255,255,255,.4)}
+.am-close{position:absolute;top:13px;right:15px;background:rgba(255,255,255,.1);border:none;color:#fff;width:26px;height:26px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.am-close:hover{background:rgba(255,255,255,.2)}
+.am-body{padding:22px 24px}
+.am-fg{margin-bottom:12px}
+.am-fg label{display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
+.am-inp{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-family:var(--fb);outline:none;background:var(--bg);transition:border-color .15s;color:var(--ink)}
+.am-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,66,10,.08)}
+.am-inp.key-inp{font-family:var(--fm);letter-spacing:2px;font-size:12px}
+.am-submit{width:100%;background:var(--green);color:#fff;border:none;border-radius:9px;padding:12px;font-size:14px;font-weight:700;font-family:var(--f);cursor:pointer;transition:all .15s}
+.am-submit:hover{background:#0a7d5c}
+.am-submit:disabled{background:#ccc;cursor:not-allowed}
+.am-hint{font-size:11px;color:var(--muted);margin-top:8px;text-align:center;line-height:1.6}
+.am-err{font-size:12px;color:var(--red);margin-top:8px;text-align:center}
+
 /* CONTENT */
 .content{padding:40px 48px;max-width:860px}
 .page-title{font-family:var(--f);font-size:24px;font-weight:800;letter-spacing:-0.8px;color:var(--ink);margin-bottom:6px}
@@ -312,7 +386,18 @@ tr:hover td{background:var(--bg2)}
   </div>
 
   <div class="sidebar-bottom">
-    <a href="index.html">← Back to home</a>
+    <!-- Credits Widget -->
+    <div class="credits-widget" id="sidebarCredits">
+      <div class="cw-top">
+        <span class="cw-label">Credits</span>
+        <span class="cw-count" id="cwCount">0</span>
+      </div>
+      <div class="cw-bar"><div class="cw-fill" id="cwFill" style="width:100%"></div></div>
+      <button class="btn-buy-credits" onclick="openCreditsModal()">
+        ⚡ Buy More Credits
+      </button>
+    </div>
+    <a href="index.html" style="margin-top:12px">← Back to home</a>
     <a href="Code.gs" target="_blank">📄 Download Code.gs</a>
   </div>
 </aside>
@@ -336,6 +421,26 @@ tr:hover td{background:var(--bg2)}
         <div class="conn-text" id="userConnLabel">Logged in</div>
         <span id="creditsBadge" style="background:#fff;color:var(--accent);font-size:11px;font-weight:700;padding:2px 10px;border-radius:100px;margin-left:8px"></span>
         <button class="conn-disc" onclick="logoutUser()">Logout</button>
+      </div>
+
+      <!-- Activate License & Buy Credits (shown when logged in) -->
+      <div id="licenseActionsRow" style="display:none;gap:10px;margin-top:10px">
+        <div class="activate-card" style="flex:1">
+          <div class="activate-card-title">🔑 Have a License Key?</div>
+          <div class="activate-card-desc">Already purchased? Activate your key to get full credits on this account.</div>
+          <button class="btn-activate" onclick="openActivateModal()">
+            <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+            Activate License Key
+          </button>
+        </div>
+        <div class="activate-card" style="flex:1;border-color:var(--acborder);background:var(--acbg)">
+          <div class="activate-card-title" style="color:var(--accent)">💳 Need More Credits?</div>
+          <div class="activate-card-desc">Credits finish hone ke baad yahaan se buy karo — no signup needed.</div>
+          <button class="btn-activate" style="background:var(--accent)" onclick="openCreditsModal()">
+            <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Buy Credits
+          </button>
+        </div>
       </div>
 
       <!-- Email entry -->
@@ -393,7 +498,7 @@ tr:hover td{background:var(--bg2)}
             <div>
               <div class="ss-title">Paste the code</div>
               <div class="ss-desc">Delete everything → Download <a href="Code.gs" target="_blank">Code.gs</a> → Copy all → Paste → Press <strong>Ctrl+S</strong></div>
-              <div class="ss-code"><span class="hl">Code.gs</span> → Select All → Copy → Paste → <span class="btn">Ctrl+S</span></div>
+              <div class="ss-code"><span class="hl">Code.gs</span> → Select All → Delete → Paste → <span class="btn">Ctrl+S</span></div>
             </div>
           </div>
           <div class="ss-row">
@@ -669,7 +774,7 @@ let excelRows=[],excelCols=[],pdfMap={},broadcastFiles=[],matched=[];
 let isSending=false,scriptUrl='',connEmail='',sendMode='broadcast';
 const STEPS=7;
 
-const LICENSE_SERVER_URL = 'https://script.google.com/macros/s/AKfycbzbi7XnucB7yCryeXPwBSSzs3jnf-tFpikn7G7chWkwUxdIRswPOGe25NAnVOvnj2WT/exec';
+const LICENSE_SERVER_URL = 'https://script.google.com/macros/s/AKfycbw_UhMgS6mYTWOYB6NXy0yXbjU18ywxkYqlZz_1z_9uS-ytvjX-1sHY3bD0cU8pAmPxPQ/exec';
 let currentUserEmail='', currentOTP='', userCredits=0, userLicenseKey='', userIsLoggedIn=false;
 
 window.onload=()=>{
@@ -790,19 +895,45 @@ function showUserLoggedIn(){
   document.getElementById('creditsBadge').textContent=`${userCredits} credits`;
   document.getElementById('creditsBadge').style.color=creditColor;
 
+  // Show Activate + Buy cards
+  document.getElementById('licenseActionsRow').style.display='flex';
+
   // Show Apps Script section
   document.getElementById('appsScriptSection').style.display='';
 
+  // Update sidebar credits widget
+  updateSidebarCredits();
+
   // If no credits — show buy message
   if(userCredits<=0){
-    const notice = document.createElement('div');
-    notice.className='notice n-warn';
-    notice.innerHTML='<span>⚠️</span><div><strong>No credits remaining.</strong> <a href="/#pricing" style="color:var(--blue)">Buy credits →</a></div>';
-    document.getElementById('appsScriptSection').prepend(notice);
+    const existing = document.getElementById('noCreditNotice');
+    if(!existing){
+      const notice = document.createElement('div');
+      notice.id='noCreditNotice';
+      notice.className='notice n-warn';
+      notice.style.marginTop='12px';
+      notice.innerHTML='<span>⚠️</span><div><strong>No credits remaining.</strong> <button onclick="openCreditsModal()" style="background:none;border:none;color:var(--blue);font-weight:600;cursor:pointer;font-family:var(--fb);font-size:12px;text-decoration:underline">Buy credits →</button></div>';
+      document.getElementById('loginSection').appendChild(notice);
+    }
   }
 
   // Enable next if Apps Script already connected
   if(scriptUrl) document.getElementById('btnStep1').disabled=false;
+}
+
+function updateSidebarCredits(){
+  if(!userIsLoggedIn) return;
+  const widget = document.getElementById('sidebarCredits');
+  widget.classList.add('show');
+  const count = document.getElementById('cwCount');
+  const fill = document.getElementById('cwFill');
+  count.textContent = userCredits;
+  // Determine color class
+  count.className = 'cw-count' + (userCredits<=0?' danger':userCredits<=20?' warn':'');
+  fill.className = 'cw-fill' + (userCredits<=0?' danger':userCredits<=20?' warn':'');
+  // Bar percentage (based on 2000 as full)
+  const pct = Math.min(100, Math.max(0, Math.round((userCredits/2000)*100)));
+  fill.style.width = Math.max(pct, userCredits>0?3:0) + '%';
 }
 
 function logoutUser(){
@@ -812,9 +943,13 @@ function logoutUser(){
   document.getElementById('emailEntrySection').style.display='';
   document.getElementById('otpEntrySection').style.display='none';
   document.getElementById('appsScriptSection').style.display='none';
+  document.getElementById('licenseActionsRow').style.display='none';
   document.getElementById('userEmailInp').value='';
   document.getElementById('otpInp').value='';
   document.getElementById('btnStep1').disabled=true;
+  document.getElementById('sidebarCredits').classList.remove('show');
+  const notice = document.getElementById('noCreditNotice');
+  if(notice) notice.remove();
 }
 
 async function fetchUserCredits(email){
@@ -831,6 +966,7 @@ async function fetchUserCredits(email){
       const creditColor=userCredits<=0?'#d93025':userCredits<=20?'#b45309':'#0d9e73';
       document.getElementById('creditsBadge').textContent=`${userCredits} credits`;
       document.getElementById('creditsBadge').style.color=creditColor;
+      updateSidebarCredits();
     }
   }catch(e){}
 }
@@ -1182,7 +1318,7 @@ async function startSend(){
     isSending=false;
     document.getElementById('btnGo').disabled=false;
     document.getElementById('btnBackSend').disabled=false;
-    setTimeout(()=>{ window.open('https://sendease.in/#pricing','_blank'); },800);
+    setTimeout(()=>{ openCreditsModal(); },800);
     return;
   }
 
@@ -1268,6 +1404,129 @@ async function startSend(){
     addLog('warn',`⚠ ${failed} failed — agli baar resume option milega`);
   }
 
+// ── BUY CREDITS MODAL ─────────────────────────────
+const RAZORPAY_KEY_APP = 'rzp_live_T1PUGj0qC2zy62';
+let _cmPlan='pro', _cmAmt=999, _cmCredits=2000;
+
+function openCreditsModal(){
+  // Pre-fill email if logged in
+  if(currentUserEmail) document.getElementById('cmEmail').value=currentUserEmail;
+  document.getElementById('creditsModal').classList.add('open');
+  validateCM();
+}
+function closeCreditsModal(){ document.getElementById('creditsModal').classList.remove('open'); }
+
+function selectCMPlan(plan, amt, credits){
+  _cmPlan=plan; _cmAmt=amt; _cmCredits=credits;
+  ['standard','popular','pro','business'].forEach(p=>{
+    document.getElementById('cmp-'+p).classList.toggle('selected', p===plan);
+  });
+  document.getElementById('cmSubmitTxt').textContent=`Proceed to Pay ₹${amt.toLocaleString('en-IN')}`;
+}
+
+function validateCM(){
+  const n=document.getElementById('cmName').value.trim();
+  const e=document.getElementById('cmEmail').value.trim();
+  document.getElementById('cmSubmitBtn').disabled=!(n.length>1 && e.includes('@') && e.includes('.'));
+}
+
+function submitCM(){
+  const name=document.getElementById('cmName').value.trim();
+  const email=document.getElementById('cmEmail').value.trim();
+  const phone=document.getElementById('cmPhone').value.trim();
+  if(!name || !email.includes('@')) return;
+
+  closeCreditsModal();
+
+  const planLabels={standard:'500 Credits',popular:'1,000 Credits',pro:'2,000 Credits',business:'5,000 Credits'};
+  const options={
+    key: RAZORPAY_KEY_APP,
+    amount: _cmAmt * 100,
+    currency: 'INR',
+    name: 'SendEase',
+    description: 'SendEase — ' + (planLabels[_cmPlan]||_cmCredits+' Credits'),
+    prefill: {name, email, contact: phone},
+    notes: {plan: _cmPlan, customer_name: name},
+    theme: {color: '#e8420a'},
+    handler: function(response){
+      // Show success overlay
+      const overlay = document.createElement('div');
+      overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)';
+      overlay.innerHTML=`<div style="background:#fff;border-radius:18px;padding:36px 28px;max-width:360px;width:100%;text-align:center">
+        <div style="font-size:48px;margin-bottom:12px">🎉</div>
+        <div style="font-family:'Syne',sans-serif;font-size:22px;color:#111;font-weight:800;margin-bottom:8px">Payment <span style="color:#e8420a">Successful!</span></div>
+        <p style="font-size:13px;color:#888;line-height:1.7;margin-bottom:14px">License key & invoice sent to<br/><strong style="color:#111">${email}</strong></p>
+        <p style="font-size:11px;color:#bbb;margin-bottom:20px">Payment ID: ${response.razorpay_payment_id}</p>
+        <button onclick="this.closest('div').parentNode.remove();fetchUserCredits('${email}')" style="background:#e8420a;color:#fff;border:none;border-radius:9px;padding:11px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif">Done ✓</button>
+      </div>`;
+      document.body.appendChild(overlay);
+    },
+    modal: {ondismiss: function(){}}
+  };
+  const rzp = new Razorpay(options);
+  rzp.on('payment.failed', function(resp){ alert('Payment failed: '+resp.error.description+'\nPlease try again.'); });
+  rzp.open();
+}
+
+// ── ACTIVATE LICENSE MODAL ────────────────────────
+function openActivateModal(){
+  if(currentUserEmail) document.getElementById('amEmail').value=currentUserEmail;
+  document.getElementById('amErr').style.display='none';
+  document.getElementById('activateModal').classList.add('open');
+  validateAM();
+}
+function closeActivateModal(){ document.getElementById('activateModal').classList.remove('open'); }
+
+function validateAM(){
+  const e=document.getElementById('amEmail').value.trim();
+  const k=document.getElementById('amKey').value.trim();
+  document.getElementById('amSubmitBtn').disabled=!(e.includes('@') && k.length>8);
+}
+
+async function submitActivation(){
+  const email=document.getElementById('amEmail').value.trim();
+  const key=document.getElementById('amKey').value.trim().toUpperCase();
+  const btn=document.getElementById('amSubmitBtn');
+  const errEl=document.getElementById('amErr');
+  btn.disabled=true; btn.textContent='Validating...';
+  errEl.style.display='none';
+
+  try{
+    const url=`${LICENSE_SERVER_URL}?action=validate&key=${encodeURIComponent(key)}`;
+    const r=await fetch(url);
+    const d=await r.json();
+
+    if(d.valid && d.email && d.email.toLowerCase()===email.toLowerCase()){
+      // Match! Update user session with key's balance
+      userCredits=d.balance||0;
+      userLicenseKey=key;
+      localStorage.setItem('se_web_user', JSON.stringify({email:currentUserEmail||email, credits:userCredits, key}));
+      const creditColor=userCredits<=0?'#d93025':userCredits<=20?'#b45309':'#0d9e73';
+      document.getElementById('creditsBadge').textContent=`${userCredits} credits`;
+      document.getElementById('creditsBadge').style.color=creditColor;
+      updateSidebarCredits();
+      closeActivateModal();
+      // Show success notice
+      const notice=document.createElement('div');
+      notice.className='notice n-ok';
+      notice.style.cssText='margin-top:12px';
+      notice.innerHTML=`<span>✅</span><div><strong>License activated!</strong> ${userCredits} credits added. Plan: ${d.plan||'Pro'}</div>`;
+      document.getElementById('loginSection').appendChild(notice);
+      setTimeout(()=>notice.remove(), 5000);
+    } else if(d.valid && d.email !== email){
+      errEl.textContent='❌ This key belongs to a different email address.';
+      errEl.style.display='';
+    } else {
+      errEl.textContent='❌ Key not found or revoked. Please check and try again.';
+      errEl.style.display='';
+    }
+  }catch(e){
+    errEl.textContent='⚠ Server unreachable. Please try again.';
+    errEl.style.display='';
+  }
+  btn.disabled=false; btn.textContent='✓ Activate Now';
+}
+
   // Build Excel report with color coding
   try {
     const wb = XLSX.utils.book_new();
@@ -1352,5 +1611,92 @@ async function startSend(){
   }
 }
 </script>
+
+<!-- ── BUY CREDITS MODAL ────────────────────────── -->
+<div id="creditsModal" onclick="if(event.target===this)closeCreditsModal()">
+  <div class="cm-box">
+    <div class="cm-head">
+      <button class="cm-close" onclick="closeCreditsModal()">✕</button>
+      <div class="cm-head-title">Buy <em>Credits</em></div>
+      <div class="cm-head-sub">One credit = one email · Credits never expire · Instant delivery</div>
+    </div>
+    <div class="cm-body">
+      <!-- Plan Grid -->
+      <div class="cm-grid">
+        <div class="cm-plan" id="cmp-standard" onclick="selectCMPlan('standard',299,500)">
+          <div class="cm-plan-credits">500</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">credits</div>
+          <div class="cm-plan-price">₹299</div>
+          <div class="cm-plan-per">₹0.60 per email</div>
+        </div>
+        <div class="cm-plan" id="cmp-popular" onclick="selectCMPlan('popular',499,1000)">
+          <div class="cm-plan-credits">1,000</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">credits</div>
+          <div class="cm-plan-price">₹499</div>
+          <div class="cm-plan-per">₹0.50 per email</div>
+        </div>
+        <div class="cm-plan selected" id="cmp-pro" onclick="selectCMPlan('pro',999,2000)">
+          <div class="cm-plan-credits">2,000</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">credits</div>
+          <div class="cm-plan-price">₹999</div>
+          <div class="cm-plan-per">₹0.50 per email</div>
+          <div class="cm-plan-badge">⭐ Most Popular</div>
+        </div>
+        <div class="cm-plan" id="cmp-business" onclick="selectCMPlan('business',1999,5000)">
+          <div class="cm-plan-credits">5,000</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px">credits</div>
+          <div class="cm-plan-price">₹1,999</div>
+          <div class="cm-plan-per">₹0.40 per email</div>
+        </div>
+      </div>
+
+      <!-- Checkout form -->
+      <div class="cm-fg">
+        <label>Full Name *</label>
+        <input class="cm-inp" id="cmName" type="text" placeholder="Your full name" oninput="validateCM()"/>
+      </div>
+      <div class="cm-fg">
+        <label>Email Address *</label>
+        <input class="cm-inp" id="cmEmail" type="email" placeholder="you@example.com" oninput="validateCM()"/>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">License key & invoice is emailed to this address</div>
+      </div>
+      <div class="cm-fg">
+        <label>Phone (optional)</label>
+        <input class="cm-inp" id="cmPhone" type="tel" placeholder="+91 98765 43210"/>
+      </div>
+      <button class="cm-submit" id="cmSubmitBtn" onclick="submitCM()" disabled>
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <span id="cmSubmitTxt">Proceed to Pay ₹999</span>
+      </button>
+      <div class="cm-note">🔒 Secured by Razorpay · Credits added instantly after payment</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ACTIVATE LICENSE MODAL ──────────────────── -->
+<div id="activateModal" onclick="if(event.target===this)closeActivateModal()">
+  <div class="am-box">
+    <div class="am-head">
+      <button class="am-close" onclick="closeActivateModal()">✕</button>
+      <div class="am-head-title">🔑 Activate License</div>
+      <div class="am-head-sub">Purchased SendEase? Enter your key to activate credits</div>
+    </div>
+    <div class="am-body">
+      <div class="am-fg">
+        <label>Email (same as purchase)</label>
+        <input class="am-inp" id="amEmail" type="email" placeholder="you@example.com" oninput="validateAM()"/>
+      </div>
+      <div class="am-fg">
+        <label>License Key</label>
+        <input class="am-inp key-inp" id="amKey" type="text" placeholder="SE-XXXXX-XXXXX-XXXXX-XXXXX" oninput="validateAM()"/>
+      </div>
+      <button class="am-submit" id="amSubmitBtn" onclick="submitActivation()" disabled>✓ Activate Now</button>
+      <div class="am-err" id="amErr" style="display:none"></div>
+      <div class="am-hint">Don't have a key? <button onclick="closeActivateModal();openCreditsModal()" style="background:none;border:none;color:var(--accent);font-weight:600;cursor:pointer;font-family:var(--fb);font-size:11px">Buy Credits →</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </body>
 </html>
